@@ -5,6 +5,8 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
+@source inline('fill-idea-best','fill-idea-average', 'fill-idea-bad', 'fill-idea-terrible', 'border-idea-best/70','border-idea-average', 'border-idea-bad', 'border-idea-terrible');
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -56,6 +58,11 @@
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
+
+    --color-idea-best: var(--idea-best);
+    --color-idea-average: var(--idea-average);
+    --color-idea-bad: var(--idea-bad);
+    --color-idea-terrible: var(--idea-terrible);
 }
 
 /*
@@ -119,6 +126,11 @@
     --sidebar-border: hsl(0 0% 91%);
     --sidebar-ring: hsl(217.2 91.2% 59.8%);
     --sidebar: hsl(0 0% 98%);
+
+    --idea-best: hsl(59, 100%, 62%);
+    --idea-average: hsl(33, 100%, 62%);
+    --idea-bad: hsl(15, 100%, 62%);
+    --idea-terrible: hsl(6, 100%, 62%);
 }
 
 .dark {

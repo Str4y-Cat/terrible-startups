@@ -6,7 +6,11 @@ import PlaceholderPattern from '../../components/PlaceholderPattern.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'idea-X',
+        title: 'Dashboard',
+        href: '/dashboard',
+    },
+    {
+        title: 'Idea-X',
         href: '/ideaX',
     },
 ];
