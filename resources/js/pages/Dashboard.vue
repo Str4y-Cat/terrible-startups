@@ -6,8 +6,8 @@ import IdeaListItem from '../components/custom/IdeaListItem.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard',
-        href: '/dashboard',
+        title: 'Ideas',
+        href: '/ideas',
     },
 ];
 
@@ -19,6 +19,7 @@ const ideas = [
         type: 'Saas/App',
         dateCreated: '1/10/2024',
         rating: 5,
+        pinned: false,
     },
     {
         title: 'BackyardBnB',
@@ -27,6 +28,7 @@ const ideas = [
         type: 'Marketplace',
         dateCreated: '2/14/2024',
         rating: 32,
+        pinned: false,
     },
     {
         title: 'GrassPass',
@@ -35,6 +37,7 @@ const ideas = [
         type: 'App',
         dateCreated: '3/01/2024',
         rating: 27,
+        pinned: false,
     },
     {
         title: 'Holey Socks',
@@ -43,6 +46,7 @@ const ideas = [
         type: 'E-commerce',
         dateCreated: '4/20/2024',
         rating: 13,
+        pinned: false,
     },
     {
         title: 'Zoomies',
@@ -51,6 +55,7 @@ const ideas = [
         type: 'Saas/App',
         dateCreated: '5/05/2024',
         rating: 51,
+        pinned: false,
     },
     {
         title: 'BreakupBot',
@@ -59,6 +64,7 @@ const ideas = [
         type: 'Saas',
         dateCreated: '6/11/2024',
         rating: 74,
+        pinned: false,
     },
     {
         title: 'Blipflix',
@@ -67,6 +73,7 @@ const ideas = [
         type: 'Streaming/App',
         dateCreated: '7/07/2024',
         rating: 89,
+        pinned: false,
     },
     {
         title: 'Quiet Connect',
@@ -75,6 +82,7 @@ const ideas = [
         type: 'Saas/Social',
         dateCreated: '8/19/2024',
         rating: 38,
+        pinned: false,
     },
     {
         title: 'Brew World',
@@ -83,6 +91,7 @@ const ideas = [
         type: 'VR/App',
         dateCreated: '9/01/2024',
         rating: 60,
+        pinned: false,
     },
     {
         title: 'NameFame',
@@ -91,6 +100,7 @@ const ideas = [
         type: 'Saas/Utility',
         dateCreated: '10/10/2024',
         rating: 92,
+        pinned: false,
     },
     {
         title: 'Trash Garden',
@@ -99,6 +109,7 @@ const ideas = [
         type: 'Web App',
         dateCreated: '11/23/2024',
         rating: 21,
+        pinned: false,
     },
     {
         title: 'SnackChain',
@@ -107,6 +118,7 @@ const ideas = [
         type: 'Blockchain',
         dateCreated: '12/01/2024',
         rating: 17,
+        pinned: false,
     },
     {
         title: 'PunlyFans',
@@ -115,6 +127,7 @@ const ideas = [
         type: 'Content Platform',
         dateCreated: '12/25/2024',
         rating: 69,
+        pinned: false,
     },
     {
         title: 'RockTalk',
@@ -123,6 +136,7 @@ const ideas = [
         type: 'Social/App',
         dateCreated: '1/01/2025',
         rating: 12,
+        pinned: true,
     },
     {
         title: 'SorryTube',
@@ -131,16 +145,21 @@ const ideas = [
         type: 'Saas/Tool',
         dateCreated: '1/15/2025',
         rating: 101,
+        pinned: true,
     },
 ];
 
 ideas.sort((a, b) => {
+    if (a.pinned != b.pinned && (a.pinned || b.pinned)) {
+        return a.pinned ? -1 : 1;
+    }
+
     return b.rating - a.rating;
 });
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="All" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
@@ -154,6 +173,7 @@ ideas.sort((a, b) => {
                             :type="idea.type"
                             :dateCreated="idea.dateCreated"
                             :rating="idea.rating"
+                            :pinned="idea.pinned"
                         />
                     </Link>
                 </div>

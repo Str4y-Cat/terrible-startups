@@ -7,17 +7,17 @@ import PlaceholderPattern from '../../components/PlaceholderPattern.vue';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: '/ideas',
     },
     {
-        title: 'Idea-X',
-        href: '/ideaX',
+        title: 'New terrible idea',
+        href: '/ideas/create',
     },
 ];
 </script>
 
 <template>
-    <Head title="IdeaX" />
+    <Head title="New" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">

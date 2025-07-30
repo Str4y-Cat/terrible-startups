@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Calendar, Rocket, Star } from 'lucide-vue-next';
+import { Calendar, Pin, Rocket, Star } from 'lucide-vue-next';
 import { computed } from 'vue';
 const props = defineProps<{
     title: string;
@@ -8,6 +8,7 @@ const props = defineProps<{
     type: string;
     dateCreated: string;
     rating: number;
+    pinned?: boolean;
 }>();
 
 const starClass = computed(() => {
@@ -45,8 +46,12 @@ console.log(starClass.value);
                 {{ props.dateCreated }}
             </div>
             <div class="color-primary flex items-center gap-2" :class="`text-${starClass}`">
-                <component :is="Star" :size="17" fill="currentColor" :class="`fill-${starClass}`" />
+                <component :is="Star" :size="17" :class="[`fill-current`]" />
                 {{ props.rating }}
+            </div>
+
+            <div class="color-foreground flex items-center gap-2">
+                <component :is="Pin" :size="17" :class="[{ 'fill-foreground': pinned }]" />
             </div>
         </div>
     </div>
