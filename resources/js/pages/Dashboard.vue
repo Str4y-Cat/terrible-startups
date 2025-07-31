@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
+import { computed, reactive } from 'vue';
 import IdeaListItem from '../components/custom/IdeaListItem.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -11,7 +12,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const ideas = [
+const ideasArray = reactive([
     {
         title: 'Tinder for Dogs',
         handle: 'tinder-for-dogs',
@@ -147,15 +148,21 @@ const ideas = [
         rating: 101,
         pinned: true,
     },
-];
+]);
 
-ideas.sort((a, b) => {
-    if (a.pinned != b.pinned && (a.pinned || b.pinned)) {
-        return a.pinned ? -1 : 1;
-    }
+const ideas = computed(() => {
+    return [...ideasArray].sort((a, b) => {
+        if (a.pinned != b.pinned && (a.pinned || b.pinned)) {
+            return a.pinned ? -1 : 1;
+        }
 
-    return b.rating - a.rating;
+        return b.rating - a.rating;
+    });
 });
+
+const log = (val: any) => {
+    console.log(val);
+};
 </script>
 
 <template>
@@ -165,17 +172,17 @@ ideas.sort((a, b) => {
         <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
             <div class="grid auto-rows-min gap-4 overflow-scroll">
                 <div v-for="idea in ideas" :key="idea.title" class="">
-                    <Link :href="route('ideas/show')">
-                        <IdeaListItem
-                            :title="idea.title"
-                            :handle="idea.handle"
-                            :description="idea.description"
-                            :type="idea.type"
-                            :dateCreated="idea.dateCreated"
-                            :rating="idea.rating"
-                            :pinned="idea.pinned"
-                        />
-                    </Link>
+                    <IdeaListItem
+                        :title="idea.title"
+                        :handle="idea.handle"
+                        :description="idea.description"
+                        :type="idea.type"
+                        :dateCreated="idea.dateCreated"
+                        :rating="idea.rating"
+                        :pinned="idea.pinned"
+                        :link="route('ideas/show')"
+                        @pinned="(isPinned: boolean) => (idea.pinned = isPinned)"
+                    />
                 </div>
             </div>
         </div>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import InputError from '@/components/InputError.vue';
+import Dialog from '@/components/custom/Dialog.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -6,19 +8,21 @@ import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import Select from '../../components/custom/form/Select.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard',
-        href: '/dashboard',
+        title: 'Ideas',
+        href: '/ideas',
     },
     {
-        title: 'Idea-X',
-        href: '/ideaX',
+        title: 'New idea',
+        href: '/ideas/create',
     },
 ];
+
+const businessTypes = ['Product', 'Service', 'Hello'];
 
 const form = useForm({
     title: '',
@@ -49,12 +53,11 @@ const canSubmit = computed(() => {
     });
 });
 
-console.log(canSubmit.value);
-const businessTypes = ['Product', 'Service', 'Hello'];
+const hasRating = ref(false);
 </script>
 
 <template>
-    <Head title="IdeaX" />
+    <Head title="New" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
@@ -69,27 +72,29 @@ const businessTypes = ['Product', 'Service', 'Hello'];
                                 autofocus
                                 :tabindex="0"
                                 v-model="form.title"
-                                class="border-none bg-transparent py-2 text-lg font-bold md:text-2xl dark:bg-transparent"
+                                class="border-none bg-transparent py-2 text-xl font-bold md:text-2xl dark:bg-transparent"
                                 placeholder="New idea"
                             />
                             <InputError :message="form.errors.title" />
                         </div>
-                        <Button :disabled="!canSubmit">Create</Button>
+                        <Button :variant="hasRating ? 'default' : 'ghost'" :disabled="!canSubmit">Create without rating</Button>
+                        <Dialog @click="hasRating = true"></Dialog>
+                        <!--<Button :disabled="!canSubmit">Create</Button>-->
                     </div>
 
-                    <div class="grid divide-y-1 divide-solid sm:grid-cols-5 sm:divide-x-1 sm:divide-y-0">
+                    <div class="grid divide-y-1 divide-solid sm:divide-x-1 sm:divide-y-0 md:grid-cols-5">
                         <div class="grid gap-4 p-4 sm:col-span-3">
                             <h1 class="font-bold text-foreground/30">Basics</h1>
 
                             <div class="grid gap-2">
-                                <Label for="overview" class="text-lg">Overview</Label>
+                                <Label for="overview" class="sm:text-lg">Overview</Label>
                                 <Textarea :modelValue="form.overview" class="border-none bg-input/10 p-1 dark:bg-input/10" />
                                 <InputError :message="form.errors.overview" />
                             </div>
 
                             <!-- Problem to Solve -->
                             <div class="grid gap-2">
-                                <Label for="problem_to_solve" class="text-lg">Problem to Solve</Label>
+                                <Label for="problem_to_solve" class="sm:text-lg">Problem to Solve</Label>
                                 <Textarea
                                     id="problem_to_solve"
                                     :modelValue="form.problem_to_solve"
@@ -100,14 +105,14 @@ const businessTypes = ['Product', 'Service', 'Hello'];
 
                             <!-- Inspiration for Idea -->
                             <div class="grid gap-2">
-                                <Label for="inspiration" class="text-lg">Inspiration</Label>
+                                <Label for="inspiration" class="sm:text-lg">Inspiration</Label>
                                 <Textarea id="inspiration" :modelValue="form.inspiration" class="border-none bg-input/10 dark:bg-input/10" />
                                 <InputError :message="form.errors.inspiration" />
                             </div>
 
                             <!-- Proposed Solution -->
                             <div class="grid gap-2">
-                                <Label for="solution" class="text-lg">Proposed Solution</Label>
+                                <Label for="solution" class="sm:text-lg">Proposed Solution</Label>
                                 <Textarea id="solution" :modelValue="form.solution" class="border-none bg-input/10 dark:bg-input/10" />
                                 <InputError :message="form.errors.solution" />
                             </div>
@@ -120,28 +125,28 @@ const businessTypes = ['Product', 'Service', 'Hello'];
                             <h1 class="font-bold text-foreground/30">Extra</h1>
                             <!-- Features -->
                             <div class="grid gap-2">
-                                <Label for="features" class="text-lg">Features</Label>
+                                <Label for="features" class="sm:text-lg">Features</Label>
                                 <Textarea id="features" :modelValue="form.features" class="border-none bg-input/10 dark:bg-input/10" />
                                 <InputError :message="form.errors.features" />
                             </div>
 
                             <!-- Description of Target Audience -->
                             <div class="grid gap-2">
-                                <Label for="target_audience" class="text-lg">Description of Target Audience</Label>
+                                <Label for="target_audience" class="sm:text-lg">Description of Target Audience</Label>
                                 <Textarea id="target_audience" :modelValue="form.target_audience" class="border-none bg-input/10 dark:bg-input/10" />
                                 <InputError :message="form.errors.target_audience" />
                             </div>
 
                             <!-- Risks -->
                             <div class="grid gap-2">
-                                <Label for="risks" class="text-lg">Risks</Label>
+                                <Label for="risks" class="sm:text-lg">Risks</Label>
                                 <Textarea id="risks" :modelValue="form.risks" class="border-none bg-input/10 dark:bg-input/10" />
                                 <InputError :message="form.errors.risks" />
                             </div>
 
                             <!-- Challenge -->
                             <div class="grid gap-2">
-                                <Label for="challenge" class="text-lg">Challenge</Label>
+                                <Label for="challenge" class="sm:text-lg">Challenge</Label>
                                 <Textarea id="challenge" :modelValue="form.challenge" class="border-none bg-input/10 dark:bg-input/10" />
                                 <InputError :message="form.errors.challenge" />
                             </div>
@@ -152,5 +157,3 @@ const businessTypes = ['Product', 'Service', 'Hello'];
         </div>
     </AppLayout>
 </template>
-
-/* - Problem to solve - insperation for idea - Proposed solution - features - Description of target audience - Risks - Challenges */
