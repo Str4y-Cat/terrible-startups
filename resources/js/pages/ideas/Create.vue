@@ -1,7 +1,6 @@
 <script setup lang="ts">
+import RatingDialog from '@/components/custom/RatingDialog.vue';
 import InputError from '@/components/InputError.vue';
-import Dialog from '@/components/custom/Dialog.vue';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -60,7 +59,7 @@ const hasRating = ref(false);
     <Head title="New" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+        <div class="mb-16 flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
             <div class="relative h-full w-full rounded-xl border bg-muted/20">
                 <form @submit.prevent="submit" class="flex flex-col gap-6 px-4 pt-8">
                     <div class="flex justify-between gap-4">
@@ -77,8 +76,9 @@ const hasRating = ref(false);
                             />
                             <InputError :message="form.errors.title" />
                         </div>
-                        <Button :variant="hasRating ? 'default' : 'ghost'" :disabled="!canSubmit">Create without rating</Button>
-                        <Dialog @click="hasRating = true"></Dialog>
+                        <!--<Button :variant="hasRating ? 'default' : 'ghost'" :disabled="!canSubmit">Create without rating</Button>-->
+                        <RatingDialog :disabled="!canSubmit" @click="hasRating = true"></RatingDialog>
+                        <!--<RatingDrawer :disabled="!canSubmit"></RatingDrawer>-->
                         <!--<Button :disabled="!canSubmit">Create</Button>-->
                     </div>
 
