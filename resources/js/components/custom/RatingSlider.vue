@@ -6,6 +6,7 @@ const rating = ref(0);
 const props = defineProps<{
     label: string;
     description: string;
+    currentValue: number;
 }>();
 
 // :model-value="[rating]"
@@ -27,9 +28,9 @@ const updateRating = (x: number[] | undefined) => {
             <p class="">{{ props.label }}</p>
             <p class="text-foreground/50">{{ props.description }}</p>
         </div>
-        <div class="mb-2 flex gap-2">
-            <Slider @update:model-value="updateRating" :default-value="[0]" :max="10" :step="1"></Slider>
-            <span>{{ rating }}</span>
+        <div class="mb-4 flex gap-2 pe-6">
+            <Slider @update:model-value="updateRating" :default-value="[props.currentValue]" :max="10" :step="1"></Slider>
+            <span class="w-3">{{ props.currentValue >= 0 ? props.currentValue : '-' }}</span>
         </div>
     </div>
 </template>

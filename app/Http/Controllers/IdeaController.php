@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreIdeaRequest;
 use App\Http\Requests\UpdateIdeaRequest;
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Models\Idea;
 
@@ -14,7 +16,15 @@ class IdeaController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Dashboard');
+        $user = Auth::user();
+        $ideas = Idea::query()->where('user_id', $user->id)->get();
+        $data = $ideas->map(function ($idea) {
+            return $idea->data();
+        });
+        /* $ideas = Idea::query()->where('user_id', $user->id)->orderBy("rating", "desc")->paginate(15); */
+        return Inertia::render('Dashboard', [
+            'ideas' => $data
+        ]);
     }
 
     /**
@@ -30,9 +40,25 @@ class IdeaController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreIdeaRequest $request)
+    /* public function store(Request $request) */
     {
-        //
-        dd('Idea Store');
+        $user = Auth::user();
+        $validated = $request->validated();
+        $ideaArgs = collect($validated)->except(['rating_questions']);
+        $rating_questions = $validated['rating_questions'];
+
+        $idea = Idea::create(['user_id' => $user->id, ...$ideaArgs->toArray()]);
+
+
+        foreach ($rating_questions as $question) {
+            //update or create the user rating table
+
+        }
+
+        return redirect("/ideas/$idea->id");
+
+
+        /* dd($idea->id); */
     }
 
     /**
@@ -40,8 +66,9 @@ class IdeaController extends Controller
      */
     public function show(Idea $idea)
     {
-        //
-        dd('Idea Show');
+        return Inertia::render('ideas/Show', [
+            'idea' => $idea
+        ]);
     }
 
     /**

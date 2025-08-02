@@ -5,7 +5,7 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
-@source inline('text-idea-best','text-idea-average', 'text-idea-bad', 'text-idea-terrible', 'border-idea-best/70','border-idea-average', 'border-idea-bad', 'border-idea-terrible');
+@source inline('opacity-0','text-idea-best','text-idea-average', 'text-idea-bad', 'text-idea-terrible', 'border-idea-best/70','border-idea-average', 'border-idea-bad', 'border-idea-terrible');
 
 @custom-variant dark (&:is(.dark *));
 

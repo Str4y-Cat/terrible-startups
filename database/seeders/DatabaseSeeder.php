@@ -22,9 +22,7 @@ class DatabaseSeeder extends Seeder
             'password' => "password",
         ]);
 
-        Idea::factory(20)->create([
-            'user_id' => $user->id
-        ]);
+        /* Idea::factory(20)->create([ 'user_id' => $user->id ]); */
 
 
 
