@@ -33,15 +33,16 @@ class Idea extends Model
         return[
             'title' => $this->title ,
             "rating" => $this->rating ,
-            "overview" => $this->overview ,
-            "type" => $this->type ,
-            "problem_to_solve" => $this->problem_to_solve ,
-            "inspiration" => $this->inspiration ,
-            "solution" => $this->solution ,
-            "features" => $this->features ,
-            "target_audience" => $this->target_audience ,
-            "risks" => $this->risks ,
-            "challenges" => $this->challenges ,
+            "id" => $this->id,
+            /* "overview" => $this->overview , */
+            /* "type" => $this->type , */
+            /* "problem_to_solve" => $this->problem_to_solve , */
+            /* "inspiration" => $this->inspiration , */
+            /* "solution" => $this->solution , */
+            /* "features" => $this->features , */
+            /* "target_audience" => $this->target_audience , */
+            /* "risks" => $this->risks , */
+            /* "challenges" => $this->challenges , */
             "date_created" => $this->created_at->toDateString() ,
         ];
     }

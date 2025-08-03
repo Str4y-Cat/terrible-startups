@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import IdeaTable from '@/components/custom/IdeaTable.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { Head, usePage } from '@inertiajs/vue3';
+import { computed, reactive, ref } from 'vue';
 import IdeaListItem from '../components/custom/IdeaListItem.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -12,9 +13,9 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const ideasArray;
-
-// const ideasArray = reactive([
+// const ideasArray;
+const page = usePage();
+const ideasArray = reactive(page.props.ideas);
 //     {
 //         title: 'Tinder for Dogs',
 //         handle: 'tinder-for-dogs',
@@ -162,9 +163,7 @@ const ideas = computed(() => {
     });
 });
 
-const log = (val: any) => {
-    console.log(val);
-};
+const toggle = ref(false);
 </script>
 
 <template>
@@ -172,14 +171,14 @@ const log = (val: any) => {
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-            <div class="grid auto-rows-min gap-4 overflow-scroll">
+            <div v-if="toggle" class="grid auto-rows-min gap-4 overflow-scroll">
                 <div v-for="idea in ideas" :key="idea.title" class="">
                     <IdeaListItem
                         :title="idea.title"
                         :handle="idea.handle"
                         :description="idea.description"
                         :type="idea.type"
-                        :dateCreated="idea.dateCreated"
+                        :dateCreated="idea.date_created"
                         :rating="idea.rating"
                         :pinned="idea.pinned"
                         :link="route('ideas/show')"
@@ -187,6 +186,8 @@ const log = (val: any) => {
                     />
                 </div>
             </div>
+            <IdeaTable v-if="!toggle" :ideas="ideas"></IdeaTable>
         </div>
+        <button class="hover:muted absolute right-10 bottom-10 rounded border px-3 py-2" @click="() => (toggle = !toggle)">Toggle!</button>
     </AppLayout>
 </template>

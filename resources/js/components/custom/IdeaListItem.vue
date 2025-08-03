@@ -2,19 +2,32 @@
 import { Link } from '@inertiajs/vue3';
 import { Calendar, Dot, Pin, Star } from 'lucide-vue-next';
 import { computed } from 'vue';
-const props = defineProps<{
-    title: string;
-    handle: string;
-    description?: string;
-    type: string;
-    dateCreated: string;
-    rating: number;
-    pinned?: boolean;
-    link: string;
-}>();
+
+const props = withDefaults(
+    defineProps<{
+        title: string;
+        handle: string;
+        description?: string;
+        type?: string;
+        dateCreated?: string;
+        rating?: number;
+        pinned?: boolean;
+        link?: string;
+    }>(),
+    {
+        description: '',
+        dateCreated: '',
+        rating: 0,
+        pinned: false,
+        link: '',
+    },
+);
 
 const starClass = computed(() => {
     const rating = props.rating;
+    if (rating == undefined) {
+        return '';
+    }
 
     if (rating >= 75) return 'idea-best';
     if (rating < 75 && rating >= 50) return 'idea-average';
@@ -30,7 +43,7 @@ const starClass = computed(() => {
         <Link :href="props.link" class="flex w-full items-center justify-between">
             <div class="flex flex-col py-2 xs:flex-row xs:items-center xs:gap-4 xs:py-4">
                 <h2 class="font-bold sm:text-xl">{{ props.title }}</h2>
-                <div class="flex items-center gap-2 text-white/50">
+                <div v-if="props.type" class="flex items-center gap-2 text-white/50">
                     <component :is="Dot" :size="17" class="hidden xs:block" />
                     {{ props.type }}
                 </div>
@@ -57,6 +70,7 @@ const starClass = computed(() => {
         </Link>
 
         <button
+            v-if="false"
             @click="$emit('pinned', !pinned)"
             class="color-foreground ms-4 flex cursor-pointer items-center gap-2 rounded-xl border border-transparent p-2 hover:border-muted"
         >

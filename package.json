@@ -20,11 +20,13 @@
         "prettier-plugin-organize-imports": "^4.1.0",
         "prettier-plugin-tailwindcss": "^0.6.11",
         "typescript-eslint": "^8.23.0",
+        "vite-plugin-vue-devtools": "^8.0.0",
         "vue-tsc": "^2.2.4"
     },
     "dependencies": {
         "@inertiajs/vue3": "^2.0.0",
         "@tailwindcss/vite": "^4.1.11",
+        "@tanstack/vue-table": "^8.21.3",
         "@vitejs/plugin-vue": "^6.0.0",
         "@vueuse/core": "^12.8.2",
         "class-variance-authority": "^0.7.1",
