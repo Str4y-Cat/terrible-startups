@@ -117,7 +117,7 @@ const total = computed(() => {
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="mb-16 flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-            <div class="relative h-full w-full rounded-xl border bg-muted/20">
+            <div class="relative h-full w-full rounded-xl">
                 <form @submit.prevent="submit" class="flex flex-col gap-6 px-4 pt-8">
                     <div class="flex justify-between gap-4">
                         <div class="h-fit w-full">
@@ -156,7 +156,7 @@ const total = computed(() => {
                             <h1 class="font-bold text-foreground/30">Basics</h1>
 
                             <div class="grid gap-2">
-                                <Label for="overview" class="sm:text-lg">Overview</Label>
+                                <Label for="overview" class="text-md sm:text-lg">Overview</Label>
                                 <Textarea
                                     :modelValue="form.overview"
                                     @update:modelValue="(value) => (form.overview = `${value}`)"
@@ -167,7 +167,7 @@ const total = computed(() => {
 
                             <!-- Problem to Solve -->
                             <div class="grid gap-2">
-                                <Label for="problem_to_solve" class="sm:text-lg">Problem to Solve</Label>
+                                <Label for="problem_to_solve" class="text-md sm:text-lg">Problem to Solve</Label>
                                 <Textarea
                                     id="problem_to_solve"
                                     :modelValue="form.problem_to_solve"
@@ -179,7 +179,7 @@ const total = computed(() => {
 
                             <!-- Inspiration for Idea -->
                             <div class="grid gap-2">
-                                <Label for="inspiration" class="sm:text-lg">Inspiration</Label>
+                                <Label for="inspiration" class="text-md sm:text-lg">Inspiration</Label>
                                 <Textarea
                                     @update:modelValue="(value) => (form.inspiration = `${value}`)"
                                     id="inspiration"
@@ -191,7 +191,7 @@ const total = computed(() => {
 
                             <!-- Proposed Solution -->
                             <div class="grid gap-2">
-                                <Label for="solution" class="sm:text-lg">Proposed Solution</Label>
+                                <Label for="solution" class="text-md sm:text-lg">Proposed Solution</Label>
                                 <Textarea
                                     @update:modelValue="(value) => (form.solution = `${value}`)"
                                     id="solution"
@@ -209,7 +209,7 @@ const total = computed(() => {
                             <h1 class="font-bold text-foreground/30">Extra</h1>
                             <!-- Features -->
                             <div class="grid gap-2">
-                                <Label for="features" class="sm:text-lg">Features</Label>
+                                <Label for="features" class="text-md sm:text-lg">Features</Label>
                                 <Textarea
                                     @update:modelValue="(value) => (form.features = `${value}`)"
                                     id="features"
@@ -221,7 +221,7 @@ const total = computed(() => {
 
                             <!-- Description of Target Audience -->
                             <div class="grid gap-2">
-                                <Label for="target_audience" class="sm:text-lg">Description of Target Audience</Label>
+                                <Label for="target_audience" class="text-md sm:text-lg">Description of Target Audience</Label>
                                 <Textarea
                                     @update:modelValue="(value) => (form.target_audience = `${value}`)"
                                     id="target_audience"
@@ -233,7 +233,7 @@ const total = computed(() => {
 
                             <!-- Risks -->
                             <div class="grid gap-2">
-                                <Label for="risks" class="sm:text-lg">Risks</Label>
+                                <Label for="risks" class="text-md sm:text-lg">Risks</Label>
                                 <Textarea
                                     @update:modelValue="(value) => (form.risks = `${value}`)"
                                     id="risks"
@@ -245,7 +245,7 @@ const total = computed(() => {
 
                             <!-- Challenge -->
                             <div class="grid gap-2">
-                                <Label for="challenge" class="sm:text-lg">Challenge</Label>
+                                <Label for="challenge" class="text-md sm:text-lg">Challenge</Label>
                                 <Textarea
                                     id="challenge"
                                     @update:modelValue="(value) => (form.challenges = `${value}`)"
