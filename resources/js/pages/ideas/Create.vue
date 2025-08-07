@@ -7,21 +7,25 @@ import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
-import { computed, reactive } from 'vue';
+import { computed, reactive, ref } from 'vue';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Ideas',
-        href: '/ideas',
-    },
-    {
-        title: 'New idea',
-        href: '/ideas/create',
-    },
-];
+const idea_title = ref('New idea');
+
+const breadcrumbs = computed<BreadcrumbItem[]>(() => {
+    return [
+        {
+            title: 'Ideas',
+            href: '/ideas',
+        },
+        {
+            title: idea_title.value,
+            href: '/ideas/create',
+        },
+    ];
+});
 
 //sets the select types
-const businessTypes = ['Product', 'Service', 'Hello'];
+// const businessTypes = ['Product', 'Service', 'Hello'];
 
 const form = useForm<{
     title?: string;
@@ -91,10 +95,6 @@ const ratings = reactive<Rating[]>([
     { key: 9, label: 'Evergreen Potential', description: 'Once created, how much additional effort is required to continue selling?', value: -1 },
 ]);
 
-// interface StrippedRating {
-//     key: number;
-//     value: number;
-// }
 const stripRatingsForSubmit = (): { key: number; value: number }[] => {
     return ratings.map((x) => {
         return { key: x.key, value: x.value };
@@ -112,12 +112,12 @@ const total = computed(() => {
 </script>
 
 <template>
-    <Head title="New" />
+    <Head title="idea_title" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="mb-16 flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
             <div class="relative h-full w-full rounded-xl">
-                <form @submit.prevent="submit" class="flex flex-col gap-6 px-4 pt-8">
+                <form @submit.prevent="submit" class="flex flex-col gap-6 px-2 pt-8 sm:px-4">
                     <!--TITLE-->
                     <div class="mb-4 flex justify-between gap-4">
                         <div class="h-fit w-full">
@@ -127,8 +127,13 @@ const total = computed(() => {
                                 required
                                 autofocus
                                 :tabindex="0"
+                                @update:modelValue="
+                                    (val) => {
+                                        idea_title = val;
+                                    }
+                                "
                                 v-model="form.title"
-                                class="rounded-none border-none bg-transparent p-0 text-xl font-bold focus-visible:ring-0 md:text-2xl dark:bg-transparent"
+                                class="rounded-none border-none bg-transparent p-0 text-2xl font-bold focus-visible:ring-0 md:text-3xl dark:bg-transparent"
                                 placeholder="New idea - Untitled"
                             />
                             <InputError :message="form.errors.title" />
@@ -150,7 +155,7 @@ const total = computed(() => {
                         <!--<Button :disabled="!canSubmit">Create</Button>-->
                     </div>
 
-                    <div class="divide-y-1 divide-solid sm:divide-y-0">
+                    <div class="">
                         <div class="grid gap-4">
                             <!-- OVERVIEW -->
                             <TextInput

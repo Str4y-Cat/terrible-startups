@@ -9,7 +9,7 @@ const isOpen = ref(false);
 <template>
     <Collapsible v-model:open="isOpen">
         <CollapsibleTrigger>
-            <div class="mb-4 flex items-center gap-2 text-foreground/50">
+            <div class="my-8 flex items-center gap-2 text-foreground/50">
                 Add more Information
                 <component :is="ChevronRight" :size="17" :class="{ 'rotate-90': isOpen }" />
             </div>
