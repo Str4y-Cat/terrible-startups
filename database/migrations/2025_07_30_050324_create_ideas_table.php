@@ -16,16 +16,16 @@ return new class () extends Migration {
             $table->foreignId("user_id")->constrained()->onDelete("cascade")->onUpdate("cascade");
 
             $table->string("title");
-            $table->string("rating")->nullable();
-            $table->string("overview")->nullable();
+            $table->integer("rating")->nullable();
+            $table->text("overview")->nullable();
             $table->string("type")->nullable();
-            $table->string("problem_to_solve")->nullable();
-            $table->string("inspiration")->nullable();
-            $table->string("solution")->nullable();
-            $table->string("features")->nullable();
-            $table->string("target_audience")->nullable();
-            $table->string("risks")->nullable();
-            $table->string("challenges")->nullable();
+            $table->text("problem_to_solve")->nullable();
+            $table->text("inspiration")->nullable();
+            $table->text("solution")->nullable();
+            $table->text("features")->nullable();
+            $table->text("target_audience")->nullable();
+            $table->text("risks")->nullable();
+            $table->text("challenges")->nullable();
         });
     }
 
