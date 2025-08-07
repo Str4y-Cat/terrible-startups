@@ -1,14 +1,13 @@
 <script setup lang="ts">
+import Collapsiable from '@/components/custom/Collapsiable.vue';
+import TextInput from '@/components/custom/create/TextInput.vue';
 import RatingDialog from '@/components/custom/RatingDialog.vue';
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
 import { computed, reactive } from 'vue';
-import Select from '@/components/custom/form/Select.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -119,7 +118,8 @@ const total = computed(() => {
         <div class="mb-16 flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
             <div class="relative h-full w-full rounded-xl">
                 <form @submit.prevent="submit" class="flex flex-col gap-6 px-4 pt-8">
-                    <div class="flex justify-between gap-4">
+                    <!--TITLE-->
+                    <div class="mb-4 flex justify-between gap-4">
                         <div class="h-fit w-full">
                             <Input
                                 id="title"
@@ -128,13 +128,12 @@ const total = computed(() => {
                                 autofocus
                                 :tabindex="0"
                                 v-model="form.title"
-                                class="border-none bg-transparent py-2 text-xl font-bold md:text-2xl dark:bg-transparent"
-                                placeholder="New idea"
+                                class="rounded-none border-none bg-transparent p-0 text-xl font-bold focus-visible:ring-0 md:text-2xl dark:bg-transparent"
+                                placeholder="New idea - Untitled"
                             />
                             <InputError :message="form.errors.title" />
                         </div>
                         <!--<Button :variant="hasRating ? 'default' : 'ghost'" :disabled="!canSubmit">Create without rating</Button>-->
-                        <p>{{}}</p>
                         <RatingDialog
                             @update="
                                 ({ index, value }) => {
@@ -151,109 +150,83 @@ const total = computed(() => {
                         <!--<Button :disabled="!canSubmit">Create</Button>-->
                     </div>
 
-                    <div class="grid divide-y-1 divide-solid sm:divide-x-1 sm:divide-y-0 md:grid-cols-5">
-                        <div class="grid gap-4 p-4 sm:col-span-3">
-                            <h1 class="font-bold text-foreground/30">Basics</h1>
-
-                            <div class="grid gap-2">
-                                <Label for="overview" class="text-md sm:text-lg">Overview</Label>
-                                <Textarea
-                                    :modelValue="form.overview"
-                                    @update:modelValue="(value) => (form.overview = `${value}`)"
-                                    class="border-none bg-input/10 p-1 dark:bg-input/10"
-                                />
-                                <InputError :message="form.errors.overview" />
-                            </div>
+                    <div class="divide-y-1 divide-solid sm:divide-y-0">
+                        <div class="grid gap-4">
+                            <!-- OVERVIEW -->
+                            <TextInput
+                                :modelValue="form.overview"
+                                :error="form.errors.overview"
+                                label="Overview"
+                                id="overview"
+                                @update="(value) => (form.overview = value)"
+                            ></TextInput>
 
                             <!-- Problem to Solve -->
-                            <div class="grid gap-2">
-                                <Label for="problem_to_solve" class="text-md sm:text-lg">Problem to Solve</Label>
-                                <Textarea
-                                    id="problem_to_solve"
-                                    :modelValue="form.problem_to_solve"
-                                    @update:modelValue="(value) => (form.problem_to_solve = `${value}`)"
-                                    class="border-none bg-input/10 dark:bg-input/10"
-                                />
-                                <InputError :message="form.errors.problem_to_solve" />
-                            </div>
+                            <TextInput
+                                :modelvalue="form.problem_to_solve"
+                                :error="form.errors.problem_to_solve"
+                                label="Problem to solve"
+                                id="problem_to_solve"
+                                @update:modelvalue="(value) => (form.problem_to_solve = value)"
+                            ></TextInput>
 
                             <!-- Inspiration for Idea -->
-                            <div class="grid gap-2">
-                                <Label for="inspiration" class="text-md sm:text-lg">Inspiration</Label>
-                                <Textarea
-                                    @update:modelValue="(value) => (form.inspiration = `${value}`)"
-                                    id="inspiration"
-                                    :modelValue="form.inspiration"
-                                    class="border-none bg-input/10 dark:bg-input/10"
-                                />
-                                <InputError :message="form.errors.inspiration" />
-                            </div>
+                            <TextInput
+                                :modelvalue="form.inspiration"
+                                :error="form.errors.inspiration"
+                                label="Inspiration"
+                                id="inspiration"
+                                @update:modelvalue="(value) => (form.inspiration = value)"
+                            ></TextInput>
 
                             <!-- Proposed Solution -->
-                            <div class="grid gap-2">
-                                <Label for="solution" class="text-md sm:text-lg">Proposed Solution</Label>
-                                <Textarea
-                                    @update:modelValue="(value) => (form.solution = `${value}`)"
-                                    id="solution"
-                                    :modelValue="form.solution"
-                                    class="border-none bg-input/10 dark:bg-input/10"
-                                />
-                                <InputError :message="form.errors.solution" />
-                            </div>
-
-                            <!-- Business type -->
-                            <Select v-model="form.type" placeholder="Business type" :values="businessTypes"></Select>
+                            <TextInput
+                                :modelvalue="form.solution"
+                                :error="form.errors.solution"
+                                label="Solution"
+                                id="solution"
+                                @update:modelvalue="(value) => (form.solution = value)"
+                            ></TextInput>
                         </div>
 
-                        <div class="grid gap-4 p-4 sm:col-span-2">
-                            <h1 class="font-bold text-foreground/30">Extra</h1>
-                            <!-- Features -->
-                            <div class="grid gap-2">
-                                <Label for="features" class="text-md sm:text-lg">Features</Label>
-                                <Textarea
-                                    @update:modelValue="(value) => (form.features = `${value}`)"
+                        <div class="grid gap-4">
+                            <Collapsiable>
+                                <!-- Features -->
+                                <TextInput
+                                    :modelvalue="form.features"
+                                    :error="form.errors.features"
+                                    label="Features"
                                     id="features"
-                                    :modelValue="form.features"
-                                    class="border-none bg-input/10 dark:bg-input/10"
-                                />
-                                <InputError :message="form.errors.features" />
-                            </div>
+                                    @update:modelvalue="(value) => (form.features = value)"
+                                ></TextInput>
 
-                            <!-- Description of Target Audience -->
-                            <div class="grid gap-2">
-                                <Label for="target_audience" class="text-md sm:text-lg">Description of Target Audience</Label>
-                                <Textarea
-                                    @update:modelValue="(value) => (form.target_audience = `${value}`)"
+                                <!-- Description of Target Audience -->
+                                <TextInput
+                                    :modelvalue="form.target_audience"
+                                    :error="form.errors.target_audience"
+                                    label="Target audience"
                                     id="target_audience"
-                                    :modelValue="form.target_audience"
-                                    class="border-none bg-input/10 dark:bg-input/10"
-                                />
-                                <InputError :message="form.errors.target_audience" />
-                            </div>
+                                    @update:modelvalue="(value) => (form.target_audience = value)"
+                                ></TextInput>
 
-                            <!-- Risks -->
-                            <div class="grid gap-2">
-                                <Label for="risks" class="text-md sm:text-lg">Risks</Label>
-                                <Textarea
-                                    @update:modelValue="(value) => (form.risks = `${value}`)"
+                                <!-- Risks -->
+                                <TextInput
+                                    :modelvalue="form.risks"
+                                    :error="form.errors.risks"
+                                    label="Risks"
                                     id="risks"
-                                    :modelValue="form.risks"
-                                    class="border-none bg-input/10 dark:bg-input/10"
-                                />
-                                <InputError :message="form.errors.risks" />
-                            </div>
+                                    @update:modelvalue="(value) => (form.risks = value)"
+                                ></TextInput>
 
-                            <!-- Challenge -->
-                            <div class="grid gap-2">
-                                <Label for="challenge" class="text-md sm:text-lg">Challenge</Label>
-                                <Textarea
-                                    id="challenge"
-                                    @update:modelValue="(value) => (form.challenges = `${value}`)"
-                                    :modelValue="form.challenges"
-                                    class="border-none bg-input/10 dark:bg-input/10"
-                                />
-                                <InputError :message="form.errors.challenges" />
-                            </div>
+                                <!-- Challenge -->
+                                <TextInput
+                                    :modelvalue="form.challenges"
+                                    :error="form.errors.challenges"
+                                    label="Challenges"
+                                    id="challenges"
+                                    @update:modelvalue="(value) => (form.challenges = value)"
+                                ></TextInput>
+                            </Collapsiable>
                         </div>
                     </div>
                 </form>
