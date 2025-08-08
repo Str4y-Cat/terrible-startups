@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { router } from '@inertiajs/vue3';
 import { Star } from 'lucide-vue-next';
 import Tag from './Tag.vue';
 const props = defineProps<{
@@ -13,55 +14,15 @@ interface Idea {
     rating: number;
 }
 
-const invoices = [
-    {
-        invoice: 'INV001',
-        paymentStatus: 'Paid',
-        totalAmount: '$250.00',
-        paymentMethod: 'Credit Card',
-    },
-    {
-        invoice: 'INV002',
-        paymentStatus: 'Pending',
-        totalAmount: '$150.00',
-        paymentMethod: 'PayPal',
-    },
-    {
-        invoice: 'INV003',
-        paymentStatus: 'Unpaid',
-        totalAmount: '$350.00',
-        paymentMethod: 'Bank Transfer',
-    },
-    {
-        invoice: 'INV004',
-        paymentStatus: 'Paid',
-        totalAmount: '$450.00',
-        paymentMethod: 'Credit Card',
-    },
-    {
-        invoice: 'INV005',
-        paymentStatus: 'Paid',
-        totalAmount: '$550.00',
-        paymentMethod: 'PayPal',
-    },
-    {
-        invoice: 'INV006',
-        paymentStatus: 'Pending',
-        totalAmount: '$200.00',
-        paymentMethod: 'Bank Transfer',
-    },
-    {
-        invoice: 'INV007',
-        paymentStatus: 'Unpaid',
-        totalAmount: '$300.00',
-        paymentMethod: 'Credit Card',
-    },
-];
+const goToLink = (val: string) => {
+    console.log('going to link');
+    router.visit(`/ideas/${val}`);
+};
 </script>
 
 <template>
     <Table class="border-separate. border-spacing-y-3">
-        <TableCaption>A list of your recent invoices.</TableCaption>
+        <!--<TableCaption>A list of your recent invoices.</TableCaption>-->
         <TableHeader>
             <TableRow class="border-muted/0">
                 <TableHead class=""> Title </TableHead>
@@ -71,7 +32,7 @@ const invoices = [
             </TableRow>
         </TableHeader>
         <TableBody class="">
-            <TableRow v-for="idea in props.ideas" :key="idea.id" class="border-muted/20 *:py-6">
+            <TableRow @click="goToLink(idea.id)" v-for="idea in props.ideas" :key="idea.id" class="cursor-pointer border-muted/20 *:py-6">
                 <TableCell class="font-medium">
                     {{ idea.title }}
                 </TableCell>
