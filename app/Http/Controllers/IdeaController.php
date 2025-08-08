@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Resource;
 use App\Http\Requests\StoreIdeaRequest;
 use App\Http\Requests\UpdateIdeaRequest;
 use Illuminate\Http\Client\Request;
@@ -19,7 +20,7 @@ class IdeaController extends Controller
         $user = Auth::user();
         $ideas = Idea::query()->where('user_id', $user->id)->get();
         $data = $ideas->map(function ($idea) {
-            return $idea->data();
+            return $idea->data(Resource::Index);
         });
         /* $ideas = Idea::query()->where('user_id', $user->id)->orderBy("rating", "desc")->paginate(15); */
         return Inertia::render('Dashboard', [
@@ -66,8 +67,9 @@ class IdeaController extends Controller
      */
     public function show(Idea $idea)
     {
+
         return Inertia::render('ideas/Show', [
-            'idea' => $idea
+            'idea' => $idea->data(Resource::Show)
         ]);
     }
 
