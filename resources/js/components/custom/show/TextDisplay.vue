@@ -10,7 +10,7 @@ const props = defineProps<{
 <template>
     <div class="mt-4 border border-dashed p-2">
         <div class="flex justify-between">
-            <h3 class="text-xl font-bold">{{ props.title }}</h3>
+            <h3 class="text-2xl font-bold">{{ props.title }}</h3>
 
             <div
                 class="rounded px-2 py-1 text-sm"

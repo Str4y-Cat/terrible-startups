@@ -6,9 +6,9 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div class="mt-2">
-        <h4>{{ props.title }}</h4>
-        <p class="text-foreground/70">
+    <div class="mt-4">
+        <h4 class="font-bold">{{ props.title }}</h4>
+        <p class="text-foreground/50">
             <span v-if="!props.body">Still need to complete</span>
             {{ props.body }}
         </p>
