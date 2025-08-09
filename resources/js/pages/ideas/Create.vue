@@ -133,7 +133,7 @@ const total = computed(() => {
                                     }
                                 "
                                 v-model="form.title"
-                                class="rounded-none border-none bg-transparent p-0 text-2xl font-bold focus-visible:ring-0 md:text-3xl dark:bg-transparent"
+                                class="rounded-none border-none bg-transparent p-0 text-3xl font-bold focus-visible:ring-0 md:text-3xl dark:bg-transparent"
                                 placeholder="New idea - Untitled"
                             />
                             <InputError :message="form.errors.title" />

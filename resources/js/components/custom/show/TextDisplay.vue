@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-    <div class="mt-4 border border-dashed p-2">
+    <div class="mt-8 border border-dashed p-2">
         <div class="flex justify-between">
             <h3 class="text-2xl font-bold">{{ props.title }}</h3>
 

@@ -29,7 +29,7 @@ function autoResize() {
 </script>
 <template>
     <div class="grid gap-2 divide-y-1 divide-dashed has-focus:divide-primary/20">
-        <Label for="solution" class="text-xl sm:text-2xl">{{ label }}</Label>
+        <Label for="solution" class="text-2xl">{{ label }}</Label>
         <Textarea
             @update:modelValue="
                 (value) => {
