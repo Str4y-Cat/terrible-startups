@@ -15,6 +15,5 @@ test('new users can register', function () {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('idea.index', absolute: false));
+    $response->assertRedirect(route('ideas.index', absolute: false));
 });
-

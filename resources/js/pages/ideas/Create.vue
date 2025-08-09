@@ -57,7 +57,7 @@ const form = useForm<{
 
 const submit = () => {
     form.rating_questions = [...stripRatingsForSubmit()];
-    console.log(form.data());
+    console.log('This is the form data', form.data());
     form.post(route('ideas.store'), {
         onFinish: () => {
             /*navigate to form */
@@ -127,7 +127,7 @@ const total = computed(() => {
                                 required
                                 autofocus
                                 :tabindex="0"
-                                @update:modelValue="
+                                @update="
                                     (val) => {
                                         idea_title = val;
                                     }
@@ -168,29 +168,29 @@ const total = computed(() => {
 
                             <!-- Problem to Solve -->
                             <TextInput
-                                :modelvalue="form.problem_to_solve"
+                                :modelValue="form.problem_to_solve"
                                 :error="form.errors.problem_to_solve"
                                 label="Problem to solve"
                                 id="problem_to_solve"
-                                @update:modelvalue="(value) => (form.problem_to_solve = value)"
+                                @update="(value) => (form.problem_to_solve = value)"
                             ></TextInput>
 
                             <!-- Inspiration for Idea -->
                             <TextInput
-                                :modelvalue="form.inspiration"
+                                :modelValue="form.inspiration"
                                 :error="form.errors.inspiration"
                                 label="Inspiration"
                                 id="inspiration"
-                                @update:modelvalue="(value) => (form.inspiration = value)"
+                                @update="(value) => (form.inspiration = value)"
                             ></TextInput>
 
                             <!-- Proposed Solution -->
                             <TextInput
-                                :modelvalue="form.solution"
+                                :modelValue="form.solution"
                                 :error="form.errors.solution"
                                 label="Solution"
                                 id="solution"
-                                @update:modelvalue="(value) => (form.solution = value)"
+                                @update="(value) => (form.solution = value)"
                             ></TextInput>
                         </div>
 
@@ -198,38 +198,38 @@ const total = computed(() => {
                             <Collapsiable>
                                 <!-- Features -->
                                 <TextInput
-                                    :modelvalue="form.features"
+                                    :modelValue="form.features"
                                     :error="form.errors.features"
                                     label="Features"
                                     id="features"
-                                    @update:modelvalue="(value) => (form.features = value)"
+                                    @update="(value) => (form.features = value)"
                                 ></TextInput>
 
                                 <!-- Description of Target Audience -->
                                 <TextInput
-                                    :modelvalue="form.target_audience"
+                                    :modelValue="form.target_audience"
                                     :error="form.errors.target_audience"
                                     label="Target audience"
                                     id="target_audience"
-                                    @update:modelvalue="(value) => (form.target_audience = value)"
+                                    @update="(value) => (form.target_audience = value)"
                                 ></TextInput>
 
                                 <!-- Risks -->
                                 <TextInput
-                                    :modelvalue="form.risks"
+                                    :modelValue="form.risks"
                                     :error="form.errors.risks"
                                     label="Risks"
                                     id="risks"
-                                    @update:modelvalue="(value) => (form.risks = value)"
+                                    @update="(value) => (form.risks = value)"
                                 ></TextInput>
 
                                 <!-- Challenge -->
                                 <TextInput
-                                    :modelvalue="form.challenges"
+                                    :modelValue="form.challenges"
                                     :error="form.errors.challenges"
                                     label="Challenges"
                                     id="challenges"
-                                    @update:modelvalue="(value) => (form.challenges = value)"
+                                    @update="(value) => (form.challenges = value)"
                                 ></TextInput>
                             </Collapsiable>
                         </div>
