@@ -23,7 +23,7 @@ class StoreIdeaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required','string'],
+            'title' => ['required','string',"max:255"],
             "rating" =>  ['numeric'],
             "overview" => ['string','nullable', 'max:10000'],
             "type" => ['string','nullable', 'max:10000'],

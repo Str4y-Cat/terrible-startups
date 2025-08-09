@@ -16,7 +16,8 @@ Route::get('ideas/show', function () {
     return Inertia::render('ideas/Show');
 })->middleware(['auth', 'verified'])->name('ideas/show');
 
-Route::resource('ideas', IdeaController::class)->middleware(['auth', 'verified']);
+/* Route::resource('ideas', IdeaController::class)->middleware(['auth', 'verified']); */
+Route::resource('ideas', IdeaController::class);
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

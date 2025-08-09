@@ -1,9 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
     title: string;
-
-    body: string;
-    status: string;
+    status?: string;
 }>();
 </script>
 

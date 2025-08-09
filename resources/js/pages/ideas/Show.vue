@@ -1,14 +1,17 @@
 <script setup lang="ts">
+import EditDialog from '@/components/custom/EditDialog.vue';
 import TextDisplay from '@/components/custom/show/TextDisplay.vue';
 import TextDisplayBody from '@/components/custom/show/TextDisplayBody.vue';
 import Tag from '@/components/custom/Tag.vue';
 import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Toaster } from '@/components/ui/sonner';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Head, usePage } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { Plus } from 'lucide-vue-next';
 import { ref } from 'vue';
+import { toast } from 'vue-sonner';
+import 'vue-sonner/style.css'; // vue-sonner v2 requires this import
 
 const page = usePage();
 const breadcrumbs: BreadcrumbItem[] = [
@@ -39,11 +42,43 @@ interface Idea {
 const idea: Idea = <Idea>page.props.idea;
 
 const isDialogOpen = ref(false);
-const modalData = ref({ title: '', body: '' });
+const modalData = ref({ title: '', body: '', target: '' });
 
-function openModal(title: string, body: string) {
-    modalData.value = { title, body };
+function openModal(
+    title: string,
+    body: string,
+    target: '' | 'title' | 'overview' | 'problem_to_solve' | 'inspiration' | 'solution' | 'features' | 'target_audience' | 'risks' | 'challenges',
+) {
+    modalData.value = { title, body, target };
     isDialogOpen.value = true;
+}
+
+function handleSave({ target, value }: { target: keyof Idea; value: string }) {
+    console.log('Saving\n\n', target);
+    console.log('Value\n\n', value);
+
+    // Option 1: Immediate update in UI
+    idea[target] = value;
+
+    // Option 2: Persist to server
+
+    const form = useForm({
+        [target]: value,
+    });
+    form.put(route('ideas.update', { id: idea.id }), {
+        preserveScroll: true,
+        onError: (error) => console.log(error),
+        onSuccess: () => {
+            console.log('succsess');
+            toast('Saved', {
+                description: 'Sunday, December 03, 2023 at 9:00 AM',
+                // action: {
+                //     label: 'Undo',
+                //     onClick: () => console.log('Undo'),
+                // },
+            });
+        },
+    });
 }
 </script>
 
@@ -53,29 +88,35 @@ function openModal(title: string, body: string) {
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
             <div class="relative m-auto h-full w-full max-w-4xl rounded-xl">
-                <Dialog :open="isDialogOpen" :onOpenChange="(val) => (isDialogOpen = val)"></Dialog>
-
                 <div>
-                    <h1 class="text-4xl">{{ idea.title }}</h1>
+                    <h1 class="mt-4 text-4xl">{{ idea.title }}</h1>
                 </div>
                 <TextDisplay title="Concept Foundation" :status="idea.overview && idea.inspiration ? 'complete' : 'progress'">
-                    <TextDisplayBody @click="openModal('Project overview', idea.overview)" title="Project Overview" :body="idea.overview" />
-                    <div class="mt-8 flex">
+                    <TextDisplayBody
+                        @click="openModal('Project overview', idea.overview, 'overview')"
+                        title="Project Overview"
+                        :body="idea.overview"
+                    />
+                    <div class="mt-8 flex flex-wrap gap-y-2">
                         <Tag v-for="n in 10" :key="n">Tag - {{ n }}</Tag>
                     </div>
                 </TextDisplay>
 
-                <TextDisplay
-                    @click="openModal('Problem Identification', idea.problem_to_solve)"
-                    title="Problem Identification"
-                    :status="idea.problem_to_solve ? 'complete' : 'progress'"
-                >
-                    <TextDisplayBody title="Inspiration" :body="idea.inspiration" />
-                    <TextDisplayBody title="Problem statement" :body="idea.problem_to_solve" />
+                <TextDisplay title="Problem Identification" :status="idea.problem_to_solve ? 'complete' : 'progress'">
+                    <TextDisplayBody
+                        @click="openModal('Inspiration', idea.inspiration, 'inspiration')"
+                        title="Inspiration"
+                        :body="idea.inspiration"
+                    />
+                    <TextDisplayBody
+                        @click="openModal('Problem', idea.problem_to_solve, 'problem_to_solve')"
+                        title="Problem statement"
+                        :body="idea.problem_to_solve"
+                    />
                 </TextDisplay>
 
-                <TextDisplay title="Solution Design" :status="idea.problem_to_solve ? 'complete' : 'progress'">
-                    <TextDisplayBody title="Proposed solution" :body="idea.solution" />
+                <TextDisplay title="Solution Design" :status="idea.solution ? 'complete' : 'progress'">
+                    <TextDisplayBody @click="openModal('Solution', idea.solution, 'solution')" title="Proposed solution" :body="idea.solution" />
                 </TextDisplay>
 
                 <TextDisplay title="Feature planning" :status="idea.features ? 'complete' : 'progress'">
@@ -86,8 +127,18 @@ function openModal(title: string, body: string) {
 
                 <TextDisplay title="Risk analysis" :status="idea.risks && idea.challenges ? 'complete' : 'progress'">
                     <div class="w-full gap-4 sm:flex">
-                        <TextDisplayBody class="w-full" title="Identified risks" :body="idea.risks" />
-                        <TextDisplayBody class="w-full" title="Key challenges" :body="idea.challenges" />
+                        <TextDisplayBody
+                            @click="openModal('Risks', idea.risks, 'risks')"
+                            class="w-full"
+                            title="Identified risks"
+                            :body="idea.risks"
+                        />
+                        <TextDisplayBody
+                            @click="openModal('Challenges', idea.challenges, 'challenges')"
+                            class="w-full"
+                            title="Key challenges"
+                            :body="idea.challenges"
+                        />
                     </div>
                 </TextDisplay>
 
@@ -143,14 +194,31 @@ function openModal(title: string, body: string) {
                 <TextDisplay title="Notes"> </TextDisplay>
             </div>
         </div>
+
         <!-- The dialog -->
+        <!--
         <Dialog v-model:open="isDialogOpen">
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>{{ modalData.title }}</DialogTitle>
+                    <DialogTitle>
+                        <div class="flex items-center gap-2">
+                            <SquarePen />
+                            {{ modalData.title }}
+                        </div>
+                    </DialogTitle>
                 </DialogHeader>
                 <p>{{ modalData.body }}</p>
             </DialogContent>
         </Dialog>
+        -->
+        <EditDialog
+            v-model:isOpen="isDialogOpen"
+            :title="modalData.title"
+            :body="modalData.body"
+            :form_target="modalData.target"
+            @save="handleSave"
+        ></EditDialog>
+
+        <Toaster />
     </AppLayout>
 </template>

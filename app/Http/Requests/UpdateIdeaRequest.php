@@ -11,7 +11,7 @@ class UpdateIdeaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,17 @@ class UpdateIdeaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['string', "max:255"],
+            "rating" =>  ['numeric'],
+            "overview" => ['string','nullable', 'max:10000'],
+            "type" => ['string','nullable', 'max:10000'],
+            "problem_to_solve" => ['string','nullable', 'max:10000'],
+            "inspiration" => ['string','nullable', 'max:10000'],
+            "solution" => ['string','nullable', 'max:10000'],
+            "features" => ['string','nullable', 'max:10000'],
+            "target_audience" => ['string','nullable', 'max:10000'],
+            "risks" => ['string','nullable', 'max:10000'],
+            "challenges" => ['string','nullable', 'max:10000'],
         ];
     }
 }
