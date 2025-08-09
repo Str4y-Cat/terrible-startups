@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import TextDisplay from '@/components/custom/show/TextDisplay.vue';
 import TextDisplayBody from '@/components/custom/show/TextDisplayBody.vue';
+import Tag from '@/components/custom/Tag.vue';
 import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import AppLayout from '@/layouts/AppLayout.vue';
@@ -59,6 +60,9 @@ function openModal(title: string, body: string) {
                 </div>
                 <TextDisplay title="Concept Foundation" :status="idea.overview && idea.inspiration ? 'complete' : 'progress'">
                     <TextDisplayBody @click="openModal('Project overview', idea.overview)" title="Project Overview" :body="idea.overview" />
+                    <div class="mt-8 flex">
+                        <Tag v-for="n in 10" :key="n">Tag - {{ n }}</Tag>
+                    </div>
                 </TextDisplay>
 
                 <TextDisplay
@@ -75,49 +79,59 @@ function openModal(title: string, body: string) {
                 </TextDisplay>
 
                 <TextDisplay title="Feature planning" :status="idea.features ? 'complete' : 'progress'">
-                    <TextDisplayBody title="Bare Minimum - MVP" body="" />
+                    <TextDisplayBody title="Bare Minimum - MVP" :body="idea.features" />
                     <TextDisplayBody title="Core features" body="" />
                     <TextDisplayBody title="Nice to have's" body="" />
                 </TextDisplay>
 
                 <TextDisplay title="Risk analysis" :status="idea.risks && idea.challenges ? 'complete' : 'progress'">
-                    <div class="flex gap-4">
-                        <TextDisplayBody title="Identified risks" :body="idea.risks" />
-                        <TextDisplayBody title="Key challenges" :body="idea.challenges" />
+                    <div class="w-full gap-4 sm:flex">
+                        <TextDisplayBody class="w-full" title="Identified risks" :body="idea.risks" />
+                        <TextDisplayBody class="w-full" title="Key challenges" :body="idea.challenges" />
                     </div>
                 </TextDisplay>
 
                 <TextDisplay title="Market validation" :status="false ? 'complete' : 'progress'">
-                    <div class="mt-4 grid grid-cols-3 flex-wrap gap-4">
-                        <div class="group relative flex aspect-2/1 items-center justify-center gap-2 rounded border border-dashed border-primary">
+                    <div class="mt-4 grid grid-cols-2 flex-wrap gap-4 sm:grid-cols-3">
+                        <div
+                            class="group relative flex aspect-1/1 items-center justify-center gap-2 rounded border border-dashed border-primary sm:aspect-2/1"
+                        >
                             <Plus class="block group-hover:hidden"></Plus>
                             <p class="block max-w-[70%] group-hover:hidden">Competitor search - General</p>
                             <p class="hidden group-hover:block">Coming soon</p>
                             <PlaceholderPattern class="opacity-40" />
                         </div>
 
-                        <div class="group relative flex aspect-2/1 items-center justify-center gap-2 rounded border border-dashed border-primary">
+                        <div
+                            class="group relative flex aspect-1/1 items-center justify-center gap-2 rounded border border-dashed border-primary sm:aspect-2/1"
+                        >
                             <Plus class="block group-hover:hidden"></Plus>
                             <p class="block max-w-[70%] group-hover:hidden">Competitor search - Product Hunt</p>
                             <p class="hidden group-hover:block">Coming soon</p>
                             <PlaceholderPattern class="opacity-40" />
                         </div>
 
-                        <div class="group relative flex aspect-2/1 items-center justify-center gap-2 rounded border border-dashed border-primary">
+                        <div
+                            class="group relative flex aspect-1/1 items-center justify-center gap-2 rounded border border-dashed border-primary sm:aspect-2/1"
+                        >
                             <Plus class="block group-hover:hidden"></Plus>
                             <p class="block group-hover:hidden">Reddit Scraper</p>
                             <p class="hidden group-hover:block">Coming soon</p>
                             <PlaceholderPattern class="opacity-40" />
                         </div>
 
-                        <div class="group relative flex aspect-2/1 items-center justify-center gap-2 rounded border border-dashed border-primary">
+                        <div
+                            class="group relative flex aspect-1/1 items-center justify-center gap-2 rounded border border-dashed border-primary sm:aspect-2/1"
+                        >
                             <Plus class="block group-hover:hidden"></Plus>
                             <p class="block max-w-[70%] group-hover:hidden">Local business's to talk to</p>
                             <p class="hidden group-hover:block">Coming soon</p>
                             <PlaceholderPattern class="opacity-40" />
                         </div>
 
-                        <div class="group relative flex aspect-2/1 items-center justify-center gap-2 rounded border border-dashed border-primary">
+                        <div
+                            class="group relative flex aspect-1/1 items-center justify-center gap-2 rounded border border-dashed border-primary sm:aspect-2/1"
+                        >
                             <Plus class="block group-hover:hidden"></Plus>
                             <p class="block group-hover:hidden">Possible partners</p>
                             <p class="hidden group-hover:block">Coming soon</p>
