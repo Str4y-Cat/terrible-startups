@@ -22,10 +22,15 @@ return new class () extends Migration {
             $table->text("problem_to_solve")->nullable();
             $table->text("inspiration")->nullable();
             $table->text("solution")->nullable();
-            $table->text("features")->nullable();
-            $table->text("target_audience")->nullable();
-            $table->text("risks")->nullable();
-            $table->text("challenges")->nullable();
+            /* $table->text("features")->nullable(); */
+            /* $table->text("target_audience")->nullable(); */
+            /* $table->text("risks")->nullable(); */
+            /* $table->text("challenges")->nullable(); */
+
+            $table->jsonb("features")->nullable();
+            $table->jsonb("target_audience")->nullable();
+            $table->jsonb("risks")->nullable();
+            $table->jsonb("challenges")->nullable();
         });
     }
 

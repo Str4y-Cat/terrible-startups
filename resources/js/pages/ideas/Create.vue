@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Collapsiable from '@/components/custom/Collapsiable.vue';
+import BulletTextInput from '@/components/custom/create/BulletTextInput.vue';
 import TextInput from '@/components/custom/create/TextInput.vue';
 import RatingDialog from '@/components/custom/RatingDialog.vue';
 import InputError from '@/components/InputError.vue';
@@ -35,10 +36,10 @@ const form = useForm<{
     problem_to_solve?: string;
     inspiration?: string;
     solution?: string;
-    features?: string;
-    target_audience?: string;
-    risks?: string;
-    challenges?: string;
+    features?: string[];
+    target_audience?: string[];
+    risks?: string[];
+    challenges?: string[];
     rating_questions?: { key: number; value: number }[];
 }>({
     title: '',
@@ -48,10 +49,11 @@ const form = useForm<{
     problem_to_solve: '',
     inspiration: '',
     solution: '',
-    features: '',
-    target_audience: '',
-    risks: '',
-    challenges: '',
+    // features: [''],
+    features: [''],
+    target_audience: [''],
+    risks: [''],
+    challenges: [''],
     rating_questions: [{ key: 0, value: 0 }],
 });
 
@@ -61,6 +63,9 @@ const submit = () => {
     form.post(route('ideas.store'), {
         onFinish: () => {
             /*navigate to form */
+        },
+        onError: (error) => {
+            console.log(error);
         },
     });
 };
@@ -197,6 +202,8 @@ const total = computed(() => {
                         <div class="grid gap-4">
                             <Collapsiable>
                                 <!-- Features -->
+
+                                <!--
                                 <TextInput
                                     :modelValue="form.features"
                                     :error="form.errors.features"
@@ -204,33 +211,55 @@ const total = computed(() => {
                                     id="features"
                                     @update="(value) => (form.features = value)"
                                 ></TextInput>
+                                -->
+
+                                <BulletTextInput
+                                    :modelValue="form.features"
+                                    :error="form.errors.features"
+                                    label="Features"
+                                    id="features"
+                                    @update:modelValue="
+                                        (value) => {
+                                            form.features = value;
+                                        }
+                                    "
+                                ></BulletTextInput>
 
                                 <!-- Description of Target Audience -->
+                                <!--
                                 <TextInput
                                     :modelValue="form.target_audience"
                                     :error="form.errors.target_audience"
-                                    label="Target audience"
+                                    label="Target audiences"
                                     id="target_audience"
                                     @update="(value) => (form.target_audience = value)"
                                 ></TextInput>
+                                -->
+                                <BulletTextInput
+                                    :modelValue="form.target_audience"
+                                    :error="form.errors.target_audience"
+                                    label="Target audiences"
+                                    id="target_audience"
+                                    @update="(value) => (form.target_audience = value)"
+                                ></BulletTextInput>
 
                                 <!-- Risks -->
-                                <TextInput
+                                <BulletTextInput
                                     :modelValue="form.risks"
                                     :error="form.errors.risks"
                                     label="Risks"
                                     id="risks"
                                     @update="(value) => (form.risks = value)"
-                                ></TextInput>
+                                ></BulletTextInput>
 
                                 <!-- Challenge -->
-                                <TextInput
+                                <BulletTextInput
                                     :modelValue="form.challenges"
                                     :error="form.errors.challenges"
                                     label="Challenges"
                                     id="challenges"
                                     @update="(value) => (form.challenges = value)"
-                                ></TextInput>
+                                ></BulletTextInput>
                             </Collapsiable>
                         </div>
                     </div>

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\Resource;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Idea extends Model
 {
@@ -59,6 +60,22 @@ class Idea extends Model
             ],
 
         };
+    }
+
+    protected function casts(): array
+    {
+        return[
+            'features' => 'array',
+            'target_audience' => 'array',
+            'risks' => 'array',
+            'challenges' => 'array',
+        ];
+
+    }
+
+    public function User(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
 }

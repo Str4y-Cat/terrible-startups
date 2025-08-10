@@ -28,8 +28,10 @@ function autoResize() {
 //------------------------------------------------------------------------
 </script>
 <template>
-    <div class="grid gap-2 divide-y-1 divide-dashed has-focus:divide-primary/20">
-        <Label for="solution" class="text-2xl">{{ label }}</Label>
+    <div class="group mt-4 grid gap-2">
+        <Label for="solution" class="border-b-1 border-dashed border-transparent border-b-muted pb-1 text-2xl group-has-focus:border-b-primary/20">{{
+            label
+        }}</Label>
         <Textarea
             @update:modelValue="
                 (value) => {
@@ -39,7 +41,7 @@ function autoResize() {
             "
             :id="props.id"
             :modelValue="props.modelValue"
-            class="field-sizing-content min-h-30 border-none bg-input/0 p-1 focus-visible:ring-0 dark:bg-input/0"
+            class="field-sizing-content min-h-30 resize-none border-none bg-input/0 p-1 text-foreground/70 focus-visible:ring-0 dark:bg-input/0"
         />
 
         <InputError :message="props.error" />

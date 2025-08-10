@@ -30,11 +30,25 @@ class StoreIdeaRequest extends FormRequest
             "problem_to_solve" => ['string','nullable', 'max:10000'],
             "inspiration" => ['string','nullable', 'max:10000'],
             "solution" => ['string','nullable', 'max:10000'],
-            "features" => ['string','nullable', 'max:10000'],
-            "target_audience" => ['string','nullable', 'max:10000'],
-            "risks" => ['string','nullable', 'max:10000'],
-            "challenges" => ['string','nullable', 'max:10000'],
-            "rating_questions" => ['array']
+
+            'features'          => ['array'],
+            'features.*'        => ['string', 'max:255'], // each feature must be a string
+
+            'target_audience'   => ['array'],
+            'target_audience.*' => ['string', 'max:255'],
+
+            'risks'             => ['array'],
+            'risks.*'           => ['string', 'max:255'],
+
+            'challenges'        => ['array'],
+            'challenges.*'      => ['string', 'max:255'],
+
+            'rating_questions'  => ['array','nullable'],
+            'rating_questions.*' => ['array:key,value'],
+            'rating_questions.*.key' => ['numeric'],
+            'rating_questions.*.value' => ['numeric'],
+
+
         ];
     }
 

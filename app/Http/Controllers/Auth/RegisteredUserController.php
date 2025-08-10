@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Idea;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -41,6 +42,12 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        $ideas = require database_path('seeders/data/ideas.php');
+        foreach ($ideas as $idea) {
+            $user->ideas()->create($idea);
+        }
+
 
         event(new Registered($user));
 

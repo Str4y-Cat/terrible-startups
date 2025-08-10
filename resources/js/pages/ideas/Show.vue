@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import EditDialog from '@/components/custom/EditDialog.vue';
+import EditListDialog from '@/components/custom/EditListDialog.vue';
+import EditTextDialog from '@/components/custom/EditTextDialog.vue';
+import ListDisplayBody from '@/components/custom/show/ListDisplayBody.vue';
+
 import TextDisplay from '@/components/custom/show/TextDisplay.vue';
 import TextDisplayBody from '@/components/custom/show/TextDisplayBody.vue';
 import Tag from '@/components/custom/Tag.vue';
@@ -24,6 +27,7 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/ideas/create',
     },
 ];
+
 interface Idea {
     title: string;
     rating: string;
@@ -33,16 +37,20 @@ interface Idea {
     problem_to_solve: string;
     inspiration: string;
     solution: string;
-    features: string;
-    target_audience: string;
-    risks: string;
-    challenges: string;
+    features: string[];
+    target_audience: string[];
+    risks: string[];
+    challenges: string[];
     date_created: string;
 }
+
 const idea: Idea = <Idea>page.props.idea;
 
 const isDialogOpen = ref(false);
-const modalData = ref({ title: '', body: '', target: '' });
+
+const isListDialogOpen = ref(false);
+
+const modalData = ref({ title: '', body: '', list: [''], target: '' });
 
 function openModal(
     title: string,
@@ -53,18 +61,31 @@ function openModal(
     isDialogOpen.value = true;
 }
 
+function openListModal(
+    title: string,
+    list: string[],
+    target: '' | 'title' | 'overview' | 'problem_to_solve' | 'inspiration' | 'solution' | 'features' | 'target_audience' | 'risks' | 'challenges',
+) {
+    // console.log('opening list modal');
+    modalData.value = { title, list, target };
+    isListDialogOpen.value = true;
+}
+
 function handleSave({ target, value }: { target: keyof Idea; value: string }) {
-    console.log('Saving\n\n', target);
-    console.log('Value\n\n', value);
+    // console.log('Saving\n\n', target);
+    // console.log('Value\n\n', value);
 
     // Option 1: Immediate update in UI
     idea[target] = value;
 
     // Option 2: Persist to server
 
+    // console.log('doing the form');
     const form = useForm({
         [target]: value,
     });
+
+    // console.log('putting', form.data());
     form.put(route('ideas.update', { id: idea.id }), {
         preserveScroll: true,
         onError: (error) => console.log(error),
@@ -120,21 +141,19 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
                 </TextDisplay>
 
                 <TextDisplay title="Feature planning" :status="idea.features ? 'complete' : 'progress'">
-                    <TextDisplayBody title="Bare Minimum - MVP" :body="idea.features" />
-                    <TextDisplayBody title="Core features" body="" />
-                    <TextDisplayBody title="Nice to have's" body="" />
+                    <ListDisplayBody @click="openListModal('Features', idea.features, 'features')" title="Bare Minimum - MVP" :body="idea.features" />
                 </TextDisplay>
 
                 <TextDisplay title="Risk analysis" :status="idea.risks && idea.challenges ? 'complete' : 'progress'">
                     <div class="w-full gap-4 sm:flex">
-                        <TextDisplayBody
-                            @click="openModal('Risks', idea.risks, 'risks')"
+                        <ListDisplayBody
+                            @click="openListModal('Risks', idea.risks, 'risks')"
                             class="w-full"
                             title="Identified risks"
                             :body="idea.risks"
                         />
-                        <TextDisplayBody
-                            @click="openModal('Challenges', idea.challenges, 'challenges')"
+                        <ListDisplayBody
+                            @click="openListModal('Challenges', idea.challenges, 'challenges')"
                             class="w-full"
                             title="Key challenges"
                             :body="idea.challenges"
@@ -211,13 +230,22 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
             </DialogContent>
         </Dialog>
         -->
-        <EditDialog
+        <EditTextDialog
             v-model:isOpen="isDialogOpen"
             :title="modalData.title"
             :body="modalData.body"
             :form_target="modalData.target"
             @save="handleSave"
-        ></EditDialog>
+        ></EditTextDialog>
+
+        <EditListDialog
+            v-model:isOpen="isListDialogOpen"
+            :title="modalData.title"
+            :list="modalData.list"
+            :form_target="modalData.target"
+            @save="handleSave"
+        >
+        </EditListDialog>
 
         <Toaster />
     </AppLayout>

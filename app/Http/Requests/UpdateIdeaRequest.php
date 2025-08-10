@@ -22,17 +22,25 @@ class UpdateIdeaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['string', "max:255"],
+            'title' => ['string',"max:255"],
             "rating" =>  ['numeric'],
             "overview" => ['string','nullable', 'max:10000'],
             "type" => ['string','nullable', 'max:10000'],
             "problem_to_solve" => ['string','nullable', 'max:10000'],
             "inspiration" => ['string','nullable', 'max:10000'],
             "solution" => ['string','nullable', 'max:10000'],
-            "features" => ['string','nullable', 'max:10000'],
-            "target_audience" => ['string','nullable', 'max:10000'],
-            "risks" => ['string','nullable', 'max:10000'],
-            "challenges" => ['string','nullable', 'max:10000'],
+
+            'features'          => ['array'],
+            'features.*'        => ['string', 'max:255'], // each feature must be a string
+
+            'target_audience'   => ['array'],
+            'target_audience.*' => ['string', 'max:255'],
+
+            'risks'             => ['array'],
+            'risks.*'           => ['string', 'max:255'],
+
+            'challenges'        => ['array'],
+            'challenges.*'      => ['string', 'max:255'],
         ];
     }
 }

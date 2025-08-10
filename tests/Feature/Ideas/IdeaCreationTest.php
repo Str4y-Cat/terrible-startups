@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Idea;
 use App\Models\User;
 
 /* -valid data creates a record */
@@ -11,10 +12,10 @@ test('valid data creates a idea record', function () {
            "problem_to_solve" => "lorem ipsum dolor sit amet",
            "inspiration" => "lorem ipsum dolor sit amet",
            "solution" => "lorem ipsum dolor sit amet",
-           "features" => "lorem ipsum dolor sit amet",
-           "target_audience" => "lorem ipsum dolor sit amet",
-           "risks" => "lorem ipsum dolor sit amet",
-           "challenges" => "lorem ipsum dolor sit amet",
+           "features" => ["lorem","ipsum","dolor","sit","amet"],
+           "target_audience" => ["lorem","ipsum","dolor","sit","amet"],
+           "risks" => ["lorem","ipsum","dolor","sit","amet"],
+           "challenges" => ["lorem","ipsum","dolor","sit","amet"],
             "rating_questions" => [],
         ];
 
@@ -33,11 +34,13 @@ test('valid data creates a idea record', function () {
       "problem_to_solve" => "lorem ipsum dolor sit amet",
       "inspiration" => "lorem ipsum dolor sit amet",
       "solution" => "lorem ipsum dolor sit amet",
-      "features" => "lorem ipsum dolor sit amet",
-      "target_audience" => "lorem ipsum dolor sit amet",
-      "risks" => "lorem ipsum dolor sit amet",
-      "challenges" => "lorem ipsum dolor sit amet",
     ]);
+    $idea = Idea::where('title', 'test idea')->firstOrFail();
+
+    $this->assertEquals(["lorem", "ipsum", "dolor", "sit", "amet"], $idea->features);
+    $this->assertEquals(["lorem", "ipsum", "dolor", "sit", "amet"], $idea->target_audience);
+    $this->assertEquals(["lorem", "ipsum", "dolor", "sit", "amet"], $idea->risks);
+    $this->assertEquals(["lorem", "ipsum", "dolor", "sit", "amet"], $idea->challenges);
 
 });
 
