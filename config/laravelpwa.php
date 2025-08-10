@@ -1,13 +1,13 @@
 <?php
 
 return [
-    'name' => 'LaravelPWA',
+    'name' => 'Terrible Startups',
     'manifest' => [
-        'name' => env('APP_NAME', 'My PWA App'),
-        'short_name' => 'PWA',
-        'start_url' => '/',
+        'name' => env('APP_NAME', 'Terrible Startups'),
+        'short_name' => 'Terrible Startups',
+        'start_url' => '/ideas',
         'background_color' => '#ffffff',
-        'theme_color' => '#000000',
+        'theme_color' => '#EA580C',
         'display' => 'standalone',
         'orientation' => 'any',
         'status_bar' => 'black',
@@ -70,7 +70,15 @@ return [
             [
                 'name' => 'New Idea',
                 'description' => 'A new terrible idea',
-                'url' => '/ideas/create'
+                'url' => '/ideas/create',
+                "icons" => [
+                    [
+                      "src" => "/images/icons/icon-72x72.png",
+                      "type" => "image/png",
+                      "sizes" => "72x72",
+                      "purpose" => "any"
+                    ]
+                ]
             ]
         ],
         'custom' => []
