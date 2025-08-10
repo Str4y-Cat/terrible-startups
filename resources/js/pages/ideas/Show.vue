@@ -88,15 +88,20 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
     // console.log('putting', form.data());
     form.put(route('ideas.update', { id: idea.id }), {
         preserveScroll: true,
-        onError: (error) => console.log(error),
+        onError: (error) => {
+            toast.error('Failed to save', {
+                style: {
+                    'border-color': 'var(--color-red-600)',
+                },
+                description: error[target],
+            });
+        },
         onSuccess: () => {
             console.log('succsess');
-            toast('Saved', {
-                description: 'Sunday, December 03, 2023 at 9:00 AM',
-                // action: {
-                //     label: 'Undo',
-                //     onClick: () => console.log('Undo'),
-                // },
+            toast.success('Successfully saved', {
+                style: {
+                    'border-color': 'var(--color-green-600)',
+                },
             });
         },
     });

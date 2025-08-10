@@ -100,7 +100,7 @@ function onKeyDown(e: KeyboardEvent, index: number) {
                     :id="index === 0 ? props.id : undefined"
                     class="w-full resize-none border-none bg-input/0 p-1 text-foreground/70 focus-visible:ring-0 focus-visible:outline-none"
                     :value="bullet"
-                    placeholder=""
+                    placeholder="Bullet Point"
                     @input="(e) => onInput(e, index)"
                     @keydown="(e) => onKeyDown(e, index)"
                     rows="1"

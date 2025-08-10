@@ -48,9 +48,12 @@ watch(
 function submit() {
     if (!props.form_target) return;
     console.log('submitting', inputValue.value);
+
     emit('save', {
         target: props.form_target,
-        value: inputValue.value,
+        value: inputValue.value.filter((n: string) => {
+            if (n != '') return n;
+        }),
     });
 
     emit('update:isOpen', false);
