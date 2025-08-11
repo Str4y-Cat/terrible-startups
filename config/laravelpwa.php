@@ -71,13 +71,11 @@ return [
                 'name' => 'New Idea',
                 'description' => 'A new terrible idea',
                 'url' => '/ideas/create',
-                "icons" => [
-                    [
-                      "src" => "/images/icons/icon-72x72.png",
-                      "type" => "image/png",
-                      "sizes" => "72x72",
-                      "purpose" => "any"
-                    ]
+                'icons' => [
+                    "src" => "/images/icons/icon-72x72.png",
+                    "purpose" => "any",
+                    "type" => "image/png",
+                    "sizes" => "72x72",
                 ]
             ]
         ],
