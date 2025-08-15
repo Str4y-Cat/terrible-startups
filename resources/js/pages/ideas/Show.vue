@@ -109,7 +109,7 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
 </script>
 
 <template>
-    <Head title="New" />
+    <Head :title="idea.title" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">

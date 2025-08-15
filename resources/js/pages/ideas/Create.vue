@@ -50,10 +50,10 @@ const form = useForm<{
     inspiration: '',
     solution: '',
     // features: [''],
-    features: [''],
-    target_audience: [''],
-    risks: [''],
-    challenges: [''],
+    // features: [''],
+    // target_audience: [''],
+    // risks: [''],
+    // challenges: [''],
     rating_questions: [{ key: 0, value: 0 }],
 });
 

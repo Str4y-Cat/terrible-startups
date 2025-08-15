@@ -2,7 +2,7 @@
 import { Dot } from 'lucide-vue-next';
 const props = defineProps<{
     title: string;
-    body: string[];
+    body?: string[];
 }>();
 </script>
 
