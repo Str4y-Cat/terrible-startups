@@ -112,7 +112,7 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
     <Head :title="idea.title" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+        <div class="mb-16 flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
             <div class="relative m-auto h-full w-full max-w-4xl rounded-xl">
                 <div>
                     <h1 class="mt-4 text-4xl">{{ idea.title }}</h1>
