@@ -117,7 +117,7 @@ const total = computed(() => {
 </script>
 
 <template>
-    <Head title="idea_title" />
+    <Head title="New terrible idea" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="mb-16 flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">

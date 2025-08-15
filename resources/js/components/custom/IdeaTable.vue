@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { router } from '@inertiajs/vue3';
-import { Star } from 'lucide-vue-next';
 import Tag from './Tag.vue';
 const props = defineProps<{
     ideas: Idea[];
@@ -26,9 +25,12 @@ const goToLink = (val: string) => {
         <TableHeader>
             <TableRow class="border-muted/0">
                 <TableHead class=""> Title </TableHead>
-                <TableHead>Tags</TableHead>
-                <TableHead class="hidden text-right sm:static">Date created</TableHead>
+                <TableHead class="text-right opacity-0">Tags</TableHead>
+                <TableHead class="hidden content-center text-right sm:block">Date created</TableHead>
+                <!--
+
                 <TableHead class="w-[100px] text-right"> Rating </TableHead>
+                -->
             </TableRow>
         </TableHeader>
         <TableBody class="">
@@ -37,12 +39,15 @@ const goToLink = (val: string) => {
                     {{ idea.title }}
                 </TableCell>
                 <TableCell>
-                    <Tag>Tag</Tag>
-                    <Tag>Tag</Tag>
-                    <Tag>Tag</Tag>
-                    <Tag>Tag</Tag>
+                    <div class="flex flex-wrap justify-end">
+                        <Tag>Tag</Tag>
+                        <Tag>Tag</Tag>
+                        <Tag>Tag</Tag>
+                        <Tag>Tag</Tag>
+                    </div>
                 </TableCell>
-                <TableCell class="hidden text-right sm:static">{{ idea.date_created }}</TableCell>
+                <TableCell class="hidden text-right sm:block">{{ idea.date_created }}</TableCell>
+                <!--
                 <TableCell class="text-right">
                     <div
                         class="color-primary flex items-center justify-end gap-2"
@@ -57,6 +62,7 @@ const goToLink = (val: string) => {
                         <component :is="Star" :size="17" :class="[`fill-current`]" />
                     </div>
                 </TableCell>
+                -->
             </TableRow>
         </TableBody>
     </Table>

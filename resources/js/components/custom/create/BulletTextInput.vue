@@ -92,7 +92,7 @@ function onKeyDown(e: KeyboardEvent, index: number) {
         >
 
         <div class="flex flex-col gap-1">
-            <div v-for="(bullet, index) in bullets" :key="index" class="group flex items-center gap-2">
+            <div v-for="(bullet, index) in bullets" :key="index" class="group flex items-start gap-2">
                 <Dot class="transition-color group-has-focus:text-primary"></Dot>
 
                 <textarea

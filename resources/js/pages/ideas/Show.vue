@@ -190,7 +190,7 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
                             class="group relative flex aspect-1/1 items-center justify-center gap-2 rounded border border-dashed border-primary sm:aspect-2/1"
                         >
                             <Plus class="block group-hover:hidden"></Plus>
-                            <p class="block group-hover:hidden">Reddit Scraper</p>
+                            <p class="block max-w-[70%] group-hover:hidden">Reddit Scraper</p>
                             <p class="hidden group-hover:block">Coming soon</p>
                             <PlaceholderPattern class="opacity-40" />
                         </div>
@@ -208,7 +208,7 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
                             class="group relative flex aspect-1/1 items-center justify-center gap-2 rounded border border-dashed border-primary sm:aspect-2/1"
                         >
                             <Plus class="block group-hover:hidden"></Plus>
-                            <p class="block group-hover:hidden">Possible partners</p>
+                            <p class="block max-w-[70%] group-hover:hidden">Possible partners</p>
                             <p class="hidden group-hover:block">Coming soon</p>
                             <PlaceholderPattern class="opacity-40" />
                         </div>
