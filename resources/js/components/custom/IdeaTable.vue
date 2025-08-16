@@ -11,6 +11,7 @@ interface Idea {
     id: string;
     date_created: string;
     rating: number;
+    tags: object[];
 }
 
 const goToLink = (val: string) => {
@@ -23,7 +24,7 @@ const goToLink = (val: string) => {
     <Table class="border-separate. border-spacing-y-3">
         <!--<TableCaption>A list of your recent invoices.</TableCaption>-->
         <TableHeader>
-            <TableRow class="border-muted/0">
+            <TableRow class="hidden border-muted/0">
                 <TableHead class=""> Title </TableHead>
                 <TableHead class="text-right opacity-0">Tags</TableHead>
                 <TableHead class="hidden content-center text-right sm:block">Date created</TableHead>
@@ -39,30 +40,13 @@ const goToLink = (val: string) => {
                     {{ idea.title }}
                 </TableCell>
                 <TableCell>
-                    <div class="flex flex-wrap justify-end">
-                        <Tag>Tag</Tag>
-                        <Tag>Tag</Tag>
-                        <Tag>Tag</Tag>
-                        <Tag>Tag</Tag>
+                    <div class="flex flex-wrap justify-end gap-2">
+                        <Tag v-for="(tag, index) in idea.tags" :key="index" class="border border-primary text-xs text-primary md:text-sm">{{
+                            tag.value
+                        }}</Tag>
                     </div>
                 </TableCell>
                 <TableCell class="hidden text-right sm:block">{{ idea.date_created }}</TableCell>
-                <!--
-                <TableCell class="text-right">
-                    <div
-                        class="color-primary flex items-center justify-end gap-2"
-                        :class="{
-                            'text-idea-best': idea.rating >= 75,
-                            'text-idea-average': idea.rating < 75 && idea.rating >= 50,
-                            'text-idea-bad': idea.rating < 50 && idea.rating >= 25,
-                            'text-idea-terrible': idea.rating < 25,
-                        }"
-                    >
-                        {{ idea.rating }}
-                        <component :is="Star" :size="17" :class="[`fill-current`]" />
-                    </div>
-                </TableCell>
-                -->
             </TableRow>
         </TableBody>
     </Table>

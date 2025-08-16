@@ -123,8 +123,13 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
                         title="Project Overview"
                         :body="idea.overview"
                     />
-                    <div class="mt-8 flex flex-wrap gap-y-2">
-                        <Tag v-for="n in 10" :key="n">Tag - {{ n }}</Tag>
+                    <div class="mt-8 flex flex-wrap gap-2">
+                        <Tag v-for="(tag, index) in idea.tags" :key="index" class="group border border-primary text-sm text-primary md:text-sm">
+                            {{ tag.value }}
+                        </Tag>
+                        <div class="flex items-center justify-center">
+                            <Plus class="size-4 text-primary/50"></Plus>
+                        </div>
                     </div>
                 </TextDisplay>
 

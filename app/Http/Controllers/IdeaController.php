@@ -68,6 +68,7 @@ class IdeaController extends Controller
     public function show(Idea $idea)
     {
 
+
         return Inertia::render('ideas/Show', [
             'idea' => $idea->data(Resource::Show)
         ]);

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Tag from '../Tag.vue';
 const props = defineProps<{
     title: string;
     status?: string;
@@ -10,16 +11,13 @@ const props = defineProps<{
         <div class="flex justify-between">
             <h3 class="text-2xl font-bold">{{ props.title }}</h3>
 
-            <div
-                class="flex items-center rounded px-2 py-1 text-sm"
-                :class="{
-                    'border-green-500 bg-green-500/20 text-green-500': props.status == 'complete',
-                    'border-orage-500 bg-orange-500/20 text-orange-500': props.status == 'progress',
-                }"
-            >
-                <span v-if="props.status == 'complete'">Complete</span>
-                <span v-if="props.status == 'progress'">In Progress</span>
-            </div>
+            <Tag v-if="props.status == 'complete'" class="border-green-500 bg-green-500/20 text-sm text-green-500">
+                <span>Complete</span>
+            </Tag>
+
+            <Tag v-if="props.status == 'progress'" class="border-orage-500 bg-orange-500/20 text-sm text-orange-500">
+                <span>In Progress</span>
+            </Tag>
         </div>
         <slot></slot>
     </div>

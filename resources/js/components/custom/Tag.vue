@@ -1,7 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const props = defineProps<{
+    class?: string | object;
+}>();
+</script>
 
 <template>
-    <div class="me-3 inline rounded border border-muted px-2 py-0.5 text-muted">
+    <div :class="props.class" class="inline h-fit rounded px-2 py-0.5">
         <slot> </slot>
     </div>
 </template>
