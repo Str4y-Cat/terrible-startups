@@ -70,7 +70,7 @@ class User extends Authenticatable
             foreach ($tagOptions as $key => $value) {
                 $createdIdea->tags()->create([
                     'key' => $key,
-                    'value' => fake()->randomElement($value),
+                    'value' => $value[rand(0, count($value) - 1)],
                 ]);
             }
         }
