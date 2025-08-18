@@ -41,7 +41,7 @@ const goToLink = (val: string) => {
                 </TableCell>
                 <TableCell>
                     <div class="flex flex-wrap justify-end gap-2">
-                        <Tag v-for="(tag, index) in idea.tags" :key="index" class="border border-primary text-xs text-primary md:text-sm">{{
+                        <Tag v-for="(tag, index) in idea.tags" :key="index" class="border-none bg-primary/10 text-xs text-primary md:text-sm">{{
                             tag.value
                         }}</Tag>
                     </div>

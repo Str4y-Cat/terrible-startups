@@ -11,7 +11,7 @@ import { Toaster } from '@/components/ui/sonner';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
-import { Plus } from 'lucide-vue-next';
+import { Plus, Share } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
 import 'vue-sonner/style.css'; // vue-sonner v2 requires this import
@@ -114,8 +114,9 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="mb-16 flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
             <div class="relative m-auto h-full w-full max-w-4xl rounded-xl">
-                <div>
+                <div class="flex w-full items-center justify-between">
                     <h1 class="mt-4 text-4xl">{{ idea.title }}</h1>
+                    <Share class=""></Share>
                 </div>
                 <TextDisplay title="Concept Foundation" :status="idea.overview && idea.inspiration ? 'complete' : 'progress'">
                     <TextDisplayBody
@@ -124,7 +125,7 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
                         :body="idea.overview"
                     />
                     <div class="mt-8 flex flex-wrap gap-2">
-                        <Tag v-for="(tag, index) in idea.tags" :key="index" class="group border border-primary text-sm text-primary md:text-sm">
+                        <Tag v-for="(tag, index) in idea.tags" :key="index" class="group border-none bg-primary/10 text-sm text-primary md:text-sm">
                             {{ tag.value }}
                         </Tag>
                         <div class="flex items-center justify-center">
@@ -152,6 +153,14 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
 
                 <TextDisplay title="Feature planning" :status="idea.features ? 'complete' : 'progress'">
                     <ListDisplayBody @click="openListModal('Features', idea.features, 'features')" title="Bare Minimum - MVP" :body="idea.features" />
+                </TextDisplay>
+
+                <TextDisplay title="Marketing" :status="idea.target_audience ? 'complete' : 'progress'">
+                    <ListDisplayBody
+                        @click="openListModal('Target audience', idea.target_audience, 'target_audience')"
+                        title="Target audience"
+                        :body="idea.target_audience"
+                    />
                 </TextDisplay>
 
                 <TextDisplay title="Risk analysis" :status="idea.risks && idea.challenges ? 'complete' : 'progress'">
