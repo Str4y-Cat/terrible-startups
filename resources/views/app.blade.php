@@ -114,6 +114,33 @@
     <!-- SERVICE WORKER STUFF -->
     <!-- -------------------- -->
 
+    <!-- -------------------- -->
+    <!-- Social sharing previews -->
+    <!-- ----------------------- -->
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:title" content="{{ config('app.name', 'Terrible Startups') }}" />
+    <meta property="og:description"
+        content="{{ config('app.description', 'Validate your terrible startup ideas! Find the gems') }}" />
+    <meta property="og:image" content="{{ asset('images/social-preview.jpg') }}" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ config('app.name', 'Terrible Startups') }}" />
+    <meta name="twitter:description"
+        content="{{ config('app.description', 'Validate your terrible startup ideas! Find the gems') }}" />
+    <meta name="twitter:image" content="{{ asset('images/social-preview.jpg') }}" />
+
+    <!-- Optional: Fallback -->
+    <meta name="description"
+        content="{{ config('app.description', 'Validate your terrible startup ideas! Find the gems') }}" />
+
+    <!-- -------------------- -->
+    <!-- Social sharing previews -->
+    <!-- ----------------------- -->
+
     @routes
     @vite(['resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
     @inertiaHead
