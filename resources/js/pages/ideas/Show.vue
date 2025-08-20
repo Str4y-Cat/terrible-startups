@@ -183,46 +183,74 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
                 <TextDisplay title="Market validation" :status="false ? 'complete' : 'progress'">
                     <div class="mt-4 grid grid-cols-2 flex-wrap gap-4 sm:grid-cols-3">
                         <div
-                            class="group relative flex aspect-1/1 items-center justify-center gap-2 rounded border border-dashed border-primary sm:aspect-2/1"
+                            class="group relative flex aspect-1/1 items-start justify-center gap-2 rounded border border-dashed border-primary p-2 sm:aspect-2/1"
                         >
-                            <Plus class="block group-hover:hidden"></Plus>
-                            <p class="block max-w-[70%] group-hover:hidden">Competitor search - General</p>
+                            <div>
+                                <div class="flex w-full max-w-[90%] items-center justify-start gap-2 group-hover:hidden">
+                                    <h3 class="font-bold">Competitor Search - AI</h3>
+                                </div>
+                                <p class="block max-w-[90%] group-hover:hidden">
+                                    Search the web for competitors. Get their market position, estimated user count, price range and website link
+                                </p>
+                            </div>
                             <p class="hidden group-hover:block">Coming soon</p>
                             <PlaceholderPattern class="opacity-40" />
                         </div>
 
                         <div
-                            class="group relative flex aspect-1/1 items-center justify-center gap-2 rounded border border-dashed border-primary sm:aspect-2/1"
+                            class="group relative flex aspect-1/1 items-start justify-center gap-2 rounded border border-dashed border-primary p-2 sm:aspect-2/1"
                         >
-                            <Plus class="block group-hover:hidden"></Plus>
-                            <p class="block max-w-[70%] group-hover:hidden">Competitor search - Product Hunt</p>
+                            <div>
+                                <div class="flex w-full max-w-[90%] items-center justify-start gap-2 group-hover:hidden">
+                                    <h3 class="font-bold">Customer search - B2B</h3>
+                                </div>
+                                <p class="block max-w-[90%] group-hover:hidden">
+                                    Search for local businesses that may benifit from your business idea.
+                                </p>
+                            </div>
                             <p class="hidden group-hover:block">Coming soon</p>
                             <PlaceholderPattern class="opacity-40" />
                         </div>
 
                         <div
-                            class="group relative flex aspect-1/1 items-center justify-center gap-2 rounded border border-dashed border-primary sm:aspect-2/1"
+                            class="group relative flex aspect-1/1 items-start justify-center gap-2 rounded border border-dashed border-primary p-2 sm:aspect-2/1"
                         >
-                            <Plus class="block group-hover:hidden"></Plus>
-                            <p class="block max-w-[70%] group-hover:hidden">Reddit Scraper</p>
+                            <div>
+                                <div class="flex w-full max-w-[90%] items-center justify-start gap-2 group-hover:hidden">
+                                    <h3 class="font-bold">Competitor Search - App specific</h3>
+                                </div>
+                                <p class="block max-w-[90%] group-hover:hidden">
+                                    Search specific app launch websites [productHunt, sumoapps, ] for software similar to your idea.
+                                </p>
+                            </div>
                             <p class="hidden group-hover:block">Coming soon</p>
                             <PlaceholderPattern class="opacity-40" />
                         </div>
 
                         <div
-                            class="group relative flex aspect-1/1 items-center justify-center gap-2 rounded border border-dashed border-primary sm:aspect-2/1"
+                            class="group relative flex aspect-1/1 items-start justify-center gap-2 rounded border border-dashed border-primary p-2 sm:aspect-2/1"
                         >
-                            <Plus class="block group-hover:hidden"></Plus>
-                            <p class="block max-w-[70%] group-hover:hidden">Local business's to talk to</p>
+                            <div>
+                                <div class="flex w-full max-w-[90%] items-center justify-start gap-2 group-hover:hidden">
+                                    <h3 class="font-bold">Customer search - Reddit</h3>
+                                </div>
+                                <p class="block max-w-[90%] group-hover:hidden">Search for reddit communities that may be interested in your idea</p>
+                            </div>
                             <p class="hidden group-hover:block">Coming soon</p>
                             <PlaceholderPattern class="opacity-40" />
                         </div>
 
                         <div
-                            class="group relative flex aspect-1/1 items-center justify-center gap-2 rounded border border-dashed border-primary sm:aspect-2/1"
+                            class="group relative flex aspect-1/1 items-start justify-center gap-2 rounded border border-dashed border-primary p-2 sm:aspect-2/1"
                         >
-                            <Plus class="block group-hover:hidden"></Plus>
-                            <p class="block max-w-[70%] group-hover:hidden">Possible partners</p>
+                            <div>
+                                <div class="flex w-full max-w-[90%] items-center justify-start gap-2 group-hover:hidden">
+                                    <h3 class="font-bold">Partner Search - Community finder</h3>
+                                </div>
+                                <p class="block max-w-[90%] group-hover:hidden">
+                                    Search for communities that may help you get the idea off the ground
+                                </p>
+                            </div>
                             <p class="hidden group-hover:block">Coming soon</p>
                             <PlaceholderPattern class="opacity-40" />
                         </div>
