@@ -36,7 +36,7 @@ const goToLink = (val: string) => {
         </TableHeader>
         <TableBody class="">
             <TableRow @click="goToLink(idea.id)" v-for="idea in props.ideas" :key="idea.id" class="cursor-pointer border-muted/20 *:py-6">
-                <TableCell class="font-medium">
+                <TableCell class="text-base font-medium sm:text-lg">
                     {{ idea.title }}
                 </TableCell>
                 <TableCell>

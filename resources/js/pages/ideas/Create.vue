@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Collapsiable from '@/components/custom/Collapsiable.vue';
 import BulletTextInput from '@/components/custom/create/BulletTextInput.vue';
+import TagInput from '@/components/custom/create/TagInput.vue';
 import TextInput from '@/components/custom/create/TextInput.vue';
 import RatingDialog from '@/components/custom/RatingDialog.vue';
 import InputError from '@/components/InputError.vue';
@@ -171,9 +172,7 @@ const total = computed(() => {
                                 @update="(value) => (form.overview = value)"
                             ></TextInput>
 
-                            <!--
                             <TagInput> </TagInput>
-                            -->
 
                             <!-- Problem to Solve -->
                             <TextInput
