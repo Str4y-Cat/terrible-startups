@@ -33,10 +33,15 @@ class IdeaController extends Controller
      */
     public function create()
     {
-        /* $user = Auth::user(); */
-        /* $tags = $user->ideas->tags()->get(); */
-        /* dd($tags); */
-        return Inertia::render('ideas/Create');
+        $user = Auth::user();
+
+        $tagGroups = $user->tags()
+            ->get(['key', 'value']) // only fetch what you need
+            ->groupBy('key')
+            ->map
+            ->pluck('value');
+
+        return Inertia::render('ideas/Create', ['tagGroups' => $tagGroups]);
     }
 
     /**

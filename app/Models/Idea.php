@@ -37,24 +37,24 @@ class Idea extends Model
     {
         $tags = [];
 
-        /* if ($view == Resource::Index) { */
-        /*     $tags =  $this->tags()->get()->map( */
-        /*         function (Tag $tag, int $index) { */
-        /*             return $tag->getData(); */
-        /*         } */
-        /*     )->filter(function (array $tag) { */
-        /*         return  $tag["key"] == "industry" || $tag["key"] == "business model" || $tag["key"] == */
-        /*         "customer segment"; */
-        /*     }); */
-        /* } */
-        /**/
-        /* if ($view == Resource::Show) { */
-        /*     $tags =  $this->tags()->get()->map( */
-        /*         function (Tag $tag, int $index) { */
-        /*             return $tag->getData(); */
-        /*         } */
-        /*     ); */
-        /* }; */
+        if ($view == Resource::Index) {
+            $tags =  $this->tags()->get()->map(
+                function (Tag $tag, int $index) {
+                    return $tag->getData();
+                }
+            )->filter(function (array $tag) {
+                return  $tag["key"] == "industry" || $tag["key"] == "business model" || $tag["key"] ==
+                "customer segment";
+            });
+        }
+
+        if ($view == Resource::Show) {
+            $tags =  $this->tags()->get()->map(
+                function (Tag $tag, int $index) {
+                    return $tag->getData();
+                }
+            );
+        };
 
         return match($view) {
 

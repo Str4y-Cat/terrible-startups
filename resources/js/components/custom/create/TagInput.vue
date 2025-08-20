@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ChevronsUpDown, Search } from 'lucide-vue-next';
 
+import { cn } from '@/lib/utils';
 import { ref } from 'vue';
 // import { cn } from "@/utils"
 import { Button } from '@/components/ui/button';
@@ -26,12 +27,14 @@ const props = defineProps<{
 }>();
 
 const frameworks = [
-    { value: 'next.js', label: 'Next.js' },
-    { value: 'sveltekit', label: 'SvelteKit' },
-    { value: 'nuxt', label: 'Nuxt' },
-    { value: 'remix', label: 'Remix' },
+    { value: 'fintech', label: 'Fintech' },
+    { value: 'edtech', label: 'EdTech' },
+    { value: 'climate', label: 'Climate' },
+    { value: 'consumer', label: 'Consumer' },
     { value: 'astro', label: 'Astro' },
 ];
+
+const title = 'Industry';
 
 const value = ref<(typeof frameworks)[0]>();
 </script>
@@ -41,7 +44,7 @@ const value = ref<(typeof frameworks)[0]>();
         <ComboboxAnchor as-child>
             <ComboboxTrigger as-child>
                 <Button variant="outline" class="justify-between">
-                    {{ value?.label ?? 'Select framework' }}
+                    {{ value?.label ?? 'Select tag' }}
 
                     <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
@@ -50,7 +53,7 @@ const value = ref<(typeof frameworks)[0]>();
 
         <ComboboxList>
             <div class="relative w-full max-w-sm items-center">
-                <ComboboxInput class="h-10 rounded-none border-0 border-b pl-9 focus-visible:ring-0" placeholder="Select framework..." />
+                <ComboboxInput class="h-10 rounded-none border-0 border-b pr-9 focus-visible:ring-0" placeholder="Select framework..." />
                 <span class="absolute inset-y-0 start-0 flex items-center justify-center px-3">
                     <Search class="size-4 text-muted-foreground" />
                 </span>
@@ -63,7 +66,7 @@ const value = ref<(typeof frameworks)[0]>();
                     {{ framework.label }}
 
                     <ComboboxItemIndicator>
-                        <!--<Check :class="cn('ml-auto h-4 w-4')" />-->
+                        <Check :class="cn('ml-auto h-4 w-4')" />
                     </ComboboxItemIndicator>
                 </ComboboxItem>
             </ComboboxGroup>

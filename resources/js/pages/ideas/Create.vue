@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import Collapsiable from '@/components/custom/Collapsiable.vue';
 import BulletTextInput from '@/components/custom/create/BulletTextInput.vue';
-import TagInput from '@/components/custom/create/TagInput.vue';
 import TextInput from '@/components/custom/create/TextInput.vue';
 import RatingDialog from '@/components/custom/RatingDialog.vue';
+import Tag from '@/components/custom/Tag.vue';
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/vue3';
+import { Plus } from 'lucide-vue-next';
 import { computed, reactive, ref } from 'vue';
 
 const idea_title = ref('New idea');
@@ -89,16 +90,11 @@ interface Rating {
 
 //REFACTOR: Convert this array to a database call, thats cached
 const ratings = reactive<Rating[]>([
-    { key: 0, label: 'Urgency', description: 'How badly do users want this?', value: -1 },
-    { key: 1, label: 'Market Size', description: 'How many people are already purchasing things like this?', value: -1 },
-    { key: 2, label: 'Pricing Potential', description: 'How high can you sell this for?', value: -1 },
-    { key: 3, label: 'Customer Aquisition Cost', description: 'How much will it cost to generate a sale?', value: -1 },
-    { key: 4, label: 'Value Delivery Cost', description: 'How much time/effort is required to deliver value?', value: -1 },
-    { key: 5, label: 'Uniqueness', description: 'How unique is your offer compared to competitors?', value: -1 },
-    { key: 6, label: 'Speed to marker', description: 'How soon can you create something to sell?', value: -1 },
-    { key: 7, label: 'Up-front investment', description: 'How much do you need to invest to start selling?', value: -1 },
-    { key: 8, label: 'Upsell potential', description: 'Are there secondary offers you can present to customers?', value: -1 },
-    { key: 9, label: 'Evergreen Potential', description: 'Once created, how much additional effort is required to continue selling?', value: -1 },
+    { key: 0, label: 'Product', description: 'How likely is it that this product could be 10x better that what people currently use', value: -1 },
+    { key: 1, label: 'Acquisition', description: 'Can I find and reach users without spending money?', value: -1 },
+    { key: 2, label: 'Market', description: 'Is this a big and growing market', value: -1 },
+    { key: 3, label: 'Defensibility', description: 'Once it gets traction, is it hard to copy?', value: -1 },
+    { key: 4, label: 'Buildibility', description: 'Can I realistically get the people, money and skills to build it', value: -1 },
 ]);
 
 const stripRatingsForSubmit = (): { key: number; value: number }[] => {
@@ -109,11 +105,15 @@ const stripRatingsForSubmit = (): { key: number; value: number }[] => {
 
 //calculated the rating total out of a 100. Regardless of the rating count
 const total = computed(() => {
-    const max = ratings.length * 10;
-    const current = ratings.reduce((sum, current) => {
-        return (sum += current.value);
-    }, 0);
-    return Math.round((current / max) * 100);
+    // const max = ratings.length * 10;
+    // const current = ratings.reduce((sum, current) => {
+    //     return (sum += current.value);
+    // }, 0);
+    // return Math.round((current / max) * 100);
+    const total = ratings.reduce((sum, current) => {
+        return (sum *= current.value);
+    }, 1);
+    return total;
 });
 </script>
 
@@ -172,7 +172,20 @@ const total = computed(() => {
                                 @update="(value) => (form.overview = value)"
                             ></TextInput>
 
-                            <TagInput> </TagInput>
+                            <div v-for="(tagGroup, key, group_index) in $page.props.tagGroups" :key="group_index" class="mb-4 flex">
+                                <h3 class="mr-4 block">{{ key }}</h3>
+                                <div class="flex flex-wrap gap-2">
+                                    <Tag
+                                        class="border border-primary/30 text-primary data-[active=true]:bg-primary/30"
+                                        v-for="(tag, index) in tagGroup"
+                                        :key="index"
+                                        >{{ tag }}</Tag
+                                    >
+                                    <Tag class="text-primary">
+                                        <Plus class="size-4"></Plus>
+                                    </Tag>
+                                </div>
+                            </div>
 
                             <!-- Problem to Solve -->
                             <TextInput

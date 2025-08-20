@@ -29,7 +29,7 @@ const updateRating = (x: number[] | undefined) => {
             <p class="text-foreground/50">{{ props.description }}</p>
         </div>
         <div class="mb-4 flex gap-2 pe-6">
-            <Slider @update:model-value="updateRating" :default-value="[props.currentValue]" :max="10" :step="1"></Slider>
+            <Slider @update:model-value="updateRating" :default-value="[props.currentValue]" :max="3" :step="1"></Slider>
             <span class="w-3">{{ props.currentValue >= 0 ? props.currentValue : '-' }}</span>
         </div>
     </div>

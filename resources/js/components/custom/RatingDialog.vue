@@ -37,26 +37,13 @@ const targetIsVisible = ref(false);
 const { stop } = useIntersectionObserver(target, ([entry], observerElement) => {
     targetIsVisible.value = entry?.isIntersecting || false;
 });
-
-// const progress = ref(0);
-//
-// const updateProgress = () => {
-//     const total = ratings.length;
-//     const current = ratings.reduce((sum: any, cur: any) => {
-//         if (cur.value > -1) return (sum = sum + 1);
-//         return sum;
-//     }, 0);
-//     // console.log('update progress: ', current, total);
-//     progress.value = Math.floor((current / total) * 100);
-// };
-// console.log;
 </script>
 
 <template>
     <Dialog>
         <DialogTrigger
             :disabled="props.disabled"
-            class="fixed right-4 bottom-4 inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium whitespace-nowrap text-primary-foreground shadow-xs transition-all outline-none hover:bg-primary/90 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:translate-y-[200%] disabled:opacity-50 has-[>svg]:px-3 aria-invalid:border-destructive aria-invalid:ring-destructive/20 sm:static sm:disabled:translate-0 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=\'size-\'])]:size-4"
+            class="fixed right-4 bottom-20 inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium whitespace-nowrap text-primary-foreground shadow-xs transition-all outline-none hover:bg-primary/90 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:translate-y-[200%] disabled:opacity-50 has-[>svg]:px-3 aria-invalid:border-destructive aria-invalid:ring-destructive/20 sm:static sm:disabled:translate-0 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*=\'size-\'])]:size-4"
         >
             Create
         </DialogTrigger>
@@ -75,10 +62,6 @@ const { stop } = useIntersectionObserver(target, ([entry], observerElement) => {
                     :currentValue="rating.value"
                     @rating="
                         (x) => {
-                            // ratings[index].value = x;
-                            // updateProgress();
-                            // console.log(ratings);
-                            // console.log(progress);
                             $emit('update', { index: index, value: x });
                         }
                     "
