@@ -15,10 +15,11 @@ return new class () extends Migration {
             $table->timestamps();
 
             /* $table->foreignId("user_id")->constrained()->onDelete('cascade')->onUpdate("cascade"); */
-            $table->foreignId("idea_id")->constrained()->onDelete('cascade')->onUpdate("cascade");
+            $table->foreignId("user_id")->constrained()->onDelete('cascade')->onUpdate("cascade");
 
             $table->string("key")->nullable();
             $table->string("value");
+            $table->unique(["user_id","key", "value"]);
         });
     }
 

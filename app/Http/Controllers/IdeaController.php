@@ -33,7 +33,9 @@ class IdeaController extends Controller
      */
     public function create()
     {
-        //
+        /* $user = Auth::user(); */
+        /* $tags = $user->ideas->tags()->get(); */
+        /* dd($tags); */
         return Inertia::render('ideas/Create');
     }
 

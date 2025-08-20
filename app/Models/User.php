@@ -50,32 +50,38 @@ class User extends Authenticatable
         ];
     }
 
-    public static function createWithDemoData(array $attributes): User
+    public function withDemoData(): User
     {
 
-        $user = self::create([
-            'name' => $attributes['name'],
-            'email' => $attributes['email'],
-            'password' => Hash::make($attributes['password']),
-        ]);
 
         $ideas = require database_path('seeders/data/ideas.php');
         $tagOptions = require database_path('seeders/data/tags.php');
 
-        //create dummy ideas attached to user
-        foreach ($ideas as $idea) {
-            $createdIdea = $user->ideas()->create($idea);
-
-            //create dummy tags attached to user
-            foreach ($tagOptions as $key => $value) {
-                $createdIdea->tags()->create([
+        //create the default tags
+        foreach ($tagOptions as $key => $values) {
+            foreach ($values as $value) {
+                $this->tags()->create([
                     'key' => $key,
-                    'value' => $value[rand(0, count($value) - 1)],
+                    'value' => $value,
                 ]);
             }
         }
 
-        return $user;
+        //create dummy ideas attached to user
+        foreach ($ideas as $idea) {
+            $createdIdea = $this->ideas()->create($idea);
+
+            //create dummy tags attached to user
+            /* //create dummy tags attached to user */
+            foreach ($tagOptions as $key => $value) {
+
+                $tag = $this->tags()->where('key', $key)->inRandomOrder()->first();
+
+                $createdIdea->tags()->attach($tag->id);
+            }
+        }
+
+        return $this;
     }
 
     public function ideas(): HasMany

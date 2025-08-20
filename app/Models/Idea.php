@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\Resource;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Idea extends Model
@@ -36,24 +37,24 @@ class Idea extends Model
     {
         $tags = [];
 
-        if ($view == Resource::Index) {
-            $tags =  $this->tags()->get()->map(
-                function (Tag $tag, int $index) {
-                    return $tag->getData();
-                }
-            )->filter(function (array $tag) {
-                return  $tag["key"] == "industry" || $tag["key"] == "business model" || $tag["key"] ==
-                "customer segment";
-            });
-        }
-
-        if ($view == Resource::Show) {
-            $tags =  $this->tags()->get()->map(
-                function (Tag $tag, int $index) {
-                    return $tag->getData();
-                }
-            );
-        };
+        /* if ($view == Resource::Index) { */
+        /*     $tags =  $this->tags()->get()->map( */
+        /*         function (Tag $tag, int $index) { */
+        /*             return $tag->getData(); */
+        /*         } */
+        /*     )->filter(function (array $tag) { */
+        /*         return  $tag["key"] == "industry" || $tag["key"] == "business model" || $tag["key"] == */
+        /*         "customer segment"; */
+        /*     }); */
+        /* } */
+        /**/
+        /* if ($view == Resource::Show) { */
+        /*     $tags =  $this->tags()->get()->map( */
+        /*         function (Tag $tag, int $index) { */
+        /*             return $tag->getData(); */
+        /*         } */
+        /*     ); */
+        /* }; */
 
         return match($view) {
 
@@ -101,9 +102,9 @@ class Idea extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function tags(): HasMany
+    public function tags(): BelongsToMany
     {
-        return $this->hasMany(Tag::class);
+        return $this->belongsToMany(Tag::class);
     }
 
 }

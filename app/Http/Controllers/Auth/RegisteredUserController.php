@@ -38,7 +38,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::createWithDemoData($validated);
+        $user = User::create($validated)->withDemoData();
 
         event(new Registered($user));
 
