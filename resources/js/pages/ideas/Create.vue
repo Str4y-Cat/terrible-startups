@@ -3,13 +3,12 @@ import Collapsiable from '@/components/custom/Collapsiable.vue';
 import BulletTextInput from '@/components/custom/create/BulletTextInput.vue';
 import TextInput from '@/components/custom/create/TextInput.vue';
 import RatingDialog from '@/components/custom/RatingDialog.vue';
-import Tag from '@/components/custom/Tag.vue';
+import TagInputGroup from '@/components/custom/TagInputGroup.vue';
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm } from '@inertiajs/vue3';
-import { Plus } from 'lucide-vue-next';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { computed, reactive, ref } from 'vue';
 
 const idea_title = ref('New idea');
@@ -115,6 +114,10 @@ const total = computed(() => {
     }, 1);
     return total;
 });
+const page = usePage();
+const selectedTags = ref<string[]>([]);
+
+console.log(page.props.tagGroups);
 </script>
 
 <template>
@@ -160,6 +163,14 @@ const total = computed(() => {
                         <!--<RatingDrawer :disabled="!canSubmit"></RatingDrawer>-->
                         <!--<Button :disabled="!canSubmit">Create</Button>-->
                     </div>
+                    <!--
+                    <DetailTagInputGroup :tag_group="$page.props.tagGroups"></DetailTagInputGroup>
+-->
+                    <TagInputGroup
+                        :tag_group="$page.props.tagGroups"
+                        v-model:selected="selectedTags"
+                        @update:selected="console.log(selectedTags)"
+                    ></TagInputGroup>
 
                     <div class="">
                         <div class="grid gap-4">
@@ -171,21 +182,6 @@ const total = computed(() => {
                                 id="overview"
                                 @update="(value) => (form.overview = value)"
                             ></TextInput>
-
-                            <div v-for="(tagGroup, key, group_index) in $page.props.tagGroups" :key="group_index" class="mb-4 flex">
-                                <h3 class="mr-4 block">{{ key }}</h3>
-                                <div class="flex flex-wrap gap-2">
-                                    <Tag
-                                        class="border border-primary/30 text-primary data-[active=true]:bg-primary/30"
-                                        v-for="(tag, index) in tagGroup"
-                                        :key="index"
-                                        >{{ tag }}</Tag
-                                    >
-                                    <Tag class="text-primary">
-                                        <Plus class="size-4"></Plus>
-                                    </Tag>
-                                </div>
-                            </div>
 
                             <!-- Problem to Solve -->
                             <TextInput
