@@ -42,6 +42,7 @@ const form = useForm<{
     risks?: string[];
     challenges?: string[];
     rating_questions?: { key: number; value: number }[];
+    tags?: { key: string; value: string }[];
 }>({
     title: '',
     rating: 0,
@@ -163,14 +164,6 @@ console.log(page.props.tagGroups);
                         <!--<RatingDrawer :disabled="!canSubmit"></RatingDrawer>-->
                         <!--<Button :disabled="!canSubmit">Create</Button>-->
                     </div>
-                    <!--
-                    <DetailTagInputGroup :tag_group="$page.props.tagGroups"></DetailTagInputGroup>
--->
-                    <TagInputGroup
-                        :tag_group="$page.props.tagGroups"
-                        v-model:selected="selectedTags"
-                        @update:selected="console.log(selectedTags)"
-                    ></TagInputGroup>
 
                     <div class="">
                         <div class="grid gap-4">
@@ -182,6 +175,8 @@ console.log(page.props.tagGroups);
                                 id="overview"
                                 @update="(value) => (form.overview = value)"
                             ></TextInput>
+
+                            <TagInputGroup title="Tags" :tag_group="$page.props.tagGroups" v-model:selected="form.tags"></TagInputGroup>
 
                             <!-- Problem to Solve -->
                             <TextInput

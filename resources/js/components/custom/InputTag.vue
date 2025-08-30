@@ -1,19 +1,21 @@
 <script setup lang="ts">
 const props = defineProps<{
+    parent: string;
     label: string;
     selected?: boolean;
 }>();
 
 const emit = defineEmits<{
-    (e: 'toggle', label: string): void;
+    (e: 'toggle', tag: { key: string; value: string }): void;
 }>();
 </script>
 
 <template>
+    <span class="sr-only">{{ parent }}</span>
     <span
-        class="cursor-pointer rounded border px-2 py-1 data-[active=true]:bg-primary/30"
+        class="cursor-pointer rounded border border-primary px-2 py-1 data-[active=true]:bg-primary/30"
         :data-active="selected"
-        @click="emit('toggle', props.label)"
+        @click="emit('toggle', { key: props.parent, value: props.label })"
     >
         {{ label }}
     </span>

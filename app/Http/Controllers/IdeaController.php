@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\Resource;
 use App\Http\Requests\StoreIdeaRequest;
 use App\Http\Requests\UpdateIdeaRequest;
+use App\Models\Tag;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -50,12 +51,31 @@ class IdeaController extends Controller
     public function store(StoreIdeaRequest $request)
     /* public function store(Request $request) */
     {
+
+
+
+
         $user = Auth::user();
-        $validated = $request->validated();
-        $ideaArgs = collect($validated)->except(['rating_questions']);
+        $validated = collect($request->validated());
+
+
+
+
+        $ideaArgs = $validated->except(['rating_questions','tags']);
+
         $rating_questions = $validated['rating_questions'];
 
         $idea = Idea::create(['user_id' => $user->id, ...$ideaArgs->toArray()]);
+
+
+        $tag_props = $validated->get('tags');
+
+        foreach ($tag_props as $tag_values) {
+            $tag = Tag::firstOrNew($tag_values);
+            $idea->tags()->attach($tag);
+        }
+
+        /* $idea->tags()->attach(Tag::([])); */
 
 
         foreach ($rating_questions as $question) {

@@ -33,7 +33,6 @@ class StoreIdeaRequest extends FormRequest
 
             'features'          => ['array'],
             'features.*'        => ['string', 'max:255'], // each feature must be a string
-
             'target_audience'   => ['array'],
             'target_audience.*' => ['string', 'max:255'],
 
@@ -47,6 +46,7 @@ class StoreIdeaRequest extends FormRequest
             'rating_questions.*' => ['array:key,value'],
             'rating_questions.*.key' => ['numeric'],
             'rating_questions.*.value' => ['numeric'],
+            'tags' => ['array'],
 
 
         ];
