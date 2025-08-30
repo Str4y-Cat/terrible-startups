@@ -1,0 +1,11 @@
+I'm building a success card for a progressive rating dialog. The dialog is used for user to rate a part of their work. It steps them through multiple questions then calculates a score based on their answers. I want to create a page that displays the calculated form, the individual section scores, and a option to see how the score was caculated and find out more about the rating system. This extra information should be hidden until the user expands it.
+
+Please create 5 different versions of the success card. I want to gamify the experience.
+
+here is a reference of the rating component
+
+```
+
+```
+
+

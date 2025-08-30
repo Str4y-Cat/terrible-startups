@@ -2,14 +2,15 @@
 import Collapsiable from '@/components/custom/Collapsiable.vue';
 import BulletTextInput from '@/components/custom/create/BulletTextInput.vue';
 import TextInput from '@/components/custom/create/TextInput.vue';
-import RatingDialog from '@/components/custom/RatingDialog.vue';
+import ProgressiveRatingDialog from '@/components/custom/ProgressiveRatingDialog.vue';
 import TagInputGroup from '@/components/custom/TagInputGroup.vue';
 import InputError from '@/components/InputError.vue';
 import { Input } from '@/components/ui/input';
+import { exampleQuestions } from '@/data/exampleQuestions';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
-import { computed, reactive, ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const idea_title = ref('New idea');
 
@@ -56,11 +57,12 @@ const form = useForm<{
     // target_audience: [''],
     // risks: [''],
     // challenges: [''],
+    tags: [],
     rating_questions: [{ key: 0, value: 0 }],
 });
 
 const submit = () => {
-    form.rating_questions = [...stripRatingsForSubmit()];
+    // form.rating_questions = [...stripratingsforsubmit()];
     console.log('This is the form data', form.data());
     form.post(route('ideas.store'), {
         onFinish: () => {
@@ -81,42 +83,24 @@ const canSubmit = computed(() => {
     });
 });
 
-interface Rating {
-    label: string;
-    description: string;
-    value: number;
-    key: number;
-}
+// const stripRatingsForSubmit = (): { key: number; value: number }[] => {
+//     return ratings.map((x) => {
+//         return { key: x.key, value: x.value };
+//     });
+// };
 
-//REFACTOR: Convert this array to a database call, thats cached
-const ratings = reactive<Rating[]>([
-    { key: 0, label: 'Product', description: 'How likely is it that this product could be 10x better that what people currently use', value: -1 },
-    { key: 1, label: 'Acquisition', description: 'Can I find and reach users without spending money?', value: -1 },
-    { key: 2, label: 'Market', description: 'Is this a big and growing market', value: -1 },
-    { key: 3, label: 'Defensibility', description: 'Once it gets traction, is it hard to copy?', value: -1 },
-    { key: 4, label: 'Buildibility', description: 'Can I realistically get the people, money and skills to build it', value: -1 },
-]);
-
-const stripRatingsForSubmit = (): { key: number; value: number }[] => {
-    return ratings.map((x) => {
-        return { key: x.key, value: x.value };
-    });
-};
-
-//calculated the rating total out of a 100. Regardless of the rating count
-const total = computed(() => {
-    // const max = ratings.length * 10;
-    // const current = ratings.reduce((sum, current) => {
-    //     return (sum += current.value);
-    // }, 0);
-    // return Math.round((current / max) * 100);
-    const total = ratings.reduce((sum, current) => {
-        return (sum *= current.value);
-    }, 1);
-    return total;
-});
 const page = usePage();
-const selectedTags = ref<string[]>([]);
+
+function ratingTotal(obj: object) {
+    let total = 1;
+    for (const key in obj) {
+        console.log(key, obj[key]);
+        if (obj[key] != undefined) {
+            total *= obj[key];
+        }
+    }
+    return total;
+}
 
 console.log(page.props.tagGroups);
 </script>
@@ -148,21 +132,20 @@ console.log(page.props.tagGroups);
                             />
                             <InputError :message="form.errors.title" />
                         </div>
-                        <!--<Button :variant="hasRating ? 'default' : 'ghost'" :disabled="!canSubmit">Create without rating</Button>-->
-                        <RatingDialog
-                            @update="
-                                ({ index, value }) => {
-                                    ratings[index].value = value;
-                                    form.rating = total;
+
+                        <ProgressiveRatingDialog
+                            :questions="exampleQuestions"
+                            :disabled="!canSubmit"
+                            @submit="
+                                (ratings) => {
+                                    form.rating = ratingTotal(ratings);
+                                    submit();
                                 }
                             "
-                            :onSubmit="submit"
-                            :ratings="ratings"
-                            :disabled="!canSubmit"
-                        ></RatingDialog>
+                            @skip="submit"
+                        />
+
                         <InputError :message="form.errors.rating_questions" />
-                        <!--<RatingDrawer :disabled="!canSubmit"></RatingDrawer>-->
-                        <!--<Button :disabled="!canSubmit">Create</Button>-->
                     </div>
 
                     <div class="">

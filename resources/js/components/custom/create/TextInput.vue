@@ -25,6 +25,10 @@ function autoResize() {
     textarea.value.style.height = 'auto'; // Reset height
     textarea.value.style.height = textarea.value.scrollHeight + 'px'; // Set new height
 }
+
+defineEmits<{
+    (e: 'update', value: string): void;
+}>();
 //------------------------------------------------------------------------
 </script>
 <template>
@@ -35,7 +39,7 @@ function autoResize() {
         <Textarea
             @update:modelValue="
                 (value) => {
-                    $emit('update', value);
+                    $emit('update', `${value}`);
                     autoResize();
                 }
             "
