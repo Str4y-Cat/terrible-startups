@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { CardContent } from '@/components/ui/card';
 import Progress from '@/components/ui/progress/Progress.vue';
 import type { RatingFormData, RatingSystemProps } from '@/types/rating';
-import { Star, Check, ChevronLeft, ChevronRight } from 'lucide-vue-next';
+import { Star, Check, ChevronLeft, ChevronRight, LoaderCircle } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 import {
   Dialog,
@@ -173,7 +173,15 @@ const isOpen = ref(false)
                         </div>
 
                         <Button v-if="!allAnswered" variant="ghost" @click.prevent="emit('skip')">Create without rating</Button>
-                        <Button @click.prevent="handleSubmit" v-if="allAnswered" class="hover:bg-primary-dark bg-primary">Complete</Button>
+                        <Button @click.prevent="handleSubmit" :disabled="props.processing" v-if="allAnswered" class="hover:bg-primary-dark bg-primary">
+                            <span v-if="!props.processing">Complete</span>
+
+                            <span v-if="props.processing" class="flex gap-2 flex-nowrap">
+                                <LoaderCircle  class="h-4 w-4 animate-spin" />
+                                Submitting
+                            </span>
+
+                    </Button>
                     </div>
                 </div>
             </CardContent>

@@ -136,6 +136,7 @@ console.log(page.props.tagGroups);
                         <ProgressiveRatingDialog
                             :questions="exampleQuestions"
                             :disabled="!canSubmit"
+                            :processing="form.processing"
                             @submit="
                                 (ratings) => {
                                     form.rating = ratingTotal(ratings);

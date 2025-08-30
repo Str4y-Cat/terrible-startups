@@ -19,5 +19,6 @@ export interface RatingQuestion {
 export interface RatingSystemProps {
     questions: RatingQuestion[];
     disabled: boolean;
+    processing: boolean;
     title?: string;
 }
