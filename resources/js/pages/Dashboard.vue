@@ -31,7 +31,7 @@ const ideas = computed(() => {
     <Head title="Terrible ideas" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+        <div class="mb-16 flex flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
             <IdeaTable :ideas="ideas"></IdeaTable>
         </div>
     </AppLayout>

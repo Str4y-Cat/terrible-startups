@@ -12,7 +12,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="fixed bottom-0 flex w-full justify-between bg-background px-6 py-2 pb-8 md:hidden md:px-4">
+    <div class="flex w-full justify-between bg-background px-6 py-2 pb-8 md:hidden md:px-4">
         <button :disabled="!canGoBack()" @click="goBack" class="group">
             <ChevronLeft class="text-primary group-disabled:text-foreground/30" />
         </button>
