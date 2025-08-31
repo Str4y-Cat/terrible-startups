@@ -203,7 +203,7 @@ const isOpen = ref(false)
         </DialogTrigger>
 
         <DialogContent class="">
-            <DialogTitle class="sr-only">Progressive Rating form</DialogTitle>
+            <DialogTitle class="text-muted-foreground text-sm">Idea rating</DialogTitle>
             <div class="flex items-center justify-between border-b p-4" v-if="currentQuestion != props.questions.length"  >
                 <div class="min-w-15 text-sm text-muted-foreground">{{ currentQuestion<props.questions.length? currentQuestion + 1: props.questions.length }} of {{ props.questions.length }}</div>
                 <Progress  class="h-1" :model-value="progress"/>
