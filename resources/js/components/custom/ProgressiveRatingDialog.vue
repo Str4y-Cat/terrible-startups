@@ -172,7 +172,14 @@ const isOpen = ref(false)
                             </Button>
                         </div>
 
-                        <Button v-if="!allAnswered" variant="ghost" @click.prevent="emit('skip')">Create without rating</Button>
+                        <Button v-if="!allAnswered" variant="ghost" @click.prevent="emit('skip')" :disabled>
+                            <span v-if="!props.processing">Create without rating</span>
+                            <span v-if="props.processing" class="flex gap-2 flex-nowrap">
+                                <LoaderCircle  class="h-4 w-4 animate-spin" />
+                                Submitting
+                            </span>
+                        </Button>
+
                         <Button @click.prevent="handleSubmit" :disabled="props.processing" v-if="allAnswered" class="hover:bg-primary-dark bg-primary">
                             <span v-if="!props.processing">Complete</span>
 
