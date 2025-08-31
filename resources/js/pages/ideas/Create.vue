@@ -109,7 +109,7 @@ console.log(page.props.tagGroups);
     <Head title="New terrible idea" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="mb-16 flex flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+        <div class="flex flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
             <div class="relative w-full rounded-xl">
                 <form @submit.prevent="submit" class="flex flex-col gap-6 px-2 pt-8 sm:px-4">
                     <!--TITLE-->
