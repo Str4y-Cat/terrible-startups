@@ -137,4 +137,22 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | OpenAi
+    |--------------------------------------------------------------------------
+    |
+    | api key for openAI
+    | REFACTOR: update this. move it to its own config file.
+    |           have seperate things for each prompt
+    |
+    |
+    |
+    */
+
+    'openai_key' => env('OPENAI_KEY'),
+    'openai_url' => env('OPENAI_URL', 'https://api.openai.com/v1/responses'),
+    'openai_id' => env('OPENAI_ID', 'pmpt_68b437cd4bfc8196a576e741fdecb161087b063f5cf348a0'),
+    'openai_version' => env('OPENAI_VERSION', '6'),
+
 ];
