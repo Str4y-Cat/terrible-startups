@@ -10,7 +10,7 @@ import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
 import { Toaster } from '@/components/ui/sonner';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
 import { Plus, Share } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
@@ -182,7 +182,8 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
 
                 <TextDisplay title="Market validation tools - coming soon" :status="false ? 'complete' : 'progress'">
                     <div class="mt-4 grid grid-cols-2 flex-wrap gap-4 sm:grid-cols-3">
-                        <div
+                        <Link
+                            :href="route('tool.competitor_search', idea.id)"
                             class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-primary p-2"
                         >
                             <div>
@@ -194,7 +195,7 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
                                 </p>
                             </div>
                             <PlaceholderPattern class="opacity-40" />
-                        </div>
+                        </Link>
 
                         <div
                             class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-primary p-2"
