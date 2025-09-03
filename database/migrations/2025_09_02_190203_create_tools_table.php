@@ -14,12 +14,14 @@ return new class () extends Migration {
             $table->id();
             $table->timestamps();
 
-            $table->foreignId("user_id")->constrained()->onDelete("cascade");
             $table->foreignId("idea_id")->constrained()->onDelete("cascade");
 
 
-            $table->json("full_response");
-            $table->json("content");
+            $table->string("type");
+            $table->string("status")->default('processing');
+
+            $table->json("full_response")->nullable();
+            $table->json("content")->nullable();
 
         });
     }

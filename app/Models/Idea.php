@@ -107,4 +107,9 @@ class Idea extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function tools(): HasMany
+    {
+        return $this->hasMany(Tool::class);
+    }
+
 }

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Idea;
 use GuzzleHttp\Utils;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\Response;
 
 use function GuzzleHttp\json_decode;
 use function GuzzleHttp\json_encode;
@@ -56,35 +57,24 @@ class AiService
     }
 
 
-    public function getCompetitorAnalysis()
+    public function getCompetitorAnalysis(): Response
     {
-        /* dd(Utils::jsonEncode([ */
-        /*     "prompt" => [ */
-        /*         "id" => config('app.openai_id'), */
-        /*         "version" => config('app.openai_version'), */
-        /*         "variables" => [ */
-        /*             "business_idea" =>  $this->jsonContext */
-        /*         ] */
-        /*     ]])); */
-
-        $promise = Http::async()
-            ->acceptJson()
+        return  Http::acceptJson()
             ->withToken(config('app.openai_key'))
             ->withBody(
-                Utils::jsonEncode([
-            "prompt" => [
-                "id" => config('app.openai_id'),
-                "version" => config('app.openai_version'),
-                "variables" => [
-                    "business_idea" =>  "$this->jsonContext"
-
-                ]
-            ]])
+                Utils::jsonEncode(
+                    [
+                    "prompt" => [
+                        "id" => config('app.openai_id'),
+                        "version" => config('app.openai_version'),
+                        "variables" => [
+                            "business_idea" =>  "$this->jsonContext"
+                            ]
+                        ]
+                    ]
+                ),
+                'application/json'
             )
             ->post(config('app.openai_url'));
-
-        $promise->then(function ($response) {
-            dd($response->json());
-        })->wait();
     }
 }

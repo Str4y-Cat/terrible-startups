@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\ToolType;
+use App\Enums\ToolStatus;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Tool extends Model
 {
@@ -12,6 +15,21 @@ class Tool extends Model
 
     protected $fillable = [
         "full_response",
-        "content"
+        "content",
+        'type',
+        'status'
     ];
+
+    protected $casts = [
+        "type" => ToolType::class,
+        'status' => ToolStatus::class,
+        'content' => 'array',
+        'full_response' => 'array',
+    ];
+
+    public function idea(): BelongsTo
+    {
+        return this->belongsTo(Tool::class);
+    }
+
 }

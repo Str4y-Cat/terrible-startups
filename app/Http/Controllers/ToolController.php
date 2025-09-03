@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ToolStatus;
+use App\Enums\ToolType;
+use App\Jobs\ProcessCompetitorSearchJob;
 use App\Models\Idea;
+use App\Models\Tool;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class ToolController extends Controller
@@ -15,7 +20,8 @@ class ToolController extends Controller
 
         /* dd("hello world, $idea->id"); */
         return Inertia::render('tools/CompetitorSearch', [
-            "idea" => $idea -> only(['id', 'title'])
+            "idea" => fn () => $idea -> only(['id', 'title']),
+            "competitor_searches" => fn () => $idea->tools()->where('type', ToolType::competitorSearch->value)->get(['status', "content", 'updated_at'])
         ]);
 
     }
@@ -25,16 +31,24 @@ class ToolController extends Controller
 
         //1. create empty instance in the database, status = untouched
         //2. toolType = enum(competitor-search)
+        $tool = $idea->tools()->create([
+            "type" => ToolType::competitorSearch->value,
+            "status" => ToolStatus::processing->value,
+        ]);
+        /* $tool = Tool::create([ */
+        /*     "user_id" => Auth::user()->id, */
+        /*     "idea_id" => $idea->id, */
+        /* ]); */
 
-        //3. createToolResourceJob (idea, tool, toolType)
-        // - set the tool status to processing
-        // - queries api
-        // - saves response to database
-        // - SUCCESS: set status to finished
-        // - BROKEN: set status to failed
 
-        //4. return the id of the tool to ping
-        //OR
-        // 4. ui has a selection of which tables are available. It can see that there is a new value created, but it is processing. so set a spinner, and poll. While it's not processing, dont poll
+        ProcessCompetitorSearchJob::dispatch($idea, $tool);
+
+        return response()->json([
+            'tool' => [
+                'id' => $tool->id,
+                'status' => $tool->id,
+            ]
+        ]);
+
     }
 }

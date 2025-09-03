@@ -183,7 +183,7 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
                 <TextDisplay title="Market validation tools - coming soon" :status="false ? 'complete' : 'progress'">
                     <div class="mt-4 grid grid-cols-2 flex-wrap gap-4 sm:grid-cols-3">
                         <Link
-                            :href="route('tool.competitor_search', idea.id)"
+                            :href="route('tool.show_competitor_search', idea.id)"
                             class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-primary p-2"
                         >
                             <div>
