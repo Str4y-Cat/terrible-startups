@@ -1,18 +1,27 @@
 <script setup lang="ts">
+import CompetitorSearchTable from '@/components/custom/CompetitorSearchTable.vue';
 import Button from '@/components/ui/button/Button.vue';
+import { Toaster } from '@/components/ui/sonner';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { CompetitorSearch } from '@/types/competitor_search';
 import { Head, router, usePage, usePoll } from '@inertiajs/vue3';
+import { LoaderCircle } from 'lucide-vue-next';
+import { computed, onUpdated, watch } from 'vue';
+import { toast } from 'vue-sonner';
+import 'vue-sonner/style.css'; // vue-sonner v2 requires this import
 
 const page = usePage();
 
-console.log(page.props);
-const idea: { id: string; title: string } = page.props.idea;
+const idea = page.props.idea as { id: string; title: string };
 
-const competitor_searches = page.props.competitor_searches as CompetitorSearch[];
-console.log(competitor_searches);
-const latest_competitor_search = competitor_searches[competitor_searches.length - 1];
+const competitor_searches = computed(() => page.props.competitor_searches as CompetitorSearch[]);
+// console.log(competitor_searches);
+const latest_competitor_search = computed(() => competitor_searches.value[competitor_searches.value.length - 1]);
+
+const processing = computed(() => {
+    return latest_competitor_search?.value.status == 'processing';
+});
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -29,95 +38,96 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+const poll = usePoll(
+    1000,
+    {
+        only: ['competitor_searches'],
+    },
+    { autoStart: false },
+);
+console.log(poll);
+
 function createNewCompetitorSearch() {
     router.visit(route('tool.create_competitor_search', idea.id), {
         method: 'post',
         onSuccess: (response) => {
-            console.log('Success! ', response);
+            console.log('SUCCESS', response);
+            poll.start();
         },
         onError: (error) => {
-            console.log('failed! ', error);
+            console.log(error);
+            //trigger pop up
+
+            toast.error('Failed to save', {
+                style: {
+                    'border-color': 'var(--color-red-600)',
+                },
+                description: 'Error performing search',
+            });
         },
     });
 }
 
-usePoll(2000, {
-    only: ['competitor_searches'],
+// function checkSearchStatus() {
+//     console.log('checking the search status', latest_competitor_search.value.status);
+//
+//     if (latest_competitor_search.value?.status != 'complete') return;
+//     console.log('Stopping the search!', latest_competitor_search.value.status);
+//     poll.stop();
+// }
+
+onUpdated(() => {
+    console.log(latest_competitor_search?.value.status);
 });
+
+watch(
+    () => latest_competitor_search?.value.status,
+    (newStatus) => {
+        console.log('competitor status', newStatus);
+        if (newStatus == 'complete') {
+            console.log('stopping the search');
+            console.log(poll);
+            poll.stop();
+        }
+    },
+);
 </script>
 
 <template>
     <Head title="Terrible ideas" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="flex flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+        <div class="flex flex-1 gap-4 overflow-x-auto rounded-xl p-4">
             <h1 class="text-4xl">hello this is the competitor search page</h1>
-            <Button @click="createNewCompetitorSearch">Search for competitors</Button>
+            <Button :disabled="processing" @click="createNewCompetitorSearch">
+                <span v-if="!processing"> Search </span>
+                <span v-if="processing"> Searching </span>
+                <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
+            </Button>
         </div>
+
         <div>
             <div class="space-y-8 p-4">
                 <!-- DIRECT COMPETITORS -->
                 <div v-if="latest_competitor_search">
                     <h3 class="mb-4 text-2xl font-semibold">Direct Competitors</h3>
-                    <div class="overflow-x-auto rounded-lg shadow">
-                        <table class="min-w-full divide-y divide-gray-200 border border-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Name</th>
-                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Description</th>
-                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Strengths</th>
-                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Weaknesses</th>
-                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Pricing</th>
-                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Website</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100">
-                                <tr v-for="(competitor, index) in latest_competitor_search.content?.competitors" :key="index">
-                                    <td class="px-4 py-2 font-medium text-gray-900">{{ competitor.name }}</td>
-                                    <td class="px-4 py-2">{{ competitor.description }}</td>
-                                    <td class="px-4 py-2">{{ competitor.strengths }}</td>
-                                    <td class="px-4 py-2">{{ competitor.weaknesses }}</td>
-                                    <td class="px-4 py-2">{{ competitor.pricing }}</td>
-                                    <td class="px-4 py-2 text-blue-600 underline">
-                                        <a :href="`https://${competitor.website}`" target="_blank">{{ competitor.website }}</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <CompetitorSearchTable
+                        :head="['name', 'description', 'strengths', 'weaknesses', 'pricing', 'website']"
+                        :content="latest_competitor_search.content?.competitors"
+                    />
                 </div>
 
                 <!-- INDIRECT COMPETITORS -->
                 <div v-if="latest_competitor_search">
                     <h3 class="mb-4 text-2xl font-semibold">Indirect Competitors</h3>
-                    <div class="overflow-x-auto rounded-lg shadow">
-                        <table class="min-w-full divide-y divide-gray-200 border border-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Name</th>
-                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Description</th>
-                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Strengths</th>
-                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Weaknesses</th>
-                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Pricing</th>
-                                    <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Website</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100">
-                                <tr v-for="(competitor, index) in latest_competitor_search.content.indirect_competitors" :key="index">
-                                    <td class="px-4 py-2 font-medium text-gray-900">{{ competitor.name }}</td>
-                                    <td class="px-4 py-2">{{ competitor.description }}</td>
-                                    <td class="px-4 py-2">{{ competitor.strengths }}</td>
-                                    <td class="px-4 py-2">{{ competitor.weaknesses }}</td>
-                                    <td class="px-4 py-2">{{ competitor.pricing }}</td>
-                                    <td class="px-4 py-2 text-blue-600 underline">
-                                        <a :href="`https://${competitor.website}`" target="_blank">{{ competitor.website }}</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <CompetitorSearchTable
+                        :head="['name', 'description', 'strengths', 'weaknesses', 'pricing', 'website']"
+                        :content="latest_competitor_search.content?.indirect_competitors"
+                    />
                 </div>
             </div>
         </div>
+
+        <Toaster />
     </AppLayout>
 </template>
