@@ -11,7 +11,7 @@ import { Toaster } from '@/components/ui/sonner';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
-import { Plus, Share } from 'lucide-vue-next';
+import { Share } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
 import 'vue-sonner/style.css'; // vue-sonner v2 requires this import
@@ -128,9 +128,6 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
                         <Tag v-for="(tag, index) in idea.tags" :key="index" class="group border-none bg-primary/10 text-sm text-primary md:text-sm">
                             {{ tag.value }}
                         </Tag>
-                        <div class="flex items-center justify-center">
-                            <Plus class="size-4 text-primary/50"></Plus>
-                        </div>
                     </div>
                 </TextDisplay>
 
@@ -152,7 +149,7 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
                 </TextDisplay>
 
                 <TextDisplay title="Features" :status="idea.features ? 'complete' : 'progress'">
-                    <ListDisplayBody @click="openListModal('Features', idea.features, 'features')" title="Bare Minimum - MVP" :body="idea.features" />
+                    <ListDisplayBody @click="openListModal('Features', idea.features, 'features')" title="" :body="idea.features" />
                 </TextDisplay>
 
                 <TextDisplay title="Marketing" :status="idea.target_audience ? 'complete' : 'progress'">
@@ -188,11 +185,14 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
                         >
                             <div>
                                 <div class="flex w-full max-w-[90%] items-center justify-start gap-2">
-                                    <h3 class="font-bold">Competitor Search - AI</h3>
+                                    <h3 class="flex font-bold">Competitor search</h3>
                                 </div>
+
+                                <!--
                                 <p class="block max-w-[90%]">
                                     Search the web for competitors. Get their market position, estimated user count, price range and website link
                                 </p>
+                                -->
                             </div>
                             <PlaceholderPattern class="opacity-40" />
                         </Link>
@@ -252,24 +252,9 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
                         >
                             <div>
                                 <div class="flex w-full max-w-[90%] items-center justify-start gap-2">
-                                    <h3 class="font-bold">Possible risks - AI</h3>
+                                    <h3 class="font-bold">Feedback</h3>
                                 </div>
-                                <p class="block max-w-[90%]">
-                                    Get feedback of the idea that you may not have thought about before. add a rating slider here so you can choose
-                                    your nitpicky level
-                                </p>
-                            </div>
-                            <PlaceholderPattern class="opacity-40" />
-                        </div>
-
-                        <div
-                            class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-primary p-2"
-                        >
-                            <div>
-                                <div class="flex w-full max-w-[90%] items-center justify-start gap-2">
-                                    <h3 class="font-bold">Current boons - AI</h3>
-                                </div>
-                                <p class="block max-w-[90%]">Opposite to risks, this is what is good about your idea</p>
+                                <p class="block max-w-[90%]">Risks, weaknesses, strengths</p>
                             </div>
                             <PlaceholderPattern class="opacity-40" />
                         </div>

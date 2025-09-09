@@ -12,11 +12,11 @@ const emit = defineEmits<{
 
 <template>
     <span class="sr-only">{{ parent }}</span>
-    <span
-        class="cursor-pointer rounded border border-primary px-2 py-1 data-[active=true]:bg-primary/30"
+    <button
+        class="cursor-pointer rounded bg-muted/50 px-2 py-1 data-[active=true]:bg-primary/20 data-[active=true]:text-primary"
         :data-active="selected"
-        @click="emit('toggle', { key: props.parent, value: props.label })"
+        @click.prevent="emit('toggle', { key: props.parent, value: props.label })"
     >
         {{ label }}
-    </span>
+    </button>
 </template>

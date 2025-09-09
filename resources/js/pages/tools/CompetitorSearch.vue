@@ -5,9 +5,9 @@ import { Toaster } from '@/components/ui/sonner';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { CompetitorSearch } from '@/types/competitor_search';
-import { Head, router, usePage, usePoll } from '@inertiajs/vue3';
-import { LoaderCircle } from 'lucide-vue-next';
-import { computed, onUpdated, watch } from 'vue';
+import { Head, Link, router, usePage, usePoll } from '@inertiajs/vue3';
+import { ArrowLeft, LoaderCircle } from 'lucide-vue-next';
+import { computed, watch } from 'vue';
 import { toast } from 'vue-sonner';
 import 'vue-sonner/style.css'; // vue-sonner v2 requires this import
 
@@ -17,7 +17,7 @@ const idea = page.props.idea as { id: string; title: string };
 
 const competitor_searches = computed(() => page.props.competitor_searches as CompetitorSearch[]);
 // console.log(competitor_searches);
-const latest_competitor_search = computed(() => competitor_searches.value[competitor_searches.value.length - 1]);
+const latest_competitor_search = computed(() => competitor_searches.value[competitor_searches.value.length - 1] || {});
 
 const processing = computed(() => {
     return latest_competitor_search?.value.status == 'processing';
@@ -38,21 +38,21 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-const poll = usePoll(
+const { start, stop } = usePoll(
     1000,
     {
         only: ['competitor_searches'],
     },
     { autoStart: false },
 );
-console.log(poll);
+// console.log(poll);
 
 function createNewCompetitorSearch() {
     router.visit(route('tool.create_competitor_search', idea.id), {
         method: 'post',
         onSuccess: (response) => {
             console.log('SUCCESS', response);
-            poll.start();
+            start();
         },
         onError: (error) => {
             console.log(error);
@@ -76,9 +76,9 @@ function createNewCompetitorSearch() {
 //     poll.stop();
 // }
 
-onUpdated(() => {
-    console.log(latest_competitor_search?.value.status);
-});
+// onUpdated(() => {
+//     console.log(latest_competitor_search?.value.status);
+// });
 
 watch(
     () => latest_competitor_search?.value.status,
@@ -86,8 +86,8 @@ watch(
         console.log('competitor status', newStatus);
         if (newStatus == 'complete') {
             console.log('stopping the search');
-            console.log(poll);
-            poll.stop();
+            // console.log(poll);
+            stop();
         }
     },
 );
@@ -97,13 +97,27 @@ watch(
     <Head title="Terrible ideas" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="flex flex-1 gap-4 overflow-x-auto rounded-xl p-4">
-            <h1 class="text-4xl">hello this is the competitor search page</h1>
-            <Button :disabled="processing" @click="createNewCompetitorSearch">
-                <span v-if="!processing"> Search </span>
-                <span v-if="processing"> Searching </span>
-                <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
-            </Button>
+        <div class="mb-8 px-4">
+            <div>
+                <Link :href="`/ideas/${idea.id}`" class="mt-4 flex items-center text-foreground/50">
+                    <ArrowLeft class="size-5" />
+                    back
+                </Link>
+            </div>
+            <div class="flex flex-1 gap-4 overflow-x-auto rounded-xl py-4">
+                <h1 class="text-4xl">Competitor search</h1>
+                <Button :disabled="processing" @click="createNewCompetitorSearch">
+                    <span v-if="!processing"> Search </span>
+                    <span v-if="processing"> Searching </span>
+                    <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
+                </Button>
+            </div>
+            <div>
+                <p class="text-foreground/50">
+                    Perform a ai search for all the competitors of your idea. The more information you have added to your idea description, the more
+                    accurate the results will be
+                </p>
+            </div>
         </div>
 
         <div>

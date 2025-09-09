@@ -46,14 +46,14 @@ function isTagIncluded(tag: SelectedTag) {
 </script>
 
 <template>
-    <div class="group mt-4 grid gap-2">
-        <p class="border-b-1 border-dashed border-transparent border-b-muted pb-1 text-2xl group-has-focus:border-b-primary/20">
+    <div class="group mt-4 gap-2 pt-2">
+        <p class="mb-4 border-b-1 border-dashed border-transparent border-b-muted pb-1 text-2xl group-has-focus:border-b-primary/20">
             {{ title }}
         </p>
 
         <div v-for="(tagGroup, key, group_index) in tag_group" :key="group_index" class="mb-4 flex">
             <div class="flex flex-wrap gap-2">
-                <Tag class="border text-nowrap text-foreground/70">{{ key }}</Tag>
+                <Tag class="text-base font-bold text-nowrap text-foreground/70 capitalize">{{ key }}</Tag>
 
                 <InputTag
                     v-for="(tag, index) in tagGroup"
