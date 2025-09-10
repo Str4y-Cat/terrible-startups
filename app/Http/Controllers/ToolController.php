@@ -43,11 +43,9 @@ class ToolController extends Controller
 
         ProcessCompetitorSearchJob::dispatch($idea, $tool);
 
-        return response()->json([
-            'tool' => [
-                'id' => $tool->id,
-                'status' => $tool->id,
-            ]
+        return Inertia::render('tools/CompetitorSearch', [
+            "idea" => fn () => $idea -> only(['id', 'title']),
+            "competitor_searches" => fn () => $idea->tools()->where('type', ToolType::competitorSearch->value)->get(['status', "content", 'updated_at'])
         ]);
 
     }
