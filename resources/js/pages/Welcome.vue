@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
-import PlaceholderPattern from '../components/PlaceholderPattern.vue';
 </script>
 
 <template>
@@ -18,6 +17,7 @@ import PlaceholderPattern from '../components/PlaceholderPattern.vue';
                 >
                     Dashboard
                 </Link>
+                <!--
                 <template v-else>
                     <Link
                         :href="route('login')"
@@ -32,13 +32,19 @@ import PlaceholderPattern from '../components/PlaceholderPattern.vue';
                         Register
                     </Link>
                 </template>
+                -->
             </nav>
         </header>
         <div class="flex w-full items-center justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0">
             <main class="flex w-full max-w-[335px] flex-col-reverse overflow-hidden rounded-lg lg:max-w-4xl lg:flex-row">
+                <div class="m-auto flex flex-col items-center justify-center">
+                    <h1 class="text-4xl font-bold text-primary">This site is still being built. Check back in soon :)</h1>
+                </div>
+                <!--
                 <div class="relative h-[50vh] w-full flex-grow border">
                     <PlaceholderPattern />
                 </div>
+-->
             </main>
         </div>
     </div>
