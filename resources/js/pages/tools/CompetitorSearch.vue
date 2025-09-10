@@ -126,7 +126,7 @@ watch(
                 <div v-if="latest_competitor_search">
                     <h3 class="mb-4 text-2xl font-semibold">Direct Competitors</h3>
                     <CompetitorSearchTable
-                        :head="['name', 'description', 'strengths', 'weaknesses', 'pricing', 'website']"
+                        :head="['name', 'regions', 'description', 'strengths', 'weaknesses', 'target_audience', 'website']"
                         :content="latest_competitor_search.content?.competitors"
                     />
                 </div>
@@ -135,7 +135,7 @@ watch(
                 <div v-if="latest_competitor_search">
                     <h3 class="mb-4 text-2xl font-semibold">Indirect Competitors</h3>
                     <CompetitorSearchTable
-                        :head="['name', 'description', 'strengths', 'weaknesses', 'pricing', 'website']"
+                        :head="['name', 'regions', 'description', 'strengths', 'weaknesses', 'target_audience', 'website']"
                         :content="latest_competitor_search.content?.indirect_competitors"
                     />
                 </div>
