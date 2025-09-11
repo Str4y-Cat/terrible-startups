@@ -1,3 +1,4 @@
+// COMPETITOR ANALYSIS
 export interface Competitor {
     name: string;
     description: string;
@@ -19,4 +20,27 @@ export interface CompetitorSearch {
     status: 'processing' | 'complete' | 'failed'; // matches your ToolStatus enum
     content: CompetitorSearchContent;
     updated_at: string;
+}
+
+// SWOT
+export interface SwotAnalysis {
+    status: 'processing' | 'complete' | 'failed'; // matches your ToolStatus enum
+    content: SwotAnalysisContent;
+    updated_at: string;
+}
+
+export interface SwotAnalysisContent {
+    SWOT: {
+        Threats: SWOTCategory;
+        Strengths: SWOTCategory;
+        Weaknesses: SWOTCategory;
+        Opportunities: SWOTCategory;
+    };
+    Research: string;
+    BusinessIdeaSummary: string;
+}
+
+export interface SWOTCategory {
+    Points: string[];
+    Reasoning: string;
 }

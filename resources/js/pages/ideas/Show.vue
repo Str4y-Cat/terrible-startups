@@ -10,8 +10,8 @@ import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
 import { Toaster } from '@/components/ui/sonner';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
-import { Share } from 'lucide-vue-next';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
+import { Ellipsis } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
 import 'vue-sonner/style.css'; // vue-sonner v2 requires this import
@@ -106,6 +106,24 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
         },
     });
 }
+
+function getContext() {
+    console.log('Getting context');
+    router.visit(route('tool.context', idea.id), {
+        method: 'post',
+        onSuccess: (response) => {
+            console.log('SUCCESS', response);
+        },
+        onError: (error) => {
+            toast.error('Failed to save', {
+                style: {
+                    'border-color': 'var(--color-red-600)',
+                },
+                description: 'Error performing search',
+            });
+        },
+    });
+}
 </script>
 
 <template>
@@ -116,7 +134,9 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
             <div class="relative m-auto h-full w-full max-w-4xl rounded-xl">
                 <div class="flex w-full items-center justify-between">
                     <h1 class="mt-4 text-4xl">{{ idea.title }}</h1>
-                    <Share class=""></Share>
+                    <button @click.prevent="getContext" class="transition-color aspect-1/1 rounded-full bg-white/0 p-4 hover:bg-white/20">
+                        <Ellipsis class="" />
+                    </button>
                 </div>
                 <TextDisplay title="Concept" :status="idea.overview && idea.inspiration ? 'complete' : 'progress'">
                     <TextDisplayBody
@@ -180,7 +200,7 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
                 <TextDisplay title="Market validation tools - coming soon" :status="false ? 'complete' : 'progress'">
                     <div class="mt-4 grid grid-cols-2 flex-wrap gap-4 sm:grid-cols-3">
                         <Link
-                            :href="route('tool.show_competitor_search', idea.id)"
+                            :href="route('tool.competitor_search', idea.id)"
                             class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-primary p-2"
                         >
                             <div>
@@ -193,6 +213,19 @@ function handleSave({ target, value }: { target: keyof Idea; value: string }) {
                                     Search the web for competitors. Get their market position, estimated user count, price range and website link
                                 </p>
                                 -->
+                            </div>
+                            <PlaceholderPattern class="opacity-40" />
+                        </Link>
+
+                        <Link
+                            :href="route('tool.swot', idea.id)"
+                            class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-primary p-2"
+                        >
+                            <div>
+                                <div class="flex w-full max-w-[90%] items-center justify-start gap-2">
+                                    <h3 class="font-bold">SWOT</h3>
+                                </div>
+                                <p class="block max-w-[90%]">Strengths, Weaknesses, Opportunities, Threats</p>
                             </div>
                             <PlaceholderPattern class="opacity-40" />
                         </Link>

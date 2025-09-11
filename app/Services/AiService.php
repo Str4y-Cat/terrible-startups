@@ -33,10 +33,10 @@ class AiService
         "Inspiring event or inspiration: ". $idea->inspiration ."\n".
         "Problem to solve: ". $idea->problem_to_solve ."\n".
         "Proposed solution: ". $idea->solution ."\n".
-        "Features: \n-". implode("\n- ", $idea->features) ."\n".
-        "Target audience: \n-". implode("\n- ", $idea->target_audience) ."\n".
-        "Potential risks: \n-". implode("\n- ", $idea->risks) ."\n".
-        "Potential challenges: \n-". implode("\n- ", $idea->challenges)
+        "Features: \n-". implode("\n- ", $idea->features ?: []) ."\n".
+        "Target audience: \n-". implode("\n- ", $idea->target_audience ?: []) ."\n".
+        "Potential risks: \n-". implode("\n- ", $idea->risks ?: []) ."\n".
+        "Potential challenges: \n-". implode("\n- ", $idea->challenges ?: [])
         ;
         return $context;
     }
@@ -58,6 +58,48 @@ class AiService
 
 
     public function getCompetitorAnalysis(): Response
+    {
+        return  Http::acceptJson()
+            ->withToken(config('ai.openai_key'))
+            ->withBody(
+                Utils::jsonEncode(
+                    [
+                    "prompt" => [
+                        "id" => config('ai.openai_competitor_search_prompt_id'),
+                        "version" => config('ai.openai_competitor_search_prompt_version'),
+                        "variables" => [
+                            "business_idea" =>  "$this->jsonContext"
+                            ]
+                        ]
+                    ]
+                ),
+                'application/json'
+            )
+            ->post(config('ai.openai_url'));
+    }
+
+    public function getSwot(): Response
+    {
+        return  Http::acceptJson()
+            ->withToken(config('ai.openai_key'))
+            ->withBody(
+                Utils::jsonEncode(
+                    [
+                    "prompt" => [
+                        "id" => config('ai.openai_SWOT_prompt_id'),
+                        "version" => config('ai.openai_SWOT_prompt_version'),
+                        "variables" => [
+                            "business_idea" =>  "$this->jsonContext"
+                            ]
+                        ]
+                    ]
+                ),
+                'application/json'
+            )
+            ->post(config('ai.openai_url'));
+    }
+
+    public function getFeedback(): Response
     {
         return  Http::acceptJson()
             ->withToken(config('app.openai_key'))

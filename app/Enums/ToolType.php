@@ -7,4 +7,5 @@ enum ToolType: string
     case competitorSearch = "competitor-search";
     case riskAnalysis =  "risk-analysis";
     case feedback = "feedback";
+    case swot = "swot";
 }
