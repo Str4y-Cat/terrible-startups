@@ -26,4 +26,8 @@ return [
     // SWOT
     'openai_SWOT_prompt_id' => env('OPENAI_SWOT_PROMT_ID', 'pmpt_68c26aa743f88196a80bc6fe06b54f0608145998f4d33b5e'),
     'openai_SWOT_prompt_version' => env('OPENAI_SWOT_PROMT_VERSION', '2'),
+
+    // REDDIT COMMUNITIES
+    'openai_reddit_communities_prompt_id' => env('OPENAI_REDDIT_COMMUNITIES_PROMT_ID', 'pmpt_68c26aa743f88196a80bc6fe06b54f0608145998f4d33b5e'),
+    'openai_reddit_communities_prompt_version' => env('OPENAI_REDDIT_COMMUNITIES_PROMT_VERSION', '2'),
 ];

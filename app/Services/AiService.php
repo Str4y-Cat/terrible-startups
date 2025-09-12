@@ -56,8 +56,7 @@ class AiService
         return $idea_context;
     }
 
-
-    public function getCompetitorAnalysis(): Response
+    private function queryOpenAi(string $id, string $version)
     {
         return  Http::acceptJson()
             ->withToken(config('ai.openai_key'))
@@ -65,8 +64,8 @@ class AiService
                 Utils::jsonEncode(
                     [
                     "prompt" => [
-                        "id" => config('ai.openai_competitor_search_prompt_id'),
-                        "version" => config('ai.openai_competitor_search_prompt_version'),
+                        "id" => config($id),
+                        "version" => config($version),
                         "variables" => [
                             "business_idea" =>  "$this->jsonContext"
                             ]
@@ -76,47 +75,34 @@ class AiService
                 'application/json'
             )
             ->post(config('ai.openai_url'));
+    }
+
+
+    public function getCompetitorAnalysis(): Response
+    {
+
+        $id = 'ai.openai_competitor_search_prompt_id';
+        $version = 'ai.openai_competitor_search_prompt_version';
+
+        return $this->queryOpenAi($id, $version);
+
     }
 
     public function getSwot(): Response
     {
-        return  Http::acceptJson()
-            ->withToken(config('ai.openai_key'))
-            ->withBody(
-                Utils::jsonEncode(
-                    [
-                    "prompt" => [
-                        "id" => config('ai.openai_SWOT_prompt_id'),
-                        "version" => config('ai.openai_SWOT_prompt_version'),
-                        "variables" => [
-                            "business_idea" =>  "$this->jsonContext"
-                            ]
-                        ]
-                    ]
-                ),
-                'application/json'
-            )
-            ->post(config('ai.openai_url'));
+        $id = "ai.openai_SWOT_prompt_id";
+        $version = "ai.openai_SWOT_prompt_version";
+
+        return $this->queryOpenAi($id, $version);
     }
 
-    public function getFeedback(): Response
+    public function getRedditCommunities(): Response
     {
-        return  Http::acceptJson()
-            ->withToken(config('app.openai_key'))
-            ->withBody(
-                Utils::jsonEncode(
-                    [
-                    "prompt" => [
-                        "id" => config('app.openai_id'),
-                        "version" => config('app.openai_version'),
-                        "variables" => [
-                            "business_idea" =>  "$this->jsonContext"
-                            ]
-                        ]
-                    ]
-                ),
-                'application/json'
-            )
-            ->post(config('app.openai_url'));
+
+        $id = "ai.openai_reddit_communities_prompt_id";
+        $version = "ai.openai_reddit_communities_prompt_version";
+
+        return $this->queryOpenAi($id, $version);
     }
+
 }
