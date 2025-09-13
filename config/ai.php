@@ -28,6 +28,6 @@ return [
     'openai_SWOT_prompt_version' => env('OPENAI_SWOT_PROMT_VERSION', '2'),
 
     // REDDIT COMMUNITIES
-    'openai_reddit_communities_prompt_id' => env('OPENAI_REDDIT_COMMUNITIES_PROMT_ID', 'pmpt_68c26aa743f88196a80bc6fe06b54f0608145998f4d33b5e'),
+    'openai_reddit_communities_prompt_id' => env('OPENAI_REDDIT_COMMUNITIES_PROMT_ID', 'pmpt_68c501c00d488193bdc5a804f2c082320207874f3224ac36'),
     'openai_reddit_communities_prompt_version' => env('OPENAI_REDDIT_COMMUNITIES_PROMT_VERSION', '2'),
 ];

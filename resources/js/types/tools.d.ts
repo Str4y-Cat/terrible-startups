@@ -44,3 +44,23 @@ export interface SWOTCategory {
     Points: string[];
     Reasoning: string;
 }
+
+// COMMUNITY
+export interface CommunityAnalysis {
+    status: 'processing' | 'complete' | 'failed'; // matches your ToolStatus enum
+    content: CommunityAnalysisContent;
+    updated_at: string;
+}
+
+export interface CommunityAnalysisContent {
+    communities: Community[];
+    business_idea_analysis: string;
+}
+
+export interface Community {
+    name: string;
+    type?: string;
+    description: string;
+    link_or_access: string;
+    relevance_reasoning: string;
+}

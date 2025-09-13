@@ -5,13 +5,14 @@ import ListDisplayBody from '@/components/custom/show/ListDisplayBody.vue';
 
 import TextDisplay from '@/components/custom/show/TextDisplay.vue';
 import TextDisplayBody from '@/components/custom/show/TextDisplayBody.vue';
+import ToolOverview from '@/components/custom/show/ToolOverview.vue';
 import Tag from '@/components/custom/Tag.vue';
 import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
 import { Toaster } from '@/components/ui/sonner';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
-import { Ellipsis } from 'lucide-vue-next';
+import { Head, router, useForm, usePage } from '@inertiajs/vue3';
+import { Ellipsis, Ghost, Grid2x2Check, Users } from 'lucide-vue-next';
 import { ref } from 'vue';
 import { toast } from 'vue-sonner';
 import 'vue-sonner/style.css'; // vue-sonner v2 requires this import
@@ -138,12 +139,8 @@ function getContext() {
                         <Ellipsis class="" />
                     </button>
                 </div>
-                <TextDisplay title="Concept" :status="idea.overview && idea.inspiration ? 'complete' : 'progress'">
-                    <TextDisplayBody
-                        @click="openModal('Project overview', idea.overview, 'overview')"
-                        title="Project Overview"
-                        :body="idea.overview"
-                    />
+                <TextDisplay title="Overview" :status="idea.overview && idea.inspiration ? 'complete' : 'progress'">
+                    <TextDisplayBody @click="openModal('Project overview', idea.overview, 'overview')" title="" :body="idea.overview" />
                     <div class="mt-8 flex flex-wrap gap-2">
                         <Tag v-for="(tag, index) in idea.tags" :key="index" class="group border-none bg-primary/10 text-sm text-primary md:text-sm">
                             {{ tag.value }}
@@ -197,41 +194,34 @@ function getContext() {
                     </div>
                 </TextDisplay>
 
-                <TextDisplay title="Market validation tools - coming soon" :status="false ? 'complete' : 'progress'">
+                <TextDisplay title="Validation tools" :status="false ? 'complete' : 'progress'">
+                    <div class="mt-4 grid grid-cols-1 flex-wrap gap-4 xs:grid-cols-2 md:grid-cols-3">
+                        <!-- COMPETITOR SEARCH -->
+                        <ToolOverview route_name="tool.competitor_search" :idea_id="idea.id">
+                            <template v-slot:icon><Ghost /></template>
+                            Competitor Search
+                            <template v-slot:description>Search for competitors to your business</template>
+                        </ToolOverview>
+
+                        <!-- SWOT ANALYSIS -->
+                        <ToolOverview route_name="tool.swot" :idea_id="idea.id">
+                            <template v-slot:icon><Grid2x2Check /></template>
+                            SWOT
+                            <template v-slot:description>Strengths, Weaknesses, Opportunities, Threats</template>
+                        </ToolOverview>
+
+                        <!-- REDDIT COMPETITOR ANALYSIS -->
+                        <ToolOverview route_name="tool.reddit_community_search" :idea_id="idea.id">
+                            <template v-slot:icon><Users /></template>
+                            Reddit Community search
+                            <template v-slot:description>Search for relevant reddit communities</template>
+                        </ToolOverview>
+                    </div>
+
+                    <h3 class="mt-6 font-bold">Possible future additions:</h3>
                     <div class="mt-4 grid grid-cols-2 flex-wrap gap-4 sm:grid-cols-3">
-                        <Link
-                            :href="route('tool.competitor_search', idea.id)"
-                            class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-primary p-2"
-                        >
-                            <div>
-                                <div class="flex w-full max-w-[90%] items-center justify-start gap-2">
-                                    <h3 class="flex font-bold">Competitor search</h3>
-                                </div>
-
-                                <!--
-                                <p class="block max-w-[90%]">
-                                    Search the web for competitors. Get their market position, estimated user count, price range and website link
-                                </p>
-                                -->
-                            </div>
-                            <PlaceholderPattern class="opacity-40" />
-                        </Link>
-
-                        <Link
-                            :href="route('tool.swot', idea.id)"
-                            class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-primary p-2"
-                        >
-                            <div>
-                                <div class="flex w-full max-w-[90%] items-center justify-start gap-2">
-                                    <h3 class="font-bold">SWOT</h3>
-                                </div>
-                                <p class="block max-w-[90%]">Strengths, Weaknesses, Opportunities, Threats</p>
-                            </div>
-                            <PlaceholderPattern class="opacity-40" />
-                        </Link>
-
                         <div
-                            class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-primary p-2"
+                            class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-border p-2"
                         >
                             <div>
                                 <div class="flex w-full max-w-[90%] items-center justify-start gap-2">
@@ -243,7 +233,7 @@ function getContext() {
                         </div>
 
                         <div
-                            class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-primary p-2"
+                            class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-border p-2"
                         >
                             <div>
                                 <div class="flex w-full max-w-[90%] items-center justify-start gap-2">
@@ -257,31 +247,7 @@ function getContext() {
                         </div>
 
                         <div
-                            class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-primary p-2"
-                        >
-                            <div>
-                                <div class="flex w-full max-w-[90%] items-center justify-start gap-2">
-                                    <h3 class="font-bold">Customer search - Reddit</h3>
-                                </div>
-                                <p class="block max-w-[90%]">Search for reddit communities that may be interested in your idea</p>
-                            </div>
-                            <PlaceholderPattern class="opacity-40" />
-                        </div>
-
-                        <div
-                            class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-primary p-2"
-                        >
-                            <div>
-                                <div class="flex w-full max-w-[90%] items-center justify-start gap-2">
-                                    <h3 class="font-bold">Partner Search - Community finder</h3>
-                                </div>
-                                <p class="block max-w-[90%]">Search for communities that may help you get the idea off the ground</p>
-                            </div>
-                            <PlaceholderPattern class="opacity-40" />
-                        </div>
-
-                        <div
-                            class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-primary p-2"
+                            class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-border p-2"
                         >
                             <div>
                                 <div class="flex w-full max-w-[90%] items-center justify-start gap-2">
