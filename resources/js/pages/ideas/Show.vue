@@ -166,7 +166,7 @@ function getContext() {
                 </TextDisplay>
 
                 <TextDisplay title="Features" :status="idea.features ? 'complete' : 'progress'">
-                    <ListDisplayBody @click="openListModal('Features', idea.features, 'features')" title="" :body="idea.features" />
+                    <ListDisplayBody @click="openListModal('Features', idea.features, 'features')" title="features" :body="idea.features" />
                 </TextDisplay>
 
                 <TextDisplay title="Marketing" :status="idea.target_audience ? 'complete' : 'progress'">
