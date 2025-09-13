@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import IdeaTable from '@/components/custom/IdeaTable.vue';
+import IdeaList from '@/components/custom/index/IdeaList.vue';
+import Input from '@/components/ui/input/Input.vue';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
+import { Idea } from '@/types/general';
 import { Head, usePage } from '@inertiajs/vue3';
-import { computed, reactive } from 'vue';
-
+import { Search } from 'lucide-vue-next';
+import { computed, ref } from 'vue';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Ideas',
@@ -14,25 +16,37 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 // const ideasArray;
 const page = usePage();
-const ideasArray = reactive(page.props.ideas);
+const originalIdeas = page.props.ideas as Idea[];
+originalIdeas.sort((a, b) => {
+    return b.rating - a.rating;
+});
+
+const searchTerm = ref('');
 
 const ideas = computed(() => {
-    return [...ideasArray].sort((a, b) => {
-        if (a.pinned != b.pinned && (a.pinned || b.pinned)) {
-            return a.pinned ? -1 : 1;
-        }
-
-        return b.rating - a.rating;
+    return originalIdeas.filter((idea) => {
+        return idea.title.includes(searchTerm.value);
     });
 });
+
+console.log(ideas.value);
 </script>
 
 <template>
     <Head title="Terrible ideas" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="flex flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-            <IdeaTable :ideas="ideas"></IdeaTable>
+        <div class="flex flex-1 flex-col gap-4 overflow-x-auto rounded-xl sm:p-4">
+            <div class="mt-4 flex justify-center px-4 sm:justify-end">
+                <div class="relative w-full max-w-sm items-center">
+                    <Input v-model="searchTerm" id="search" type="text" placeholder="Search..." class="pl-10" />
+                    <span class="absolute inset-y-0 start-0 flex items-center justify-center px-2">
+                        <Search class="size-5 text-muted-foreground" />
+                    </span>
+                </div>
+            </div>
+            <!--<IdeaTable :ideas="ideas" />-->
+            <IdeaList :ideas="ideas" />
         </div>
     </AppLayout>
 </template>

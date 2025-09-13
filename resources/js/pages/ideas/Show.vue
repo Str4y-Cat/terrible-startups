@@ -7,7 +7,6 @@ import TextDisplay from '@/components/custom/show/TextDisplay.vue';
 import TextDisplayBody from '@/components/custom/show/TextDisplayBody.vue';
 import ToolOverview from '@/components/custom/show/ToolOverview.vue';
 import Tag from '@/components/custom/Tag.vue';
-import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
 import { Toaster } from '@/components/ui/sonner';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
@@ -218,6 +217,7 @@ function getContext() {
                         </ToolOverview>
                     </div>
 
+                    <!--
                     <h3 class="mt-6 font-bold">Possible future additions:</h3>
                     <div class="mt-4 grid grid-cols-2 flex-wrap gap-4 sm:grid-cols-3">
                         <div
@@ -258,6 +258,7 @@ function getContext() {
                             <PlaceholderPattern class="opacity-40" />
                         </div>
                     </div>
+                    -->
                 </TextDisplay>
 
                 <TextDisplay title="Notes"> </TextDisplay>
