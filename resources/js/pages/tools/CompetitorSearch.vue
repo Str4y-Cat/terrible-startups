@@ -68,18 +68,6 @@ function createNewCompetitorSearch() {
     });
 }
 
-// function checkSearchStatus() {
-//     console.log('checking the search status', latest_competitor_search.value.status);
-//
-//     if (latest_competitor_search.value?.status != 'complete') return;
-//     console.log('Stopping the search!', latest_competitor_search.value.status);
-//     poll.stop();
-// }
-
-// onUpdated(() => {
-//     console.log(latest_competitor_search?.value.status);
-// });
-
 watch(
     () => latest_competitor_search?.value.status,
     (newStatus) => {

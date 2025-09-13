@@ -34,31 +34,30 @@ class ProcessCompetitorSearchJob implements ShouldQueue
     public function handle(): void
     {
 
-        /* $openAiService = new AiService($this->idea); */
-        /* $request = $openAiService->getCompetitorAnalysis(); */
+        $openAiService = new AiService($this->idea);
+        $request = $openAiService->getCompetitorAnalysis();
 
 
-        /* if (!$request->ok()) { */
-        /**/
-        /*     $this->tool->update([ */
-        /*         "status" => ToolStatus::failed->value */
-        /*     ]); */
-        /**/
-        /*     Log::error("ProcessCompetitorSearchJob: Job failed", [ */
-        /*         "tool_id" => $this->tool->id, */
-        /*         'response' => $request->body(), */
-        /*     ]); */
-        /**/
-        /*     $this->fail($request); */
-        /* } */
+        if (!$request->ok()) {
 
-        sleep(3);
+            $this->tool->update([
+                "status" => ToolStatus::failed->value
+            ]);
+
+            Log::error("ProcessCompetitorSearchJob: Job failed", [
+                "tool_id" => $this->tool->id,
+                'response' => $request->body(),
+            ]);
+
+            $this->fail($request);
+        }
+
 
 
 
         $this->tool->update([
-            /* "full_response" => $request->json(), */
-            /* "content" => json_decode(Arr::get($request->collect(), 'output.1.content.0.text'), true), */
+            "full_response" => $request->json(),
+            "content" => json_decode(Arr::get($request->collect(), 'output.1.content.0.text'), true),
             "status" => ToolStatus::complete->value
         ]);
     }

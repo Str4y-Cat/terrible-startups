@@ -6,7 +6,7 @@ import { type BreadcrumbItem } from '@/types';
 import { CommunityAnalysis } from '@/types/tools';
 import { Head, Link, router, usePage, usePoll } from '@inertiajs/vue3';
 import { ArrowLeft, LoaderCircle } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { toast } from 'vue-sonner';
 import 'vue-sonner/style.css'; // vue-sonner v2 requires this import
 
@@ -17,7 +17,6 @@ const idea = page.props.idea as { id: string; title: string };
 const community_searches = computed(() => page.props.community_searches as CommunityAnalysis[]);
 // console.log(competitor_searches);
 const latest_community_search = computed(() => {
-    if (!community_searches.value) return {};
     return community_searches.value[community_searches.value?.length - 1] || {};
 });
 
@@ -70,11 +69,10 @@ function createNewRedditCommunitySearch() {
     });
 }
 
-/*
 watch(
-    () => latest_competitor_search?.value.status,
+    () => latest_community_search?.value.status,
     (newStatus) => {
-        console.log('competitor status', newStatus);
+        console.log('status', newStatus);
         if (newStatus == 'complete') {
             console.log('stopping the search');
             // console.log(poll);
@@ -82,7 +80,6 @@ watch(
         }
     },
 );
-*/
 </script>
 
 <template>
