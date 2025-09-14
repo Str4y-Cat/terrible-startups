@@ -8,6 +8,7 @@ use App\Enums\Resource;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Idea extends Model
 {
@@ -110,6 +111,11 @@ class Idea extends Model
     public function tools(): HasMany
     {
         return $this->hasMany(Tool::class);
+    }
+
+    public function note(): HasOne
+    {
+        return $this->hasOne(Note::class);
     }
 
 }

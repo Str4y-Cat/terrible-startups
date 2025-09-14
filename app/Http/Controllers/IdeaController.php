@@ -42,6 +42,7 @@ class IdeaController extends Controller
             ->map
             ->pluck('value');
 
+
         return Inertia::render('ideas/Create', ['tagGroups' => $tagGroups]);
     }
 
@@ -97,7 +98,8 @@ class IdeaController extends Controller
 
 
         return Inertia::render('ideas/Show', [
-            'idea' => $idea->data(Resource::Show)
+            'idea' => $idea->data(Resource::Show),
+            'note' => $idea->note()->get(['contents','updated_at'])->first()
         ]);
     }
 

@@ -2,6 +2,7 @@
 import EditListDialog from '@/components/custom/EditListDialog.vue';
 import EditTextDialog from '@/components/custom/EditTextDialog.vue';
 import ListDisplayBody from '@/components/custom/show/ListDisplayBody.vue';
+import Note from '@/components/custom/show/Note.vue';
 
 import TextDisplay from '@/components/custom/show/TextDisplay.vue';
 import TextDisplayBody from '@/components/custom/show/TextDisplayBody.vue';
@@ -43,8 +44,15 @@ interface Idea {
     challenges: string[];
     date_created: string;
 }
+interface Note {
+    contents: string;
+    updated_at: string;
+}
 
-const idea: Idea = <Idea>page.props.idea;
+const idea = page.props.idea as Idea;
+const note = page.props.note as Note;
+
+console.log(note);
 
 const isDialogOpen = ref(false);
 
@@ -261,7 +269,9 @@ function getContext() {
                     -->
                 </TextDisplay>
 
-                <TextDisplay title="Notes"> </TextDisplay>
+                <TextDisplay title="Notes">
+                    <Note :idea_id="idea.id" :content="note.contents"></Note>
+                </TextDisplay>
             </div>
         </div>
 
