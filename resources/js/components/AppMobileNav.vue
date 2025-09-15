@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useHistory } from '@/composables/useHistory';
 import { Link } from '@inertiajs/vue3';
-import { ChevronLeft, ChevronRight, CirclePlus, Ellipsis, Rows3 } from 'lucide-vue-next';
+import { ChevronLeft, ChevronRight, Ellipsis, Plus, Rows3 } from 'lucide-vue-next';
 import { onMounted } from 'vue';
 const { canGoBack, canGoForward, goBack, goForward, position } = useHistory();
 
@@ -21,7 +21,7 @@ onMounted(() => {
             <ChevronRight class="text-primary group-disabled:text-foreground/30" />
         </button>
         <Link :href="route('ideas.create')">
-            <CirclePlus class="text-primary" />
+            <Plus class="text-primary" />
         </Link>
 
         <Link :href="route('ideas.index')">
