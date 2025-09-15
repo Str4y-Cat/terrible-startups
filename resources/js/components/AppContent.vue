@@ -19,7 +19,7 @@ const className = computed(() => props.class);
         </div>
 
         <!-- scrollable content -->
-        <div class="overflow-scroll">
+        <div class="flex-grow overflow-scroll">
             <slot />
         </div>
 

@@ -70,7 +70,7 @@ debouncedWatch(
         submit(contents.value || '');
         console.log('debounced');
     },
-    { debounce: 500 },
+    { debounce: 1500 },
 );
 </script>
 

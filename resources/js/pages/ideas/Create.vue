@@ -128,7 +128,7 @@ console.log(page.props.tagGroups);
                                 "
                                 v-model="form.title"
                                 class="rounded-none border-none bg-transparent p-0 text-3xl font-bold focus-visible:ring-0 md:text-3xl dark:bg-transparent"
-                                placeholder="New idea - Untitled"
+                                placeholder="Untitled"
                             />
                             <InputError :message="form.errors.title" />
                         </div>
@@ -160,7 +160,14 @@ console.log(page.props.tagGroups);
                                 @update="(value) => (form.overview = value)"
                             ></TextInput>
 
-                            <TagInputGroup title="Tags" :tag_group="$page.props.tagGroups" v-model:selected="form.tags"></TagInputGroup>
+                            <!-- Inspiration for Idea -->
+                            <TextInput
+                                :modelValue="form.inspiration"
+                                :error="form.errors.inspiration"
+                                label="Inspiration"
+                                id="inspiration"
+                                @update="(value) => (form.inspiration = value)"
+                            ></TextInput>
 
                             <!-- Problem to Solve -->
                             <TextInput
@@ -171,15 +178,6 @@ console.log(page.props.tagGroups);
                                 @update="(value) => (form.problem_to_solve = value)"
                             ></TextInput>
 
-                            <!-- Inspiration for Idea -->
-                            <TextInput
-                                :modelValue="form.inspiration"
-                                :error="form.errors.inspiration"
-                                label="Inspiration"
-                                id="inspiration"
-                                @update="(value) => (form.inspiration = value)"
-                            ></TextInput>
-
                             <!-- Proposed Solution -->
                             <TextInput
                                 :modelValue="form.solution"
@@ -188,6 +186,8 @@ console.log(page.props.tagGroups);
                                 id="solution"
                                 @update="(value) => (form.solution = value)"
                             ></TextInput>
+
+                            <TagInputGroup title="Tags" :tag_group="$page.props.tagGroups" v-model:selected="form.tags"></TagInputGroup>
                         </div>
 
                         <div class="grid gap-4">

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import InputTag from './InputTag.vue';
-import Tag from './Tag.vue';
 
 interface SelectedTag {
     key: string;
@@ -47,14 +46,13 @@ function isTagIncluded(tag: SelectedTag) {
 
 <template>
     <div class="group mt-4 gap-2 pt-2">
-        <p class="mb-4 border-b-1 border-dashed border-transparent border-b-muted pb-1 text-2xl group-has-focus:border-b-primary/20">
+        <h3 class="mb-4 border-b-1 border-dashed border-transparent border-b-muted pb-1 text-2xl group-has-focus:border-b-primary/20">
             {{ title }}
-        </p>
+        </h3>
 
-        <div v-for="(tagGroup, key, group_index) in tag_group" :key="group_index" class="mb-4 flex">
+        <div v-for="(tagGroup, key, group_index) in tag_group" :key="group_index" class="mb-8 flex flex-col gap-2">
+            <h4 class="text-base font-bold text-nowrap text-foreground/70 capitalize">{{ key }}</h4>
             <div class="flex flex-wrap gap-2">
-                <Tag class="text-base font-bold text-nowrap text-foreground/70 capitalize">{{ key }}</Tag>
-
                 <InputTag
                     v-for="(tag, index) in tagGroup"
                     :key="index"
@@ -63,13 +61,6 @@ function isTagIncluded(tag: SelectedTag) {
                     :selected="isTagIncluded({ key: key, value: tag })"
                     @toggle="toggleTag"
                 />
-
-                <!-- Add new tag button -->
-                <!--
-                <Tag class="block border border-primary/30 text-primary">
-                    <Plus class="block size-4" />
-                </Tag>
-                -->
             </div>
         </div>
     </div>

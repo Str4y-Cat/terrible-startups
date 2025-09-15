@@ -201,7 +201,7 @@ function getContext() {
                     </div>
                 </TextDisplay>
 
-                <TextDisplay title="Validation tools" :status="false ? 'complete' : 'progress'">
+                <TextDisplay title="Validation tools">
                     <div class="mt-4 grid grid-cols-1 flex-wrap gap-4 xs:grid-cols-2 md:grid-cols-3">
                         <!-- COMPETITOR SEARCH -->
                         <ToolOverview route_name="tool.competitor_search" :idea_id="idea.id">
