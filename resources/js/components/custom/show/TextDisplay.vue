@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import Tag from '../Tag.vue';
-const props = defineProps<{
-    title: string;
+defineProps<{
+    title?: string;
     status?: string;
 }>();
 </script>
 
 <template>
-    <div class="mt-8 rounded border border-dashed p-4">
+    <div class="mt-8 rounded">
         <div class="flex justify-between">
-            <h3 class="text-2xl font-bold">{{ props.title }}</h3>
+            <h3 v-if="title" class="text-2xl font-bold">{{ title }}</h3>
 
-            <Tag v-if="props.status == 'complete'" class="border-green-500 bg-green-500/20 text-sm text-green-500">
+            <Tag v-if="status == 'complete'" class="border-green-500 bg-green-500/20 text-sm text-green-500">
                 <span>Complete</span>
             </Tag>
 
-            <Tag v-if="props.status == 'progress'" class="border-orage-500 bg-orange-500/20 text-sm text-orange-500">
+            <Tag v-if="status == 'progress'" class="border-orage-500 bg-orange-500/20 text-sm text-orange-500">
                 <span>In Progress</span>
             </Tag>
         </div>

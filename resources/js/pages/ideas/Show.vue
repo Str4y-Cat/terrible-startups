@@ -4,6 +4,7 @@ import EditTextDialog from '@/components/custom/EditTextDialog.vue';
 import ListDisplayBody from '@/components/custom/show/ListDisplayBody.vue';
 import Note from '@/components/custom/show/Note.vue';
 
+import CollapsibleContainer from '@/components/custom/show/CollapsibleContainer.vue';
 import TextDisplay from '@/components/custom/show/TextDisplay.vue';
 import TextDisplayBody from '@/components/custom/show/TextDisplayBody.vue';
 import ToolOverview from '@/components/custom/show/ToolOverview.vue';
@@ -146,62 +147,58 @@ function getContext() {
                         <Ellipsis class="" />
                     </button>
                 </div>
-                <TextDisplay title="Overview" :status="idea.overview && idea.inspiration ? 'complete' : 'progress'">
+                <CollapsibleContainer title="Overview" :open="true">
                     <TextDisplayBody @click="openModal('Project overview', idea.overview, 'overview')" title="" :body="idea.overview" />
                     <div class="mt-8 flex flex-wrap gap-2">
                         <Tag v-for="(tag, index) in idea.tags" :key="index" class="group border-none bg-primary/10 text-sm text-primary md:text-sm">
                             {{ tag.value }}
                         </Tag>
                     </div>
-                </TextDisplay>
+                </CollapsibleContainer>
 
-                <TextDisplay title="Problem" :status="idea.problem_to_solve ? 'complete' : 'progress'">
-                    <TextDisplayBody
-                        @click="openModal('Inspiration', idea.inspiration, 'inspiration')"
-                        title="Inspiring event"
-                        :body="idea.inspiration"
-                    />
-                    <TextDisplayBody
-                        @click="openModal('Problem', idea.problem_to_solve, 'problem_to_solve')"
-                        title="Problem to solve"
-                        :body="idea.problem_to_solve"
-                    />
-                </TextDisplay>
+                <CollapsibleContainer title="Details">
+                    <TextDisplay title="Inspiration" :status="idea.problem_to_solve ? 'complete' : 'progress'">
+                        <TextDisplayBody @click="openModal('Inspiration', idea.inspiration, 'inspiration')" :body="idea.inspiration" />
+                    </TextDisplay>
+                    <TextDisplay title="Problem" :status="idea.problem_to_solve ? 'complete' : 'progress'">
+                        <TextDisplayBody @click="openModal('Problem', idea.problem_to_solve, 'problem_to_solve')" :body="idea.problem_to_solve" />
+                    </TextDisplay>
 
-                <TextDisplay title="Solution" :status="idea.solution ? 'complete' : 'progress'">
-                    <TextDisplayBody @click="openModal('Solution', idea.solution, 'solution')" title="Proposed solution" :body="idea.solution" />
-                </TextDisplay>
+                    <TextDisplay title="Solution" :status="idea.solution ? 'complete' : 'progress'">
+                        <TextDisplayBody @click="openModal('Solution', idea.solution, 'solution')" :body="idea.solution" />
+                    </TextDisplay>
 
-                <TextDisplay title="Features" :status="idea.features ? 'complete' : 'progress'">
-                    <ListDisplayBody @click="openListModal('Features', idea.features, 'features')" title="features" :body="idea.features" />
-                </TextDisplay>
+                    <TextDisplay title="Features" :status="idea.features ? 'complete' : 'progress'">
+                        <ListDisplayBody @click="openListModal('Features', idea.features, 'features')" title="features" :body="idea.features" />
+                    </TextDisplay>
 
-                <TextDisplay title="Marketing" :status="idea.target_audience ? 'complete' : 'progress'">
-                    <ListDisplayBody
-                        @click="openListModal('Target audience', idea.target_audience, 'target_audience')"
-                        title="Target audience"
-                        :body="idea.target_audience"
-                    />
-                </TextDisplay>
-
-                <TextDisplay title="Risk analysis" :status="idea.risks && idea.challenges ? 'complete' : 'progress'">
-                    <div class="w-full gap-4 sm:flex">
+                    <TextDisplay title="Marketing" :status="idea.target_audience ? 'complete' : 'progress'">
                         <ListDisplayBody
-                            @click="openListModal('Risks', idea.risks, 'risks')"
-                            class="w-full"
-                            title="Identified risks"
-                            :body="idea.risks"
+                            @click="openListModal('Target audience', idea.target_audience, 'target_audience')"
+                            title="Target audience"
+                            :body="idea.target_audience"
                         />
-                        <ListDisplayBody
-                            @click="openListModal('Challenges', idea.challenges, 'challenges')"
-                            class="w-full"
-                            title="Key challenges"
-                            :body="idea.challenges"
-                        />
-                    </div>
-                </TextDisplay>
+                    </TextDisplay>
 
-                <TextDisplay title="Validation tools">
+                    <TextDisplay title="Risk analysis" :status="idea.risks && idea.challenges ? 'complete' : 'progress'">
+                        <div class="w-full gap-4 sm:flex">
+                            <ListDisplayBody
+                                @click="openListModal('Risks', idea.risks, 'risks')"
+                                class="w-full"
+                                title="Identified risks"
+                                :body="idea.risks"
+                            />
+                            <ListDisplayBody
+                                @click="openListModal('Challenges', idea.challenges, 'challenges')"
+                                class="w-full"
+                                title="Key challenges"
+                                :body="idea.challenges"
+                            />
+                        </div>
+                    </TextDisplay>
+                </CollapsibleContainer>
+
+                <CollapsibleContainer title="Validation Tools">
                     <div class="mt-4 grid grid-cols-1 flex-wrap gap-4 xs:grid-cols-2 md:grid-cols-3">
                         <!-- COMPETITOR SEARCH -->
                         <ToolOverview route_name="tool.competitor_search" :idea_id="idea.id">
@@ -224,50 +221,7 @@ function getContext() {
                             <template v-slot:description>Search for relevant reddit communities</template>
                         </ToolOverview>
                     </div>
-
-                    <!--
-                    <h3 class="mt-6 font-bold">Possible future additions:</h3>
-                    <div class="mt-4 grid grid-cols-2 flex-wrap gap-4 sm:grid-cols-3">
-                        <div
-                            class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-border p-2"
-                        >
-                            <div>
-                                <div class="flex w-full max-w-[90%] items-center justify-start gap-2">
-                                    <h3 class="font-bold">Customer search - B2B</h3>
-                                </div>
-                                <p class="block max-w-[90%]">Search for local businesses that may benifit from your business idea.</p>
-                            </div>
-                            <PlaceholderPattern class="opacity-40" />
-                        </div>
-
-                        <div
-                            class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-border p-2"
-                        >
-                            <div>
-                                <div class="flex w-full max-w-[90%] items-center justify-start gap-2">
-                                    <h3 class="font-bold">Competitor Search - App specific</h3>
-                                </div>
-                                <p class="block max-w-[90%]">
-                                    Search specific app launch websites [productHunt, sumoapps, ] for software similar to your idea.
-                                </p>
-                            </div>
-                            <PlaceholderPattern class="opacity-40" />
-                        </div>
-
-                        <div
-                            class="group relative flex h-full w-full items-start justify-center gap-2 rounded border border-dashed border-border p-2"
-                        >
-                            <div>
-                                <div class="flex w-full max-w-[90%] items-center justify-start gap-2">
-                                    <h3 class="font-bold">Feedback</h3>
-                                </div>
-                                <p class="block max-w-[90%]">Risks, weaknesses, strengths</p>
-                            </div>
-                            <PlaceholderPattern class="opacity-40" />
-                        </div>
-                    </div>
-                    -->
-                </TextDisplay>
+                </CollapsibleContainer>
 
                 <Note :idea_id="idea.id" :note="note"></Note>
             </div>

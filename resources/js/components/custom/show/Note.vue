@@ -109,7 +109,7 @@ debouncedWatch(
                 :id="`note_textarea_${props.idea_id}`"
                 :modelValue="contents"
                 placeholder="Example content ..."
-                class="field-sizing-content min-h-60 resize-none border-none bg-input/0 p-1 text-foreground/70 shadow-none focus-visible:ring-0 sm:min-h-30 dark:bg-input/0"
+                class="field-sizing-content min-h-60 resize-none border-none bg-input/0 p-0 text-foreground/70 shadow-none focus-visible:ring-0 sm:min-h-30 dark:bg-input/0"
             />
 
             <InputError class="absolute top-0 right-0" :message="form.errors.contents" />
