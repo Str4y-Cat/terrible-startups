@@ -29,6 +29,8 @@ const form = useForm<{
 const submit = (value: string) => {
     form.contents = value;
     form.put(route('note.update', { idea: props.idea_id }), {
+        preserveState: true,
+        preserveScroll: true,
         onFinish: () => {
             console.log('sent the note update');
         },
