@@ -12,8 +12,8 @@ interface Note {
     updated_at: string;
 }
 const props = defineProps<{
-    idea_id: string;
-    note: Note;
+    idea_id: number;
+    note?: Note;
 }>();
 
 // const content = ref(props.content);
@@ -23,7 +23,7 @@ const props = defineProps<{
 const form = useForm<{
     contents: string;
 }>({
-    contents: props.note.contents || '',
+    contents: props.note?.contents || '',
 });
 
 const submit = (value: string) => {
@@ -61,7 +61,7 @@ function autoResize() {
 //------------------------------------------------------------------------
 
 // Autosave function
-const contents = ref(props.note.contents);
+const contents = ref(props.note?.contents || '');
 debouncedWatch(
     contents,
     () => {

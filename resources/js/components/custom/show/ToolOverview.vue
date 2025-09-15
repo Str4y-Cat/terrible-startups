@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { useSlots } from 'vue';
-const props = defineProps<{
+defineProps<{
     route_name: string;
-    idea_id: string;
+    idea_id: number;
 }>();
 const slots = useSlots();
 </script>
@@ -21,6 +21,5 @@ const slots = useSlots();
             </div>
             <p class="block"><slot name="description" /></p>
         </div>
-        <PlaceholderPattern class="opacity-40" />
     </Link>
 </template>
