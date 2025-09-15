@@ -269,9 +269,7 @@ function getContext() {
                     -->
                 </TextDisplay>
 
-                <TextDisplay title="Notes">
-                    <Note :idea_id="idea.id" :content="note.contents"></Note>
-                </TextDisplay>
+                <Note :idea_id="idea.id" :note="note"></Note>
             </div>
         </div>
 
