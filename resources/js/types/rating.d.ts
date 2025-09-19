@@ -17,6 +17,7 @@ export interface RatingQuestion {
 }
 
 export interface RatingSystemProps {
+    open?: boolean;
     questions: RatingQuestion[];
     disabled: boolean;
     processing: boolean;

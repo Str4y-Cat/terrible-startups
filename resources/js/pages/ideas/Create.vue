@@ -110,7 +110,7 @@ console.log(page.props.tagGroups);
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-            <div class="relative w-full rounded-xl">
+            <div class="relative m-auto w-full max-w-4xl rounded-xl">
                 <form @submit.prevent="submit" class="flex flex-col gap-6 px-2 pt-8 sm:px-4">
                     <!--TITLE-->
                     <div class="mb-4 flex justify-between gap-4">
@@ -155,6 +155,7 @@ console.log(page.props.tagGroups);
                             <TextInput
                                 :modelValue="form.overview"
                                 :error="form.errors.overview"
+                                :required="true"
                                 label="Overview"
                                 id="overview"
                                 @update="(value) => (form.overview = value)"

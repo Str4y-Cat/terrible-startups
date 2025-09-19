@@ -198,7 +198,7 @@ function getContext() {
                     </TextDisplay>
                 </CollapsibleContainer>
 
-                <CollapsibleContainer title="Validation Tools">
+                <CollapsibleContainer title="Validation Tools" :open="true">
                     <div class="mt-4 grid grid-cols-1 flex-wrap gap-4 xs:grid-cols-2 md:grid-cols-3">
                         <!-- COMPETITOR SEARCH -->
                         <ToolOverview route_name="tool.competitor_search" :idea_id="idea.id">

@@ -25,7 +25,7 @@ class StoreIdeaRequest extends FormRequest
         return [
             'title' => ['required','string',"max:255"],
             "rating" =>  ['numeric'],
-            "overview" => ['string','nullable', 'max:10000'],
+            "overview" => ['required','string','nullable', 'max:10000'],
             "type" => ['string','nullable', 'max:10000'],
             "problem_to_solve" => ['string','nullable', 'max:10000'],
             "inspiration" => ['string','nullable', 'max:10000'],

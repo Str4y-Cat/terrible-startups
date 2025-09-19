@@ -17,8 +17,8 @@ const isOpen = ref(props.open || false);
                     {{ title }}
                 </div>
                 <div class="rounded-full bg-muted/0 p-4 text-foreground/70 transition-colors *:size-5 group-hover:bg-muted">
-                    <Maximize2 v-if="isOpen" />
-                    <Minimize2 v-else />
+                    <Minimize2 v-if="isOpen" />
+                    <Maximize2 v-else />
                 </div>
             </CollapsibleTrigger>
             <CollapsibleContent class="p-4"><slot /></CollapsibleContent>

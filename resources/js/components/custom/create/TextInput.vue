@@ -8,6 +8,7 @@ const props = defineProps<{
     error?: string;
     label: string;
     class?: string;
+    required?: boolean;
     id: string;
 }>();
 
@@ -33,9 +34,11 @@ defineEmits<{
 </script>
 <template>
     <div class="group mt-4 grid gap-2">
-        <Label for="solution" class="border-b-1 border-dashed border-transparent border-b-muted pb-1 text-2xl group-has-focus:border-b-primary/20">{{
-            label
-        }}</Label>
+        <div class="flex items-center gap-2 border-b-1 border-dashed border-transparent border-b-muted group-has-focus:border-b-primary/20">
+            <Label for="solution" class="pb-1 text-2xl"> {{ label }}</Label>
+            <div class="item-start flex text-red-600" v-if="required"><span class="h-fit">*</span></div>
+            <InputError :message="props.error" />
+        </div>
         <Textarea
             @update:modelValue="
                 (value) => {
@@ -43,11 +46,10 @@ defineEmits<{
                     autoResize();
                 }
             "
+            :required="required"
             :id="props.id"
             :modelValue="props.modelValue"
             class="field-sizing-content min-h-30 resize-none border-none bg-input/0 p-1 text-foreground/70 focus-visible:ring-0 dark:bg-input/0"
         />
-
-        <InputError :message="props.error" />
     </div>
 </template>
