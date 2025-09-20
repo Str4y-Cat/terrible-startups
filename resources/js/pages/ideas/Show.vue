@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import EditListDialog from '@/components/custom/EditListDialog.vue';
-import EditTextDialog from '@/components/custom/EditTextDialog.vue';
-import ListDisplayBody from '@/components/custom/show/ListDisplayBody.vue';
 import Note from '@/components/custom/show/Note.vue';
 
 import CollapsibleContainer from '@/components/custom/show/CollapsibleContainer.vue';
@@ -9,12 +6,14 @@ import TextDisplay from '@/components/custom/show/TextDisplay.vue';
 import TextDisplayBody from '@/components/custom/show/TextDisplayBody.vue';
 import ToolOverview from '@/components/custom/show/ToolOverview.vue';
 import Tag from '@/components/custom/Tag.vue';
+import SyncToast from '@/components/custom/toasters/SyncToast.vue';
 import { Toaster } from '@/components/ui/sonner';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { Head, router, useForm, usePage } from '@inertiajs/vue3';
+import { Idea } from '@/types/general';
+import { Head, router, usePage } from '@inertiajs/vue3';
 import { Ellipsis, Ghost, Grid2x2Check, Users } from 'lucide-vue-next';
-import { ref } from 'vue';
+import { computed, markRaw, ref, watch } from 'vue';
 import { toast } from 'vue-sonner';
 import 'vue-sonner/style.css'; // vue-sonner v2 requires this import
 
@@ -30,21 +29,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-interface Idea {
-    title: string;
-    rating: string;
-    id: string;
-    overview: string;
-    type: string;
-    problem_to_solve: string;
-    inspiration: string;
-    solution: string;
-    features: string[];
-    target_audience: string[];
-    risks: string[];
-    challenges: string[];
-    date_created: string;
-}
 interface Note {
     contents: string;
     updated_at: string;
@@ -53,68 +37,68 @@ interface Note {
 const idea = page.props.idea as Idea;
 const note = page.props.note as Note;
 
-console.log(note);
+console.log(idea);
 
-const isDialogOpen = ref(false);
+// const isDialogOpen = ref(false);
+//
+// const isListDialogOpen = ref(false);
+//
+// const modalData = ref({ title: '', body: '', list: [''], target: '' });
+//
+// function openModal(
+//     title: string,
+//     body: string,
+//     target: '' | 'title' | 'overview' | 'problem_to_solve' | 'inspiration' | 'solution' | 'features' | 'target_audience' | 'risks' | 'challenges',
+// ) {
+//     modalData.value = { title, body, target };
+//     isDialogOpen.value = true;
+// }
 
-const isListDialogOpen = ref(false);
-
-const modalData = ref({ title: '', body: '', list: [''], target: '' });
-
-function openModal(
-    title: string,
-    body: string,
-    target: '' | 'title' | 'overview' | 'problem_to_solve' | 'inspiration' | 'solution' | 'features' | 'target_audience' | 'risks' | 'challenges',
-) {
-    modalData.value = { title, body, target };
-    isDialogOpen.value = true;
-}
-
-function openListModal(
-    title: string,
-    list: string[],
-    target: '' | 'title' | 'overview' | 'problem_to_solve' | 'inspiration' | 'solution' | 'features' | 'target_audience' | 'risks' | 'challenges',
-) {
-    // console.log('opening list modal');
-    modalData.value = { title, list, target };
-    isListDialogOpen.value = true;
-}
-
-function handleSave({ target, value }: { target: keyof Idea; value: string }) {
-    // console.log('Saving\n\n', target);
-    // console.log('Value\n\n', value);
-
-    // Option 1: Immediate update in UI
-    idea[target] = value;
-
-    // Option 2: Persist to server
-
-    // console.log('doing the form');
-    const form = useForm({
-        [target]: value,
-    });
-
-    // console.log('putting', form.data());
-    form.put(route('ideas.update', { id: idea.id }), {
-        preserveScroll: true,
-        onError: (error) => {
-            toast.error('Failed to save', {
-                style: {
-                    'border-color': 'var(--color-red-600)',
-                },
-                description: error[target],
-            });
-        },
-        onSuccess: () => {
-            console.log('succsess');
-            toast.success('Successfully saved', {
-                style: {
-                    'border-color': 'var(--color-green-600)',
-                },
-            });
-        },
-    });
-}
+// function openListModal(
+//     title: string,
+//     list: string[],
+//     target: '' | 'title' | 'overview' | 'problem_to_solve' | 'inspiration' | 'solution' | 'features' | 'target_audience' | 'risks' | 'challenges',
+// ) {
+//     // console.log('opening list modal');
+//     modalData.value = { title, list, target };
+//     isListDialogOpen.value = true;
+// }
+//
+// function handleSave({ target, value }: { target: keyof Idea; value: string }) {
+//     // console.log('Saving\n\n', target);
+//     // console.log('Value\n\n', value);
+//
+//     // Option 1: Immediate update in UI
+//     idea[target] = value;
+//
+//     // Option 2: Persist to server
+//
+//     // console.log('doing the form');
+//     const form = useForm({
+//         [target]: value,
+//     });
+//
+//     // console.log('putting', form.data());
+//     form.put(route('ideas.update', { id: idea.id }), {
+//         preserveScroll: true,
+//         onError: (error) => {
+//             toast.error('Failed to save', {
+//                 style: {
+//                     'border-color': 'var(--color-red-600)',
+//                 },
+//                 description: error[target],
+//             });
+//         },
+//         onSuccess: () => {
+//             console.log('succsess');
+//             toast.success('Successfully saved', {
+//                 style: {
+//                     'border-color': 'var(--color-green-600)',
+//                 },
+//             });
+//         },
+//     });
+// }
 
 function getContext() {
     console.log('Getting context');
@@ -133,6 +117,44 @@ function getContext() {
         },
     });
 }
+
+const detailConfig = {
+    problem_to_solve: { title: 'Problem', type: 'string' },
+    inspiration: { title: 'Inspiration', type: 'string' },
+    solution: { title: 'Solution', type: 'string' },
+    features: { title: 'Features', type: 'list' },
+    target_audience: { title: 'Target audience', type: 'list' },
+    risks: { title: 'Risks', type: 'list' },
+    challenges: { title: 'Challenges', type: 'list' },
+} as const;
+
+const completedDetails = computed(() => {
+    let count = 0;
+    if (!idea.details) return count;
+
+    for (const key in idea.details) {
+        if (idea.details?.[key]) {
+            count++;
+        }
+    }
+    return count;
+});
+const totalDetailCount = 7;
+
+const syncing = ref(false);
+let toastId: string | number | null = null;
+watch(syncing, (isSyncing) => {
+    if (isSyncing) {
+        toastId = toast.custom(markRaw(SyncToast), {
+            duration: Infinity,
+        });
+    } else if (toastId != null) {
+        setTimeout(() => {
+            toast.dismiss(toastId);
+            toastId = null;
+        }, 300);
+    }
+});
 </script>
 
 <template>
@@ -147,8 +169,9 @@ function getContext() {
                         <Ellipsis class="" />
                     </button>
                 </div>
+
                 <CollapsibleContainer title="Overview" :open="true">
-                    <TextDisplayBody @click="openModal('Project overview', idea.overview, 'overview')" title="" :body="idea.overview" />
+                    <TextDisplayBody @processing="(value) => (syncing = value)" field="overview" :idea_id="idea.id" :body="idea.overview" />
                     <div class="mt-8 flex flex-wrap gap-2">
                         <Tag v-for="(tag, index) in idea.tags" :key="index" class="group border-none bg-primary/10 text-sm text-primary md:text-sm">
                             {{ tag.value }}
@@ -157,45 +180,31 @@ function getContext() {
                 </CollapsibleContainer>
 
                 <CollapsibleContainer title="Details">
-                    <TextDisplay title="Inspiration" :status="idea.problem_to_solve ? 'complete' : 'progress'">
-                        <TextDisplayBody @click="openModal('Inspiration', idea.inspiration, 'inspiration')" :body="idea.inspiration" />
-                    </TextDisplay>
-                    <TextDisplay title="Problem" :status="idea.problem_to_solve ? 'complete' : 'progress'">
-                        <TextDisplayBody @click="openModal('Problem', idea.problem_to_solve, 'problem_to_solve')" :body="idea.problem_to_solve" />
-                    </TextDisplay>
-
-                    <TextDisplay title="Solution" :status="idea.solution ? 'complete' : 'progress'">
-                        <TextDisplayBody @click="openModal('Solution', idea.solution, 'solution')" :body="idea.solution" />
-                    </TextDisplay>
-
-                    <TextDisplay title="Features" :status="idea.features ? 'complete' : 'progress'">
-                        <ListDisplayBody @click="openListModal('Features', idea.features, 'features')" title="features" :body="idea.features" />
-                    </TextDisplay>
-
-                    <TextDisplay title="Marketing" :status="idea.target_audience ? 'complete' : 'progress'">
-                        <ListDisplayBody
-                            @click="openListModal('Target audience', idea.target_audience, 'target_audience')"
-                            title="Target audience"
-                            :body="idea.target_audience"
-                        />
-                    </TextDisplay>
-
-                    <TextDisplay title="Risk analysis" :status="idea.risks && idea.challenges ? 'complete' : 'progress'">
-                        <div class="w-full gap-4 sm:flex">
-                            <ListDisplayBody
-                                @click="openListModal('Risks', idea.risks, 'risks')"
-                                class="w-full"
-                                title="Identified risks"
-                                :body="idea.risks"
-                            />
-                            <ListDisplayBody
-                                @click="openListModal('Challenges', idea.challenges, 'challenges')"
-                                class="w-full"
-                                title="Key challenges"
-                                :body="idea.challenges"
-                            />
+                    <template v-slot:header>
+                        <div
+                            class="rounded-full px-2 py-0.5 text-sm"
+                            :class="{
+                                'bg-orange-500/20 text-orange-500': completedDetails != totalDetailCount,
+                                'bg-green-500/20 text-green-500': completedDetails == totalDetailCount,
+                            }"
+                        >
+                            {{ completedDetails }}/{{ totalDetailCount }}
                         </div>
-                    </TextDisplay>
+                    </template>
+
+                    <template v-for="(meta, key) in detailConfig" :key="key">
+                        <TextDisplay :title="meta.title" :status="idea.details?.[key] ? 'complete' : 'progress'">
+                            <TextDisplayBody
+                                @processing="(value) => (syncing = value)"
+                                v-if="meta.type === 'string'"
+                                :field="key"
+                                :idea_id="idea.id"
+                                :body="idea.details?.[key]"
+                            />
+
+                            <ListDisplayBody v-if="meta.type === 'list'" :body="idea.details?.[key] ?? ['Still to complete']" />
+                        </TextDisplay>
+                    </template>
                 </CollapsibleContainer>
 
                 <CollapsibleContainer title="Validation Tools" :open="true">
@@ -223,43 +232,10 @@ function getContext() {
                     </div>
                 </CollapsibleContainer>
 
-                <Note :idea_id="idea.id" :note="note"></Note>
+                <Note :idea_id="idea.id" @processing="(value) => (syncing = value)" :note="note"></Note>
             </div>
         </div>
 
-        <!-- The dialog -->
-        <!--
-        <Dialog v-model:open="isDialogOpen">
-            <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>
-                        <div class="flex items-center gap-2">
-                            <SquarePen />
-                            {{ modalData.title }}
-                        </div>
-                    </DialogTitle>
-                </DialogHeader>
-                <p>{{ modalData.body }}</p>
-            </DialogContent>
-        </Dialog>
-        -->
-        <EditTextDialog
-            v-model:isOpen="isDialogOpen"
-            :title="modalData.title"
-            :body="modalData.body"
-            :form_target="modalData.target"
-            @save="handleSave"
-        ></EditTextDialog>
-
-        <EditListDialog
-            v-model:isOpen="isListDialogOpen"
-            :title="modalData.title"
-            :list="modalData.list"
-            :form_target="modalData.target"
-            @save="handleSave"
-        >
-        </EditListDialog>
-
-        <Toaster />
+        <Toaster position="bottom-right" />
     </AppLayout>
 </template>

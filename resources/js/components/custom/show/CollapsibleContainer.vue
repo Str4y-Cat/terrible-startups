@@ -13,8 +13,14 @@ const isOpen = ref(props.open || false);
     <div class="mt-8 rounded border border-dashed">
         <Collapsible v-model:open="isOpen">
             <CollapsibleTrigger class="group flex w-full cursor-pointer items-center p-4 text-left">
-                <div class="flex-grow text-2xl font-bold">
-                    {{ title }}
+                <div class="flex flex-grow items-center gap-2">
+                    <div class="text-2xl font-bold">
+                        {{ title }}
+                    </div>
+
+                    <div>
+                        <slot name="header"></slot>
+                    </div>
                 </div>
                 <div class="rounded-full bg-muted/0 p-4 text-foreground/70 transition-colors *:size-5 group-hover:bg-muted">
                     <Minimize2 v-if="isOpen" />

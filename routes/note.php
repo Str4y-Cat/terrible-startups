@@ -7,5 +7,5 @@ use Inertia\Inertia;
 
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::put('ideas/{idea}/note', [NoteController::class, 'update'])->name('note.update');
+    Route::patch('ideas/{idea}/note', [NoteController::class, 'update'])->name('note.update');
 });
