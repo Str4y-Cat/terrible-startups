@@ -7,9 +7,9 @@ defineProps<{
 </script>
 
 <template>
-    <div class="mt-8 rounded">
+    <div class="mb-8 rounded">
         <div class="flex justify-between">
-            <h3 v-if="title" class="text-2xl font-bold">{{ title }}</h3>
+            <h3 v-if="title" class="text-xl font-bold">{{ title }}</h3>
 
             <Tag v-if="status == 'complete'" class="border-green-500 bg-green-500/20 text-sm text-green-500">
                 <span>Complete</span>

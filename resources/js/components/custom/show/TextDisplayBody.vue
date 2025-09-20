@@ -27,29 +27,35 @@ watch(isSaving, (newVal) => {
 //------------------------------------------------------------------------
 const textarea = ref<HTMLTextAreaElement | null>(null);
 
+let prevHeight: number | null = null;
 onMounted(() => {
     textarea.value = document.querySelector(`#note_textarea_${props.field}`);
+
     autoResize();
 });
 
 function autoResize() {
     if (!textarea.value) return;
-    textarea.value.style.height = 'auto'; // Reset height
+    if (prevHeight == textarea.value.scrollHeight) return;
+
+    console.log('resizing');
     textarea.value.style.height = textarea.value.scrollHeight + 'px'; // Set new height
+    prevHeight = textarea.value.scrollHeight;
 }
+watch(localValue, () => {
+    autoResize();
+});
 </script>
 
 <template>
-    <div class="mt-6">
-        <div class="relative mt-4">
-            <Textarea
-                v-model="localValue"
-                :id="`note_textarea_${props.field}`"
-                placeholder="Example content ..."
-                class="field-sizing-content min-h-30 resize-none border-none bg-input/0 p-0 text-foreground/70 shadow-none focus-visible:ring-0 sm:min-h-30 dark:bg-input/0"
-            />
+    <div class="mt-2">
+        <Textarea
+            v-model="localValue"
+            :id="`note_textarea_${props.field}`"
+            placeholder="Example content ..."
+            class="field-sizing-content h-auto min-h-30 resize-none border-none bg-input/0 p-0 text-foreground/70 shadow-none focus-visible:ring-0 sm:min-h-20 dark:bg-input/0"
+        />
 
-            <InputError class="absolute top-0 right-0" :message="errorMessage" />
-        </div>
+        <InputError class="absolute top-0 right-0" :message="errorMessage" />
     </div>
 </template>

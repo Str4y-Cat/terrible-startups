@@ -187,7 +187,7 @@ console.log("this is the form data",formData.value);
                     <!-- Success -->
                     <div v-if="currentQuestion == props.questions.length" class="w-full max-w-md  rounded-lg">
 
-                        <div class="flex gap-4 mb-2">
+                        <div class="flex gap-4 mb-4">
 
                             <div
                                 class="flex aspect-1/1 h-20 w-20 text-2xl items-center justify-center rounded-full"

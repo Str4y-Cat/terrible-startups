@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import InputError from '@/components/InputError.vue';
-import { Label } from '@/components/ui/label';
 import { useAutosaveField } from '@/composables/useAutosaveField';
 import { Dot } from 'lucide-vue-next';
 import { computed, nextTick, ref, watch } from 'vue';
@@ -96,13 +95,7 @@ function onKeyDown(e: KeyboardEvent, index: number) {
 </script>
 
 <template>
-    <div class="group/parent mt-4 grid gap-2">
-        <Label
-            :for="props.field"
-            class="group/parent-has-focus:border-b-primary/20 border-b-1 border-dashed border-transparent border-b-muted pb-1 text-2xl"
-            >{{
-        }}</Label>
-
+    <div class="group/parent mt-2 grid gap-2">
         <div class="flex flex-col gap-1">
             <div v-for="(bullet, index) in localValue" :key="index" class="group flex items-start gap-2">
                 <Dot class="transition-color group-has-focus:text-primary"></Dot>
