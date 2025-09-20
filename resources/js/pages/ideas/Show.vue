@@ -2,6 +2,7 @@
 import Note from '@/components/custom/show/Note.vue';
 
 import CollapsibleContainer from '@/components/custom/show/CollapsibleContainer.vue';
+import ListDisplayBody from '@/components/custom/show/ListDisplayBody.vue';
 import TextDisplay from '@/components/custom/show/TextDisplay.vue';
 import TextDisplayBody from '@/components/custom/show/TextDisplayBody.vue';
 import ToolOverview from '@/components/custom/show/ToolOverview.vue';
@@ -142,16 +143,16 @@ const completedDetails = computed(() => {
 const totalDetailCount = 7;
 
 const syncing = ref(false);
-let toastId: string | number | null = null;
+let toastId: string | number | undefined = undefined;
 watch(syncing, (isSyncing) => {
     if (isSyncing) {
         toastId = toast.custom(markRaw(SyncToast), {
             duration: Infinity,
         });
-    } else if (toastId != null) {
+    } else if (toastId != undefined) {
         setTimeout(() => {
             toast.dismiss(toastId);
-            toastId = null;
+            toastId = undefined;
         }, 300);
     }
 });
@@ -202,7 +203,13 @@ watch(syncing, (isSyncing) => {
                                 :body="idea.details?.[key]"
                             />
 
-                            <ListDisplayBody v-if="meta.type === 'list'" :body="idea.details?.[key] ?? ['Still to complete']" />
+                            <ListDisplayBody
+                                @processing="(value) => (syncing = value)"
+                                v-if="meta.type === 'list'"
+                                :field="key"
+                                :bullets="idea.details?.[key] ?? ['']"
+                                :idea_id="idea.id"
+                            />
                         </TextDisplay>
                     </template>
                 </CollapsibleContainer>

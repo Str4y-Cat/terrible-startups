@@ -3,9 +3,15 @@ import { useForm } from '@inertiajs/vue3';
 import { debouncedWatch } from '@vueuse/core';
 import { computed, ref } from 'vue';
 
-export function useAutosaveField(route: string, fieldName: string, initialValue: string | string[], options: { debounce?: number } = {}) {
+export function useAutosaveField(
+    route: string,
+    fieldName: string,
+    initialValue: string | string[],
+    options: { debounce?: number; deep?: boolean } = {},
+) {
     const localValue = ref(initialValue);
-
+    const isArray = Array.isArray(initialValue);
+    const deep = options.deep ?? isArray;
     // dynamic form with a single key
     const form = useForm<Record<string, any>>({
         [fieldName]: initialValue,
@@ -17,9 +23,9 @@ export function useAutosaveField(route: string, fieldName: string, initialValue:
 
     // autosave
     debouncedWatch(
-        localValue,
+        () => localValue.value,
         (newVal, oldVal) => {
-            if (newVal === oldVal) return;
+            if (!isArray && newVal === oldVal) return;
 
             isSaving.value = true;
             form[fieldName] = newVal;
@@ -28,7 +34,7 @@ export function useAutosaveField(route: string, fieldName: string, initialValue:
                 preserveState: true,
                 preserveScroll: true,
                 onStart: () => {
-                    console.log(form.data());
+                    // console.log('starting autosave', form.data());
                 },
                 onFinish: () => {
                     isSaving.value = false;
@@ -41,7 +47,7 @@ export function useAutosaveField(route: string, fieldName: string, initialValue:
                 },
             });
         },
-        { debounce: options.debounce ?? 1500 },
+        { debounce: options.debounce ?? 1500, deep: deep },
     );
 
     return {
