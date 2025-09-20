@@ -93,7 +93,7 @@
 
     const ratingResults={
         'terrible': {
-            title: "A fantasticly terrible idea",
+            title: "Wonderfully terrible",
             description: "You have scored 1 or more questions as a 0. This makes the entire idea moot. Reposition your idea, or try something else"
         },
         'bad': {
@@ -101,7 +101,7 @@
             description: "Keen for pain? This is what this idea will bring."
         },
         'average': {
-            title: "Almost",
+            title: "Almost there",
             description: "It's not quite there, do some more research or try improve the idea a bit before continuing"
         },
         'good': {

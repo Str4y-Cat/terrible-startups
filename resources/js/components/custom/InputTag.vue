@@ -22,14 +22,14 @@ const emit = defineEmits<{
             {{ label }}
         </span>
         <div
-            class="transition-width relative w-0 duration-200"
+            class="transition-width relative w-0 text-primary duration-200"
             :class="{
                 'block w-7': selected,
                 'delay-200': !selected,
             }"
         >
             <CircleX
-                class="linear absolute right-0 size-5 -translate-y-[50%]"
+                class="linear absolute right-0 size-5 -translate-y-[50%] text-primary"
                 :class="{
                     'opacity-100 transition-opacity delay-200 duration-100': selected,
                     'opacity-0': !selected,
