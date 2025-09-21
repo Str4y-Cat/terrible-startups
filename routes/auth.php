@@ -14,13 +14,13 @@ use Inertia\Inertia;
 Route::middleware('guest')->group(function () {
 
     //FIX: change this once you're ready for live
-    Route::get('register', function () {
-        return Inertia::render('Welcome');
-    })->name('register');
+    /* Route::get('register', function () { */
+    /*     return Inertia::render('Welcome'); */
+    /* })->name('register'); */
     /* Route::get('register', [RegisteredUserController::class, 'create']) ->name('register'); */
-    /* Route::get('register', [RegisteredUserController::class, 'create']) ->name('register'); */
+    Route::get('register', [RegisteredUserController::class, 'create']) ->name('register');
 
-    /* Route::post('register', [RegisteredUserController::class, 'store']); */
+    Route::post('register', [RegisteredUserController::class, 'store']);
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
