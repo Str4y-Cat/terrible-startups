@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { Idea } from '@/types/general';
 import { router } from '@inertiajs/vue3';
+import Tag from '../Tag.vue';
 
 const props = defineProps<{
     ideas: Idea[];
 }>();
 
-const visit = (val: string) => {
+const visit = (val: number) => {
     router.visit(`/ideas/${val}`);
 };
 </script>
@@ -34,20 +35,28 @@ const visit = (val: string) => {
                             <div class="font-bold">
                                 {{ idea.title }}
                             </div>
-                            <div class="text-sm text-foreground/50">{{ idea.date_created }}</div>
+                            <div v-if="false" class="text-sm text-foreground/50">{{ idea.date_created }}</div>
+                            <div class="hidden flex-wrap justify-end gap-2 sm:flex">
+                                <Tag
+                                    v-for="(tag, index) in idea.tags"
+                                    :key="index"
+                                    class="border-none bg-primary/10 text-xs text-primary md:text-sm"
+                                    >{{ tag.value }}</Tag
+                                >
+                            </div>
                         </div>
-                        <div>
-                            <p>This is an example description</p>
+                        <div class="sm:max-w-[60%]">
+                            <p class="line-clamp-2 overflow-hidden text-ellipsis">{{ idea.overview }}</p>
+                        </div>
+                        <div class="mt-2 flex flex-wrap gap-2 sm:hidden">
+                            <Tag
+                                v-for="(tag, index) in idea.tags"
+                                :key="tag.value"
+                                class="border-none bg-primary/10 text-xs text-primary md:text-sm"
+                                >{{ tag.value }}</Tag
+                            >
                         </div>
                     </div>
-
-                    <!--
-                <div class="flex flex-wrap justify-end gap-2">
-                    <Tag v-for="(tag, index) in idea.tags" :key="index" class="border-none bg-primary/10 text-xs text-primary md:text-sm">{{
-                        tag.value
-                    }}</Tag>
-                </div>
--->
                 </div>
             </div>
         </template>

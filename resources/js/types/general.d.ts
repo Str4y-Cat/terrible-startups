@@ -13,7 +13,7 @@ export interface Tag {
 
 export interface Idea {
     title: string;
-    rating: string;
+    rating: number;
     id: number;
     overview: string;
     date_created: string;

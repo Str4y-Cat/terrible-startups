@@ -56,7 +56,7 @@ function autoResize() {
                 @update:modelValue="autoResize()"
                 :id="`note_textarea_${props.idea_id}`"
                 v-model="localValue"
-                placeholder="Example content ..."
+                placeholder="Jot any miscelaneous ideas down here..."
                 class="field-sizing-content min-h-60 resize-none border-none bg-input/0 p-0 text-foreground/70 shadow-none focus-visible:ring-0 sm:min-h-30 dark:bg-input/0"
             />
 

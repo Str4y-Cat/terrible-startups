@@ -38,69 +38,6 @@ interface Note {
 const idea = page.props.idea as Idea;
 const note = page.props.note as Note;
 
-console.log(idea);
-
-// const isDialogOpen = ref(false);
-//
-// const isListDialogOpen = ref(false);
-//
-// const modalData = ref({ title: '', body: '', list: [''], target: '' });
-//
-// function openModal(
-//     title: string,
-//     body: string,
-//     target: '' | 'title' | 'overview' | 'problem_to_solve' | 'inspiration' | 'solution' | 'features' | 'target_audience' | 'risks' | 'challenges',
-// ) {
-//     modalData.value = { title, body, target };
-//     isDialogOpen.value = true;
-// }
-
-// function openListModal(
-//     title: string,
-//     list: string[],
-//     target: '' | 'title' | 'overview' | 'problem_to_solve' | 'inspiration' | 'solution' | 'features' | 'target_audience' | 'risks' | 'challenges',
-// ) {
-//     // console.log('opening list modal');
-//     modalData.value = { title, list, target };
-//     isListDialogOpen.value = true;
-// }
-//
-// function handleSave({ target, value }: { target: keyof Idea; value: string }) {
-//     // console.log('Saving\n\n', target);
-//     // console.log('Value\n\n', value);
-//
-//     // Option 1: Immediate update in UI
-//     idea[target] = value;
-//
-//     // Option 2: Persist to server
-//
-//     // console.log('doing the form');
-//     const form = useForm({
-//         [target]: value,
-//     });
-//
-//     // console.log('putting', form.data());
-//     form.put(route('ideas.update', { id: idea.id }), {
-//         preserveScroll: true,
-//         onError: (error) => {
-//             toast.error('Failed to save', {
-//                 style: {
-//                     'border-color': 'var(--color-red-600)',
-//                 },
-//                 description: error[target],
-//             });
-//         },
-//         onSuccess: () => {
-//             console.log('succsess');
-//             toast.success('Successfully saved', {
-//                 style: {
-//                     'border-color': 'var(--color-green-600)',
-//                 },
-//             });
-//         },
-//     });
-// }
-
 function getContext() {
     console.log('Getting context');
     router.visit(route('tool.context', idea.id), {
@@ -120,9 +57,9 @@ function getContext() {
 }
 
 const detailConfig = {
-    problem_to_solve: { title: 'Problem', type: 'string' },
-    inspiration: { title: 'Inspiration', type: 'string' },
-    solution: { title: 'Solution', type: 'string' },
+    inspiration: { title: 'Inspiration', placeholder: 'The event, experience or thought that inspired your idea... ', type: 'string' },
+    problem_to_solve: { title: 'Problem', placeholder: 'The problem your idea solves... ', type: 'string' },
+    solution: { title: 'Solution', placeholder: 'The solution you propose...', type: 'string' },
     features: { title: 'Features', type: 'list' },
     target_audience: { title: 'Target audience', type: 'list' },
     risks: { title: 'Risks', type: 'list' },
@@ -201,6 +138,7 @@ watch(syncing, (isSyncing) => {
                                 :field="key"
                                 :idea_id="idea.id"
                                 :body="idea.details?.[key]"
+                                :placeholder="meta.placeholder"
                             />
 
                             <ListDisplayBody
