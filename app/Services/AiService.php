@@ -12,8 +12,8 @@ use function GuzzleHttp\json_encode;
 
 class AiService
 {
-    protected $jsonContext;
-    protected $textContext;
+    public $jsonContext;
+    public $textContext;
     protected $idea;
 
     public function __construct(Idea $idea)
@@ -44,7 +44,6 @@ class AiService
     public function buildJsonContext(Idea $idea)
     {
         $idea_context =  collect($idea)->only(['title','overview','inspiration','solution','features','target_audience','risks','challenges']);
-
 
         $tags = $idea->tags()
             ->get(['key', 'value']) // only fetch what you need

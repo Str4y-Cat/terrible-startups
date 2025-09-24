@@ -6,6 +6,8 @@ use App\Enums\Resource;
 use App\Http\Requests\StoreIdeaRequest;
 use App\Http\Requests\UpdateIdeaRequest;
 use App\Models\Tag;
+use App\Services\AiService;
+use App\Services\DownloadService;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -24,7 +26,7 @@ class IdeaController extends Controller
             return $idea->data(Resource::Index);
         });
         /* $ideas = Idea::query()->where('user_id', $user->id)->orderBy("rating", "desc")->paginate(15); */
-        return Inertia::render('Dashboard', [
+        return Inertia::render('ideas/Index', [
             'ideas' => $data
         ]);
     }
@@ -128,6 +130,18 @@ class IdeaController extends Controller
     public function destroy(Idea $idea)
     {
         //
-        dd('Idea Delete');
+        $idea->delete();
+        return redirect('/ideas');
+    }
+
+    public function download(Idea $idea)
+    {
+        $aiService = new AiService($idea);
+        $downloadService = new DownloadService();
+
+        $filename = str_replace(" ", "_", $idea->title);
+        $data = $aiService->jsonContext->toArray();
+
+        return $downloadService->exportAsJson($data, $filename);
     }
 }

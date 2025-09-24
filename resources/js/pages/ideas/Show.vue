@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Note from '@/components/custom/show/Note.vue';
 
+import DropDown from '@/components/custom/DropDown.vue';
 import CollapsibleContainer from '@/components/custom/show/CollapsibleContainer.vue';
 import ListDisplayBody from '@/components/custom/show/ListDisplayBody.vue';
 import TextDisplay from '@/components/custom/show/TextDisplay.vue';
@@ -13,7 +14,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Idea } from '@/types/general';
 import { Head, router, usePage } from '@inertiajs/vue3';
-import { Ellipsis, Ghost, Grid2x2Check, Users } from 'lucide-vue-next';
+import { Download, Ghost, Grid2x2Check, Share, Trash2, Users } from 'lucide-vue-next';
 import { computed, markRaw, ref, watch } from 'vue';
 import { toast } from 'vue-sonner';
 import 'vue-sonner/style.css'; // vue-sonner v2 requires this import
@@ -93,6 +94,16 @@ watch(syncing, (isSyncing) => {
         }, 300);
     }
 });
+
+function deleteIdea() {
+    router.visit(`/ideas/${idea.id}`, {
+        method: 'delete',
+    });
+}
+
+function downloadIdea() {
+    window.open(`/ideas/${idea.id}/download`, '_blank');
+}
 </script>
 
 <template>
@@ -103,9 +114,18 @@ watch(syncing, (isSyncing) => {
             <div class="relative m-auto h-full w-full max-w-4xl rounded-xl">
                 <div class="flex w-full items-center justify-between">
                     <h1 class="mt-4 text-4xl">{{ idea.title }}</h1>
+                    <DropDown
+                        :actions="[
+                            { label: 'Share', icon: Share, disabled: true, onClick: () => {} },
+                            { label: 'Save', icon: Download, onClick: downloadIdea },
+                            { label: 'Delete', class: 'text-red-500 ', icon: Trash2, onClick: deleteIdea },
+                        ]"
+                    ></DropDown>
+                    <!--
                     <button @click.prevent="getContext" class="transition-color aspect-1/1 rounded-full bg-white/0 p-4 hover:bg-white/20">
                         <Ellipsis class="" />
                     </button>
+                    -->
                 </div>
 
                 <CollapsibleContainer title="Overview" :open="true">
