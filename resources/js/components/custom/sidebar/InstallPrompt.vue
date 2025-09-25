@@ -54,7 +54,13 @@ const isDesktop = useMediaQuery('(min-width: 768px)');
 
     <Dialog v-if="!isInstalled && isDesktop && !canInstall">
         <DialogTrigger>
-            <Button :disabled="canInstall" class="w-full"> <Download class="size-5" /> Install app </Button>
+            <Button
+                :disabled="canInstall"
+                class="group-data-[collapsible=icon] w-full justify-start truncate px-2! transition-[width,height,padding]"
+            >
+                <Download class="size-5" />
+                <span class="group-data-[collapsible=icon]">Install app</span>
+            </Button>
         </DialogTrigger>
 
         <DialogContent class="">

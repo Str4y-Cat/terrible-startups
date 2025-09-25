@@ -63,6 +63,7 @@ const footerNavItems: NavItem[] = [
             <NavFooter :items="footerNavItems" />
 
             <InstallPrompt />
+
             <NavUser />
         </SidebarFooter>
     </Sidebar>
