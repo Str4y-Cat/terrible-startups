@@ -52,7 +52,7 @@ const isDesktop = useMediaQuery('(min-width: 768px)');
         </CardContent>
     </UseTemplate>
 
-    <Dialog v-if="isDesktop && !canInstall">
+    <Dialog v-if="!isInstalled && isDesktop && !canInstall">
         <DialogTrigger>
             <Button :disabled="canInstall" class="w-full"> <Download class="size-5" /> Install app </Button>
         </DialogTrigger>
@@ -87,7 +87,7 @@ const isDesktop = useMediaQuery('(min-width: 768px)');
         </DialogContent>
     </Dialog>
 
-    <Drawer v-if="!canInstall && !isDesktop">
+    <Drawer v-if="!isInstalled && !canInstall && !isDesktop">
         <DrawerTrigger>
             <Button :disabled="canInstall" class="w-full"> <Download class="size-5" /> Install app </Button>
         </DrawerTrigger>
