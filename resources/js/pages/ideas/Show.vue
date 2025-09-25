@@ -15,6 +15,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Idea } from '@/types/general';
 import { Head, usePage } from '@inertiajs/vue3';
+import { useMediaQuery } from '@vueuse/core';
 import { Download, Ghost, Grid2x2Check, Share, Trash2, Users } from 'lucide-vue-next';
 import { computed, markRaw, ref, watch } from 'vue';
 import { toast } from 'vue-sonner';
@@ -36,6 +37,8 @@ interface Note {
     contents: string;
     updated_at: string;
 }
+
+const isDesktop = useMediaQuery('(min-width: 768px)');
 
 const idea = page.props.idea as Idea;
 const note = page.props.note as Note;
@@ -89,7 +92,9 @@ watch(syncing, (isSyncing) => {
             <div class="relative m-auto h-full w-full max-w-4xl rounded-xl">
                 <div class="flex w-full items-center justify-between">
                     <h1 class="mt-4 text-4xl">{{ idea.title }}</h1>
+
                     <DropDown
+                        v-if="isDesktop"
                         :actions="[
                             { label: 'Share', icon: Share, disabled: true, onClick: () => {} },
                             { label: 'Save', icon: Download, onClick: downloadIdea },
