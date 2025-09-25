@@ -297,8 +297,10 @@ console.log("this is the form data",formData.value);
         <DrawerHeader>
             <DrawerTitle class="sr-only">Progressive Rating form</DrawerTitle>
         </DrawerHeader>
-    <ProgressiveRatingForm/>
-    <Progress  class="h-1" :model-value="progress"/>
+        <ProgressiveRatingForm/>
+
+        <Progress  class="h-1" :model-value="progress"/>
+
       <DrawerFooter v-if="false" class="pt-2">
         <DrawerClose as-child>
           <Button variant="outline">

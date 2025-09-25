@@ -25,7 +25,7 @@ export function useHistory() {
     }
 
     function canGoForward() {
-        console.log('can go forward', position.value, window.history.length);
+        // console.log('can go forward', position.value, window.history.length);
         // console.log()
         return position.value != window.history.length;
     }
