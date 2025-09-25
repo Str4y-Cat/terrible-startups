@@ -10,10 +10,11 @@ import ToolOverview from '@/components/custom/show/ToolOverview.vue';
 import Tag from '@/components/custom/Tag.vue';
 import SyncToast from '@/components/custom/toasters/SyncToast.vue';
 import { Toaster } from '@/components/ui/sonner';
+import useIdeaOptions from '@/composables/useIdeaOptions';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Idea } from '@/types/general';
-import { Head, router, usePage } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
 import { Download, Ghost, Grid2x2Check, Share, Trash2, Users } from 'lucide-vue-next';
 import { computed, markRaw, ref, watch } from 'vue';
 import { toast } from 'vue-sonner';
@@ -39,23 +40,7 @@ interface Note {
 const idea = page.props.idea as Idea;
 const note = page.props.note as Note;
 
-function getContext() {
-    console.log('Getting context');
-    router.visit(route('tool.context', idea.id), {
-        method: 'post',
-        onSuccess: (response) => {
-            console.log('SUCCESS', response);
-        },
-        onError: (error) => {
-            toast.error('Failed to save', {
-                style: {
-                    'border-color': 'var(--color-red-600)',
-                },
-                description: 'Error performing search',
-            });
-        },
-    });
-}
+const { deleteIdea, downloadIdea } = useIdeaOptions(idea);
 
 const detailConfig = {
     inspiration: { title: 'Inspiration', placeholder: 'The event, experience or thought that inspired your idea... ', type: 'string' },
@@ -94,16 +79,6 @@ watch(syncing, (isSyncing) => {
         }, 300);
     }
 });
-
-function deleteIdea() {
-    router.visit(`/ideas/${idea.id}`, {
-        method: 'delete',
-    });
-}
-
-function downloadIdea() {
-    window.open(`/ideas/${idea.id}/download`, '_blank');
-}
 </script>
 
 <template>
