@@ -1,12 +1,12 @@
-import '../css/app.css';
-
 import { createInertiaApp, router } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import type { DefineComponent } from 'vue';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from 'ziggy-js';
+import '../css/app.css';
 import { initializeTheme } from './composables/useAppearance';
 import { useHistory } from './composables/useHistory';
+import { usePWAInstall } from './composables/usePWAInstall';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -32,3 +32,5 @@ router.on('navigate', () => {
 
 // This will set light / dark mode on page load...
 initializeTheme();
+export const { canInstallPWA, installPWA } = usePWAInstall();
+console.log('can install? ', canInstallPWA.value);

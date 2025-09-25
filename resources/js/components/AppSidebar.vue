@@ -7,6 +7,7 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { LayoutGrid, Lightbulb } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
+import InstallPrompt from './custom/sidebar/InstallPrompt.vue';
 
 const mainNavItems: NavItem[] = [
     {
@@ -60,6 +61,8 @@ const footerNavItems: NavItem[] = [
 
         <SidebarFooter>
             <NavFooter :items="footerNavItems" />
+
+            <InstallPrompt />
             <NavUser />
         </SidebarFooter>
     </Sidebar>
