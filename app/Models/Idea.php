@@ -120,4 +120,9 @@ class Idea extends Model
         return $this->hasOne(Note::class);
     }
 
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(Rating::class);
+    }
+
 }

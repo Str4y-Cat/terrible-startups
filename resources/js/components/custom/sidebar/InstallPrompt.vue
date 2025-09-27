@@ -3,7 +3,7 @@ import Button from '@/components/ui/button/Button.vue';
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { CardContent } from '@/components/ui/card';
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from '@/components/ui/dialog';
 import {
     Drawer,
     DrawerClose,

@@ -5,13 +5,19 @@ namespace App\Http\Controllers;
 use App\Enums\Resource;
 use App\Http\Requests\StoreIdeaRequest;
 use App\Http\Requests\UpdateIdeaRequest;
+use App\Models\Question;
+use App\Models\Rating;
 use App\Models\Tag;
 use App\Services\AiService;
 use App\Services\DownloadService;
+use App\Services\IdeaCreatorService;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use App\Models\Idea;
+
+use function GuzzleHttp\json_decode;
 
 class IdeaController extends Controller
 {
@@ -38,14 +44,20 @@ class IdeaController extends Controller
     {
         $user = Auth::user();
 
+        //group the tags by key's
         $tagGroups = $user->tags()
             ->get(['key', 'value']) // only fetch what you need
             ->groupBy('key')
             ->map
             ->pluck('value');
 
+        //get the active questions
+        $questions = Question::where('is_active', true)
+            ->orderBy('order')
+            ->get(['id','heading','description', 'choices']) ;
 
-        return Inertia::render('ideas/Create', ['tagGroups' => $tagGroups]);
+
+        return Inertia::render('ideas/Create', ['tagGroups' => $tagGroups,'rating_questions' => $questions]);
     }
 
     /**
@@ -54,42 +66,20 @@ class IdeaController extends Controller
     public function store(StoreIdeaRequest $request)
     /* public function store(Request $request) */
     {
-
-
-
-
         $user = Auth::user();
         $validated = collect($request->validated());
 
-
-
-
         $ideaArgs = $validated->except(['rating_questions','tags']);
-
-        $rating_questions = $validated['rating_questions'];
 
         $idea = Idea::create(['user_id' => $user->id, ...$ideaArgs->toArray()]);
 
+        $ideaCreator = new IdeaCreatorService($idea);
 
-        $tag_props = $validated->get('tags');
-
-        foreach ($tag_props as $tag_values) {
-            $tag = Tag::firstOrNew($tag_values);
-            $idea->tags()->attach($tag);
-        }
-
-        /* $idea->tags()->attach(Tag::([])); */
-
-
-        foreach ($rating_questions as $question) {
-            //update or create the user rating table
-
-        }
+        $ideaCreator
+            ->createTags($validated->get('tags'))
+            ->createRating($validated->get('rating_questions'));
 
         return redirect("/ideas/$idea->id");
-
-
-        /* dd($idea->id); */
     }
 
     /**
@@ -98,10 +88,26 @@ class IdeaController extends Controller
     public function show(Idea $idea)
     {
 
+        $questions = Question::where('is_active', true)
+            ->orderBy('order')
+            ->get(['id','heading','description', 'choices']) ;
+
+        $rating_session = $idea->ratings()->latest()->first();
+
+        $answers = [];
+        if (!empty($rating_session)) {
+            $answers = $rating_session->ratingAnswers()->get(['question_id', 'score']);
+        }
+
+
 
         return Inertia::render('ideas/Show', [
             'idea' => $idea->data(Resource::Show),
-            'note' => $idea->note()->get(['contents','updated_at'])->first()
+            'note' => $idea->note()->get(['contents','updated_at'])->first(),
+            'rating' => [
+                 'questions' => $questions,
+                 'answers' => $answers
+            ]
         ]);
     }
 

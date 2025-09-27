@@ -5,7 +5,7 @@
     import Progress from '@/components/ui/progress/Progress.vue';
     import type { RatingFormData, RatingSystemProps } from '@/types/rating';
     import {  Check, ChevronLeft, ChevronRight, LoaderCircle } from 'lucide-vue-next';
-    import { computed, ref } from 'vue';
+    import { computed, ref, watch } from 'vue';
     import {
       Dialog,
       DialogContent,
@@ -27,6 +27,7 @@
 
     const props = defineProps<RatingSystemProps>();
     const emit = defineEmits<{
+        (e:'update:modelValue', value:boolean):void;
         (e: 'submit', data: RatingFormData): void;
         (e: 'skip'): void;
         (e: 'close'): void;
@@ -89,7 +90,16 @@
         }
         return total;
     })
-    const isOpen = ref(props.open);
+    // const isOpen = ref(props.open);
+    const isOpen = computed({
+      get: () => props.modelValue,
+      set: (value) => emit('update:modelValue', value),
+    });
+    watch(isOpen,()=>{
+        console.log(isOpen.value)
+    })
+    console.log('this is the open value',isOpen.value)
+
 
     const ratingResults={
         'terrible': {
@@ -133,8 +143,9 @@
       return match ? match.result : ratingResults.exceptional;
     })
 
+    console.log('this is the rating data', props.questions);
 
-console.log("this is the form data",formData.value);
+    console.log("this is the form data",formData.value);
 </script>
 
 <template>
@@ -265,13 +276,7 @@ console.log("this is the form data",formData.value);
 
     <Dialog v-if="isDesktop" v-model:open="isOpen">
         <DialogTrigger as-child>
-            <Button :disabled="props.disabled" >
-                <span v-if="processing" class="flex gap-2 items-center">
-                    Submitting
-                    <LoaderCircle  class="h-4 w-4 animate-spin" />
-                </span>
-                <span v-else> Create </span>
-            </Button>
+            <slot></slot>
         </DialogTrigger>
 
         <DialogContent class="">
@@ -288,9 +293,7 @@ console.log("this is the form data",formData.value);
 
 <Drawer v-else v-model:open="isOpen">
     <DrawerTrigger as-child>
-      <Button :disabled="props.disabled" class="fixed right-4 bottom-20 sm:static">
-            Create
-      </Button>
+            <slot></slot>
     </DrawerTrigger>
 
     <DrawerContent>

@@ -16,13 +16,15 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        $user = User::factory()->create([
-            'name' => 'Leo',
-            'email' => 'leo@innovit.co.za',
-            'password' => "password",
-        ]);
 
-        /* Idea::factory(20)->create([ 'user_id' => $user->id ]); */
+        /* $user = User::factory()->create([ */
+        /*     'name' => 'Leo', */
+        /*     'email' => 'leo@innovit.co.za', */
+        /*     'password' => "password", */
+        /* ]); */
+
+        //seed the questions
+        $this->call(QuestionSeeder::class);
 
 
 

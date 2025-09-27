@@ -43,7 +43,7 @@ class StoreIdeaRequest extends FormRequest
             'challenges.*'      => ['string', 'max:255'],
 
             'rating_questions'  => ['array','nullable'],
-            'rating_questions.*' => ['array:key,value'],
+            'rating_questions.*' => ['array:question_id,score'],
             'rating_questions.*.key' => ['numeric'],
             'rating_questions.*.value' => ['numeric'],
             'tags' => ['array'],

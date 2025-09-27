@@ -5,10 +5,11 @@ import TextInput from '@/components/custom/create/TextInput.vue';
 import ProgressiveRatingDialog from '@/components/custom/ProgressiveRatingDialog.vue';
 import TagInputGroup from '@/components/custom/TagInputGroup.vue';
 import InputError from '@/components/InputError.vue';
+import Button from '@/components/ui/button/Button.vue';
 import { Input } from '@/components/ui/input';
-import { exampleQuestions } from '@/data/exampleQuestions';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
+import { RatingFormData, RatingQuestion } from '@/types/rating';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 
@@ -27,6 +28,9 @@ const breadcrumbs = computed<BreadcrumbItem[]>(() => {
     ];
 });
 
+const page = usePage();
+const rating_questions = page.props.rating_questions as RatingQuestion[];
+
 //sets the select types
 // const businessTypes = ['Product', 'Service', 'Hello'];
 
@@ -42,7 +46,7 @@ const form = useForm<{
     target_audience?: string[];
     risks?: string[];
     challenges?: string[];
-    rating_questions?: { key: number; value: number }[];
+    rating_questions?: { question_id: number; score: number }[];
     tags?: { key: string; value: string }[];
 }>({
     title: '',
@@ -53,12 +57,11 @@ const form = useForm<{
     inspiration: '',
     solution: '',
     // features: [''],
-    // features: [''],
     // target_audience: [''],
     // risks: [''],
     // challenges: [''],
     tags: [],
-    rating_questions: [{ key: 0, value: 0 }],
+    rating_questions: [{ question_id: 0, score: 0 }],
 });
 
 const submit = () => {
@@ -89,12 +92,10 @@ const canSubmit = computed(() => {
 //     });
 // };
 
-const page = usePage();
-
 function ratingTotal(obj: object) {
     let total = 1;
     for (const key in obj) {
-        console.log(key, obj[key]);
+        // console.log(key, obj[key]);
         if (obj[key] != undefined) {
             total *= obj[key];
         }
@@ -102,7 +103,22 @@ function ratingTotal(obj: object) {
     return total;
 }
 
+function castRating(obj: RatingFormData) {
+    const arr: { question_id: number; score: number }[] = [];
+
+    for (const key in obj) {
+        // console.log(key, obj[key]);
+        if (obj[key] != undefined) {
+            arr.push({ question_id: +key, score: +obj[key] });
+        }
+    }
+    return arr;
+}
+
+const isRatingOpen = ref(false);
+
 console.log(page.props.tagGroups);
+console.log(rating_questions);
 </script>
 
 <template>
@@ -134,17 +150,34 @@ console.log(page.props.tagGroups);
                         </div>
 
                         <ProgressiveRatingDialog
-                            :questions="exampleQuestions"
+                            v-model="isRatingOpen"
+                            :questions="rating_questions"
                             :disabled="!canSubmit"
                             :processing="form.processing"
                             @submit="
                                 (ratings) => {
                                     form.rating = ratingTotal(ratings);
+                                    // console.log(ratings);
+                                    // console.log('rating', ratings[0]);
+                                    form.rating_questions = castRating(ratings);
+                                    // form.rating_questions = ratings.map((val) => {
+                                    //     console.log('this is the key', Object.keys(val));
+                                    //     // return { key: Object.keys(val) };
+                                    //     // return {key:Object.keys(val),value}
+                                    // });
                                     submit();
                                 }
                             "
                             @skip="submit"
-                        />
+                        >
+                            <Button :disabled="!canSubmit" @click.prevent="isRatingOpen = true" class="fixed right-4 bottom-20 sm:static sm:block">
+                                <span v-if="form.processing" class="flex items-center gap-2">
+                                    Submitting
+                                    <LoaderCircle class="h-4 w-4 animate-spin" />
+                                </span>
+                                <span v-else> Create </span>
+                            </Button>
+                        </ProgressiveRatingDialog>
 
                         <InputError :message="form.errors.rating_questions" />
                     </div>

@@ -4,6 +4,7 @@ import Note from '@/components/custom/show/Note.vue';
 import DropDown from '@/components/custom/DropDown.vue';
 import CollapsibleContainer from '@/components/custom/show/CollapsibleContainer.vue';
 import ListDisplayBody from '@/components/custom/show/ListDisplayBody.vue';
+import RatingOverview from '@/components/custom/show/RatingOverview.vue';
 import TextDisplay from '@/components/custom/show/TextDisplay.vue';
 import TextDisplayBody from '@/components/custom/show/TextDisplayBody.vue';
 import ToolOverview from '@/components/custom/show/ToolOverview.vue';
@@ -14,6 +15,7 @@ import useIdeaOptions from '@/composables/useIdeaOptions';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Idea } from '@/types/general';
+import { Rating } from '@/types/rating';
 import { Head, usePage } from '@inertiajs/vue3';
 import { useMediaQuery } from '@vueuse/core';
 import { Download, Ghost, Grid2x2Check, Share, Trash2, Users } from 'lucide-vue-next';
@@ -22,13 +24,18 @@ import { toast } from 'vue-sonner';
 import 'vue-sonner/style.css'; // vue-sonner v2 requires this import
 
 const page = usePage();
+const idea = page.props.idea as Idea;
+const note = page.props.note as Note;
+const rating = page.props.rating as Rating;
+console.log(rating);
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Ideas',
         href: '/ideas',
     },
     {
-        title: page.props.idea.title,
+        title: idea.title,
         href: '/ideas/create',
     },
 ];
@@ -39,9 +46,6 @@ interface Note {
 }
 
 const isDesktop = useMediaQuery('(min-width: 768px)');
-
-const idea = page.props.idea as Idea;
-const note = page.props.note as Note;
 
 const { deleteIdea, downloadIdea } = useIdeaOptions(idea);
 
@@ -115,6 +119,7 @@ watch(syncing, (isSyncing) => {
                             {{ tag.value }}
                         </Tag>
                     </div>
+                    <RatingOverview :rating="rating"></RatingOverview>
                 </CollapsibleContainer>
 
                 <CollapsibleContainer title="Details">

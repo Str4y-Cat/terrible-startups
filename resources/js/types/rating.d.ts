@@ -17,9 +17,14 @@ export interface RatingQuestion {
 }
 
 export interface RatingSystemProps {
-    open?: boolean;
+    modelValue?: boolean;
     questions: RatingQuestion[];
     disabled: boolean;
     processing: boolean;
     title?: string;
+}
+
+interface Rating {
+    questions: RatingQuestion[];
+    answers: { question_id: number; score: number }[];
 }
