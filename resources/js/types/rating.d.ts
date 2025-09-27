@@ -18,13 +18,19 @@ export interface RatingQuestion {
 
 export interface RatingSystemProps {
     modelValue?: boolean;
+    answers?: RatingAnswer[];
     questions: RatingQuestion[];
     disabled: boolean;
     processing: boolean;
     title?: string;
 }
 
-interface Rating {
+export interface Rating {
     questions: RatingQuestion[];
-    answers: { question_id: number; score: number }[];
+    answers: RatingAnswer[];
+}
+
+export interface RatingAnswer {
+    question_id: number;
+    score: number | null;
 }

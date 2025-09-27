@@ -1,16 +1,27 @@
 <script setup lang="ts">
 import Progress from '@/components/ui/progress/Progress.vue';
-import { Rating } from '@/types/rating';
-import { computed, ref } from 'vue';
+import { Rating, RatingAnswer } from '@/types/rating';
+import { useForm } from '@inertiajs/vue3';
+import { computed, reactive, ref } from 'vue';
 import ProgressiveRatingDialog from '../ProgressiveRatingDialog.vue';
 const props = defineProps<{
     rating: Rating;
+    idea_id: number;
+}>();
+
+const rating = reactive<Rating>({
+    questions: props.rating.questions,
+    answers: [...props.rating.answers],
+});
+
+const emit = defineEmits<{
+    (e: 'processing', value: boolean): void;
 }>();
 
 const ratingTotal =
-    props.rating.answers.length > 0
-        ? props.rating.answers.reduce((sum, cur) => {
-              return (sum *= cur.score);
+    rating.answers.length > 0
+        ? rating.answers.reduce((sum, cur) => {
+              return (sum *= cur.score ?? 0);
           }, 1)
         : -1;
 
@@ -54,13 +65,35 @@ const ratingResult = computed(() => {
     return match ? match.result : ratingResults.exceptional;
 });
 
-function getAnswer(questionId: number | string): { question_id: number; score: number } | undefined {
-    return props.rating.answers.find((answer) => {
+function getAnswer(questionId: number | string): RatingAnswer | undefined {
+    return rating.answers.find((answer) => {
         return answer.question_id == +questionId;
     });
 }
 
 const openRatingDialog = ref(false);
+
+const form = useForm<{ rating_answers: RatingAnswer[] }>({
+    rating_answers: [{ question_id: 0, score: 0 }],
+});
+
+const submit = () => {
+    const newAnswers = form.rating_answers;
+    emit('processing', true);
+    form.patch(route('rating.update', props.idea_id), {
+        preserveScroll: true,
+        onFinish: () => {
+            emit('processing', false);
+        },
+        onSuccess: () => {
+            console.log('succss');
+            rating.answers = [...newAnswers];
+        },
+        onError: (error) => {
+            console.log(error);
+        },
+    });
+};
 </script>
 <template>
     <div @click="openRatingDialog = true" class="mx-auto mt-8 w-full cursor-pointer rounded-lg">
@@ -102,8 +135,15 @@ const openRatingDialog = ref(false);
     <ProgressiveRatingDialog
         v-model="openRatingDialog"
         :questions="rating.questions"
+        :answers="rating.answers"
         :disabled="false"
         :processing="false"
         @close="openRatingDialog = false"
+        @submit="
+            (ratings) => {
+                form.rating_answers = ratings;
+                submit();
+            }
+        "
     />
 </template>

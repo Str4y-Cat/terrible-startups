@@ -15,7 +15,7 @@ return new class () extends Migration {
             $table->timestamps();
             $table->foreignId('rating_id')->constrained()->onDelete('cascade');
             $table->foreignId('question_id')->constrained();
-            $table->integer('score');
+            $table->integer('score')->nullable();
 
         });
     }

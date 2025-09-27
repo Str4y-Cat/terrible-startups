@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\IdeaController;
+use App\Http\Controllers\RatingController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -19,6 +20,7 @@ Route::get('ideas/show', function () {
 Route::resource('ideas', IdeaController::class)->middleware(['auth', 'verified']);
 
 Route::get('ideas/{idea}/download', [IdeaController::class,'download']);
+Route::patch('ideas/{idea}/rating', [RatingController::class,'update'])->name('rating.update');
 
 
 /* Route::resource('ideas', IdeaController::class); */

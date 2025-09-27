@@ -119,7 +119,7 @@ watch(syncing, (isSyncing) => {
                             {{ tag.value }}
                         </Tag>
                     </div>
-                    <RatingOverview :rating="rating"></RatingOverview>
+                    <RatingOverview @processing="(value) => (syncing = value)" :rating="rating" :idea_id="idea.id"></RatingOverview>
                 </CollapsibleContainer>
 
                 <CollapsibleContainer title="Details">

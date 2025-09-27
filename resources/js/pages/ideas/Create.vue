@@ -9,7 +9,7 @@ import Button from '@/components/ui/button/Button.vue';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { RatingFormData, RatingQuestion } from '@/types/rating';
+import { RatingAnswer, RatingFormData, RatingQuestion } from '@/types/rating';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
 
@@ -34,6 +34,7 @@ const rating_questions = page.props.rating_questions as RatingQuestion[];
 //sets the select types
 // const businessTypes = ['Product', 'Service', 'Hello'];
 
+//REFACTOR: move this to an interface. update rating_questions to rating_answers
 const form = useForm<{
     title?: string;
     rating?: number;
@@ -46,7 +47,7 @@ const form = useForm<{
     target_audience?: string[];
     risks?: string[];
     challenges?: string[];
-    rating_questions?: { question_id: number; score: number }[];
+    rating_questions?: RatingAnswer[];
     tags?: { key: string; value: string }[];
 }>({
     title: '',
@@ -156,15 +157,8 @@ console.log(rating_questions);
                             :processing="form.processing"
                             @submit="
                                 (ratings) => {
-                                    form.rating = ratingTotal(ratings);
-                                    // console.log(ratings);
-                                    // console.log('rating', ratings[0]);
-                                    form.rating_questions = castRating(ratings);
-                                    // form.rating_questions = ratings.map((val) => {
-                                    //     console.log('this is the key', Object.keys(val));
-                                    //     // return { key: Object.keys(val) };
-                                    //     // return {key:Object.keys(val),value}
-                                    // });
+                                    form.rating = 0;
+                                    form.rating_questions = ratings;
                                     submit();
                                 }
                             "
