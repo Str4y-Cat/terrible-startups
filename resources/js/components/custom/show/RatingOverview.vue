@@ -18,12 +18,13 @@ const emit = defineEmits<{
     (e: 'processing', value: boolean): void;
 }>();
 
-const ratingTotal =
-    rating.answers.length > 0
+const ratingTotal = computed(() => {
+    return rating.answers.length > 0
         ? rating.answers.reduce((sum, cur) => {
               return (sum *= cur.score ?? 0);
           }, 1)
         : -1;
+});
 
 const ratingResults = {
     broken: {
@@ -87,7 +88,9 @@ const submit = () => {
         },
         onSuccess: () => {
             console.log('succss');
-            rating.answers = [...newAnswers];
+            // rating.answers = [...newAnswers];
+            // rating.answers = structuredClone(newAnswers);
+            rating.answers = JSON.parse(JSON.stringify(newAnswers));
         },
         onError: (error) => {
             console.log(error);

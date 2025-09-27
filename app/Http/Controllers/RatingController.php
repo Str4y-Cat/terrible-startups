@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateRatingRequest;
 use App\Models\Idea;
+use App\Services\IdeaCreatorService;
 
 class RatingController extends Controller
 {
@@ -13,18 +14,27 @@ class RatingController extends Controller
         $rating = $idea->ratings()->first();
         $newAnswers = collect($request->validated()['rating_answers']);
 
-        $currentAnswers = $rating->ratingAnswers;
+        //REFACTOR: fix the if else
+        if (empty($rating)) {
+            $ideaCreator = new IdeaCreatorService($idea);
+            $ideaCreator->createRating($newAnswers->toArray());
 
-        $currentAnswers->map(function ($answer) use ($newAnswers) {
-            $question_id = $answer->question_id;
+        } else {
 
-            $newAnswer = $newAnswers->first(function ($answer) use ($question_id) {
-                return $answer['question_id'] == $question_id;
+            $currentAnswers = $rating->ratingAnswers;
+
+            $currentAnswers->map(function ($answer) use ($newAnswers) {
+                $question_id = $answer->question_id;
+
+                $newAnswer = $newAnswers->first(function ($answer) use ($question_id) {
+                    return $answer['question_id'] == $question_id;
+                });
+
+                $answer->update($newAnswer);
+
             });
+        }
 
-            $answer->update($newAnswer);
-
-        });
 
         return back()->with('success', 'Rating updated.');
     }

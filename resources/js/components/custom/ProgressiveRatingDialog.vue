@@ -89,14 +89,8 @@ const ratingTotal = computed(() => {
     return answers.reduce((sum, cur) => {
         return (sum *= cur.score ?? 0);
     }, 1);
-    // let total = 1;
-    // for (const key in formData.value) {
-    //     if (formData.value[key] != undefined) {
-    //         total *= formData.value[key];
-    //     }
-    // }
-    // return total;
 });
+
 // const isOpen = ref(props.open);
 const isOpen = computed({
     get: () => props.modelValue,
