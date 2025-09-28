@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTagRequest extends FormRequest
+class SyncTagRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,11 @@ class UpdateTagRequest extends FormRequest
     {
         return [
             //
-            'tag' => ['array:key,value'],
+            /* 'tags' => ['array:key,value'], */
+            'tags' => ['array'],
+            'tags.*' => ['array:key,value'],
+            'tags.*.key' => ['string'],
+            'tags.*.value' => ['string'],
         ];
     }
 }

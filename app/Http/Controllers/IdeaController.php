@@ -57,7 +57,13 @@ class IdeaController extends Controller
             ->get(['id','heading','description', 'choices']) ;
 
 
-        return Inertia::render('ideas/Create', ['tagGroups' => $tagGroups,'rating_questions' => $questions]);
+        return Inertia::render(
+            'ideas/Create',
+            [
+                'tagGroups' => $tagGroups,
+                'rating_questions' => $questions
+            ]
+        );
     }
 
     /**
@@ -88,6 +94,15 @@ class IdeaController extends Controller
     public function show(Idea $idea)
     {
 
+        $user = Auth::user();
+
+        //group the tags by key's
+        $tagGroups = $user->tags()
+            ->get(['key', 'value']) // only fetch what you need
+            ->groupBy('key')
+            ->map
+            ->pluck('value');
+
         $questions = Question::where('is_active', true)
             ->orderBy('order')
             ->get(['id','heading','description', 'choices']) ;
@@ -107,7 +122,8 @@ class IdeaController extends Controller
             'rating' => [
                  'questions' => $questions,
                  'answers' => $answers
-            ]
+            ],
+            'tag_groups' => $tagGroups,
         ]);
     }
 

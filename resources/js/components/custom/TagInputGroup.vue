@@ -9,7 +9,8 @@ interface SelectedTag {
 
 const props = defineProps<{
     tag_group: { [key: string]: string[] };
-    title: string;
+    title?: string;
+    selected_tags?: SelectedTag[];
 }>();
 
 const emit = defineEmits<{
@@ -17,23 +18,31 @@ const emit = defineEmits<{
 }>();
 
 // Single array of all selected tags
-const selectedTags = ref<SelectedTag[]>([]);
+const selectedTags = ref<SelectedTag[]>(props.selected_tags ?? []);
 
 function toggleTag(tag: SelectedTag) {
     const includesTag = isTagIncluded(tag);
 
     //if the selected tags contains the current tag
     if (includesTag) {
-        //remove the tag
-        selectedTags.value = selectedTags.value.filter((current_tag) => {
-            return current_tag.key !== tag.key || current_tag.value !== tag.value;
-        });
+        let index = undefined;
+        for (let i = 0; i < selectedTags.value.length; i++) {
+            if (selectedTags.value[i].key == tag.key && selectedTags.value[i].value == tag.value) {
+                index = i;
+                break;
+            }
+        }
+        if (index != undefined) {
+            selectedTags.value.splice(index, 1);
+        }
     } else {
         //add the tag
 
         selectedTags.value.push(tag);
     }
+
     emit('update:selected', selectedTags.value);
+    console.log('emitted change');
 }
 
 function isTagIncluded(tag: SelectedTag) {
@@ -46,7 +55,7 @@ function isTagIncluded(tag: SelectedTag) {
 
 <template>
     <div class="group mt-4 gap-2 pt-2">
-        <h3 class="mb-4 border-b-1 border-dashed border-transparent border-b-muted pb-1 text-2xl group-has-focus:border-b-primary/20">
+        <h3 v-if="title" class="mb-4 border-b-1 border-dashed border-transparent border-b-muted pb-1 text-2xl group-has-focus:border-b-primary/20">
             {{ title }}
         </h3>
 

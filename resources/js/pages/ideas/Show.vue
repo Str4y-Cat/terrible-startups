@@ -5,11 +5,13 @@ import DropDown from '@/components/custom/DropDown.vue';
 import CollapsibleContainer from '@/components/custom/show/CollapsibleContainer.vue';
 import ListDisplayBody from '@/components/custom/show/ListDisplayBody.vue';
 import RatingOverview from '@/components/custom/show/RatingOverview.vue';
+import TagUpdateDialog from '@/components/custom/show/TagUpdateDialog.vue';
 import TextDisplay from '@/components/custom/show/TextDisplay.vue';
 import TextDisplayBody from '@/components/custom/show/TextDisplayBody.vue';
 import ToolOverview from '@/components/custom/show/ToolOverview.vue';
 import Tag from '@/components/custom/Tag.vue';
 import SyncToast from '@/components/custom/toasters/SyncToast.vue';
+import Separator from '@/components/ui/separator/Separator.vue';
 import { Toaster } from '@/components/ui/sonner';
 import useIdeaOptions from '@/composables/useIdeaOptions';
 import AppLayout from '@/layouts/AppLayout.vue';
@@ -86,6 +88,8 @@ watch(syncing, (isSyncing) => {
         }, 300);
     }
 });
+
+const tagDialogOpen = ref(false);
 </script>
 
 <template>
@@ -113,12 +117,34 @@ watch(syncing, (isSyncing) => {
                 </div>
 
                 <CollapsibleContainer title="Overview" :open="true">
-                    <TextDisplayBody @processing="(value) => (syncing = value)" field="overview" :idea_id="idea.id" :body="idea.overview" />
-                    <div class="mt-8 flex flex-wrap gap-2">
-                        <Tag v-for="(tag, index) in idea.tags" :key="index" class="group border-none bg-primary/10 text-sm text-primary md:text-sm">
+                    <div class="mb-8 flex flex-wrap gap-2">
+                        <Tag
+                            @click.prevent="tagDialogOpen = true"
+                            v-for="(tag, index) in idea.tags"
+                            :key="index"
+                            class="group border-none bg-primary/10 text-sm text-primary md:text-sm"
+                        >
                             {{ tag.value }}
                         </Tag>
+
+                        <TagUpdateDialog
+                            @processing="(value) => (syncing = value)"
+                            @success="(value) => (idea.tags = JSON.parse(JSON.stringify(value ?? [])))"
+                            v-model="tagDialogOpen"
+                            :idea_id="idea.id"
+                            :selected_tags="idea.tags"
+                            :tag_groups="$page.props.tag_groups"
+                        />
                     </div>
+                    <TextDisplayBody
+                        @processing="(value) => (syncing = value)"
+                        field="overview"
+                        :idea_id="idea.id"
+                        :body="idea.overview"
+                        class="text-base! text-foreground"
+                    />
+
+                    <Separator class="mt-8" />
                     <RatingOverview @processing="(value) => (syncing = value)" :rating="rating" :idea_id="idea.id"></RatingOverview>
                 </CollapsibleContainer>
 
