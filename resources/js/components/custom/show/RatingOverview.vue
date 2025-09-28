@@ -62,7 +62,7 @@ const ratingResult = computed(() => {
         { limit: 100, result: ratingResults.good },
     ];
 
-    const match = thresholds.find((threshold) => ratingTotal < threshold.limit);
+    const match = thresholds.find((threshold) => ratingTotal.value < threshold.limit);
     return match ? match.result : ratingResults.exceptional;
 });
 
