@@ -20,7 +20,7 @@ import { Idea } from '@/types/general';
 import { Rating } from '@/types/rating';
 import { Head, usePage } from '@inertiajs/vue3';
 import { useMediaQuery } from '@vueuse/core';
-import { Download, Ghost, Grid2x2Check, Share, Trash2, Users } from 'lucide-vue-next';
+import { Download, Ghost, Grid2x2Check, Plus, Share, Trash2, Users } from 'lucide-vue-next';
 import { computed, markRaw, ref, watch } from 'vue';
 import { toast } from 'vue-sonner';
 import 'vue-sonner/style.css'; // vue-sonner v2 requires this import
@@ -117,25 +117,25 @@ const tagDialogOpen = ref(false);
                 </div>
 
                 <CollapsibleContainer title="Overview" :open="true">
-                    <div class="mb-8 flex flex-wrap gap-2">
-                        <Tag
-                            @click.prevent="tagDialogOpen = true"
-                            v-for="(tag, index) in idea.tags"
-                            :key="index"
-                            class="group border-none bg-primary/10 text-sm text-primary md:text-sm"
-                        >
+                    <div @click.prevent="tagDialogOpen = true" class="mb-8 flex flex-wrap gap-2">
+                        <Tag v-for="(tag, index) in idea.tags" :key="index" class="group border-none bg-primary/10 text-sm text-primary md:text-sm">
                             {{ tag.value }}
                         </Tag>
 
-                        <TagUpdateDialog
-                            @processing="(value) => (syncing = value)"
-                            @success="(value) => (idea.tags = JSON.parse(JSON.stringify(value ?? [])))"
-                            v-model="tagDialogOpen"
-                            :idea_id="idea.id"
-                            :selected_tags="idea.tags"
-                            :tag_groups="$page.props.tag_groups"
-                        />
+                        <Tag
+                            class="flex cursor-pointer items-center gap-2 border-none bg-muted-foreground/10 text-sm text-muted-foreground md:text-sm"
+                        >
+                            New tags <Plus class="size-4" />
+                        </Tag>
                     </div>
+                    <TagUpdateDialog
+                        @processing="(value) => (syncing = value)"
+                        @success="(value) => (idea.tags = JSON.parse(JSON.stringify(value ?? [])))"
+                        v-model="tagDialogOpen"
+                        :idea_id="idea.id"
+                        :selected_tags="idea.tags"
+                        :tag_groups="$page.props.tag_groups"
+                    />
                     <TextDisplayBody
                         @processing="(value) => (syncing = value)"
                         field="overview"

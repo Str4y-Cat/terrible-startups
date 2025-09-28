@@ -44,6 +44,10 @@ class IdeaController extends Controller
     {
         $user = Auth::user();
 
+        $user->tags()->delete();
+        $user->withDemoData();
+
+
         //group the tags by key's
         $tagGroups = $user->tags()
             ->get(['key', 'value']) // only fetch what you need

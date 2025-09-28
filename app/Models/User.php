@@ -53,8 +53,9 @@ class User extends Authenticatable
     public function withDemoData(): User
     {
 
+        //REFACTOR: this should be a seeder
 
-        $ideas = require database_path('seeders/data/ideas.php');
+        /* $ideas = require database_path('seeders/data/ideas.php'); */
         $tagOptions = require database_path('seeders/data/tags.php');
 
         //create the default tags
@@ -68,18 +69,18 @@ class User extends Authenticatable
         }
 
         //create dummy ideas attached to user
-        foreach ($ideas as $idea) {
-            $createdIdea = $this->ideas()->create($idea);
+        /* foreach ($ideas as $idea) { */
+        /*     $createdIdea = $this->ideas()->create($idea); */
 
-            //create dummy tags attached to user
-            /* //create dummy tags attached to user */
-            foreach ($tagOptions as $key => $value) {
-
-                $tag = $this->tags()->where('key', $key)->inRandomOrder()->first();
-
-                $createdIdea->tags()->attach($tag->id);
-            }
-        }
+        //create dummy tags attached to user
+        /* //create dummy tags attached to user */
+        /*     foreach ($tagOptions as $key => $value) { */
+        /**/
+        /*         $tag = $this->tags()->where('key', $key)->inRandomOrder()->first(); */
+        /**/
+        /*         $createdIdea->tags()->attach($tag->id); */
+        /*     } */
+        /* } */
 
         return $this;
     }
