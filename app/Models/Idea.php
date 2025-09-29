@@ -44,8 +44,7 @@ class Idea extends Model
                     return $tag->getData();
                 }
             )->filter(function (array $tag) {
-                return  $tag["key"] == "industry" || $tag["key"] == "business model" || $tag["key"] ==
-                "customer segment";
+                return  $tag["key"] == "industry" || $tag["key"] == "business model" || $tag["key"] == "customer segment";
             });
         }
 
@@ -61,7 +60,7 @@ class Idea extends Model
 
             Resource::Index => [
                 'title' => $this->title ,
-                "rating" => $this->rating ,
+                "rating" => $this->ratings()->first()?->total_score  ,
                 "id" => $this->id,
                 "overview" => $this->overview ,
                 "date_created" => $this->created_at->toDateString() ,

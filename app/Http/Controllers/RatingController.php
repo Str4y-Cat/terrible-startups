@@ -33,6 +33,16 @@ class RatingController extends Controller
                 $answer->update($newAnswer);
 
             });
+
+            //get the total
+            $ratingTotal = $newAnswers
+                ->reduce(function ($sum, $cur) {
+                    return $sum *= $cur['score'];
+                }, 1);
+
+            //create the rating
+            $rating->update(['total_score' => $ratingTotal]);
+
         }
 
 
