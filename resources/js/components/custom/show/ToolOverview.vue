@@ -19,7 +19,7 @@ const slots = useSlots();
             <div class="flex w-full items-center justify-start gap-2">
                 <h3 class="flex font-bold"><slot /></h3>
             </div>
-            <p class="block"><slot name="description" /></p>
+            <p class="block text-muted-foreground"><slot name="description" /></p>
         </div>
     </Link>
 </template>
