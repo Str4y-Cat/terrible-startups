@@ -2,7 +2,7 @@
 import InputError from '@/components/InputError.vue';
 import { useAutosaveField } from '@/composables/useAutosaveField';
 import { Dot } from 'lucide-vue-next';
-import { computed, nextTick, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 
 const props = defineProps<{
     bullets?: string[];
@@ -19,9 +19,6 @@ const { localValue, errorMessage, isSaving } = useAutosaveField(route('ideas.upd
     deep: true,
 });
 
-// Keep track of textareas
-const textareas = ref<(HTMLTextAreaElement | null)[]>([]);
-
 // FORM
 // --------------------------------------
 const emit = defineEmits<{
@@ -34,6 +31,15 @@ watch(isSaving, (newVal) => {
 });
 
 //------------------------------------------------------------
+// Keep track of textareas
+const textareas = ref<(HTMLTextAreaElement | null)[]>([]);
+onMounted(() => {
+    const tempareas = document.querySelectorAll(`#bullet-container-${props.field} textarea`);
+    tempareas.forEach((area) => {
+        autoResize(area);
+    });
+});
+
 function autoResize(el: HTMLTextAreaElement | null) {
     if (!el) return;
     el.style.height = 'auto'; // Reset height
@@ -63,6 +69,8 @@ function createBullet(index: number) {
     // Wait for DOM update, then focus new bullet
     nextTick(() => {
         const newTextarea = textareas.value[index + 1];
+
+        // newTextarea?.value = '';
         if (newTextarea) {
             newTextarea.focus();
         }
@@ -96,7 +104,7 @@ function onKeyDown(e: KeyboardEvent, index: number) {
 
 <template>
     <div class="group/parent mt-2 grid gap-2">
-        <div class="flex flex-col gap-1">
+        <div class="flex flex-col gap-1" :id="`bullet-container-${props.field}`">
             <div v-for="(bullet, index) in localValue" :key="index" class="group flex items-start gap-2">
                 <Dot class="transition-color group-has-focus:text-primary"></Dot>
 

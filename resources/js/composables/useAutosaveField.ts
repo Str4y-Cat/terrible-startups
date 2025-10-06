@@ -2,6 +2,7 @@
 import { useForm } from '@inertiajs/vue3';
 import { debouncedWatch } from '@vueuse/core';
 import { computed, ref } from 'vue';
+import { toast } from 'vue-sonner';
 
 export function useAutosaveField(
     route: string,
@@ -30,7 +31,16 @@ export function useAutosaveField(
             isSaving.value = true;
             form[fieldName] = newVal;
 
-            form.patch(route, {
+            form.transform((data: { [key: string]: string[] }) => {
+                const filtered: { [key: string]: string[] } = {};
+                for (const key in data) {
+                    filtered[key] = data[key].filter((val) => val != null && val != '');
+                }
+                return filtered;
+                // return data.filter((val) => {
+                //     return val != null;
+                // });
+            }).patch(route, {
                 preserveState: true,
                 preserveScroll: true,
                 onStart: () => {
@@ -42,8 +52,21 @@ export function useAutosaveField(
                 onSuccess: () => {
                     console.log('success');
                 },
-                onError: () => {
-                    console.log('failed');
+                onError: (err) => {
+                    console.log('error: ', err);
+                    let count = 0;
+                    for (const key in err) {
+                        setTimeout(() => {
+                            toast.error('Failed to save', {
+                                style: {
+                                    'border-color': 'var(--color-red-600)',
+                                },
+                                description: `${err[key]}`,
+                                duration: 10000,
+                            });
+                        }, count * 500);
+                        count++;
+                    }
                 },
             });
         },
