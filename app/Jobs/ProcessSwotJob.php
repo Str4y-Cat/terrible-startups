@@ -6,15 +6,9 @@ use App\Enums\ToolStatus;
 use App\Models\Idea;
 use App\Models\Tool;
 use App\Services\AiService;
-use GuzzleHttp\Promise\Utils;
-use GuzzleHttp\Utils as GuzzleHttpUtils;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
-use PHPUnit\Exception;
-
-use function GuzzleHttp\json_encode;
 
 class ProcessSwotJob implements ShouldQueue
 {
@@ -36,6 +30,7 @@ class ProcessSwotJob implements ShouldQueue
     {
 
         $openAiService = new AiService($this->idea);
+        //REFACTOR: return toolDTO;
         $request = $openAiService->getSwot();
 
         if (!$request->ok()) {
@@ -49,13 +44,15 @@ class ProcessSwotJob implements ShouldQueue
                 'response' => $request->body(),
             ]);
 
-            $this->fail();
+            throw new \Exception('ProcessSwotJob failed');
         }
 
         $this->tool->update([
             "full_response" => $request->json(),
-            "content" => json_decode(Arr::get($request->collect(), 'output.0.content.0.text'), true),
-            "status" => ToolStatus::complete->value
+            "content" => json_decode($request->collect()->get('output.0.content.0.text'), true),
+            "status" => ToolStatus::complete->value,
+            "tokens_used" => $request->collect()->get('usage.total_tokens'),
+            "model_type" => $request->collect()->get('model'),
         ]);
     }
 }

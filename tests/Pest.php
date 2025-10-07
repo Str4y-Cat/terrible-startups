@@ -41,7 +41,8 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function fixture(string $filename): array
 {
-    // ..
+    $path = __DIR__."/Data/{$filename}.json";
+    return json_decode(file_get_contents($path), true);
 }
