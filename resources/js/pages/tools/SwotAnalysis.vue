@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import Button from '@/components/ui/button/Button.vue';
 import { Toaster } from '@/components/ui/sonner';
+import { errorToast } from '@/composables/useErrorToast';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { SwotAnalysis } from '@/types/tools';
 import { Head, Link, router, usePage, usePoll } from '@inertiajs/vue3';
 import { ArrowLeft, LoaderCircle } from 'lucide-vue-next';
 import { computed } from 'vue';
-import { toast } from 'vue-sonner';
 import 'vue-sonner/style.css'; // vue-sonner v2 requires this import
 
 const page = usePage();
@@ -58,12 +58,13 @@ function createNewCompetitorSearch() {
             console.log(error);
             //trigger pop up
 
-            toast.error('Failed to save', {
-                style: {
-                    'border-color': 'var(--color-red-600)',
-                },
-                description: 'Error performing search',
-            });
+            errorToast('Failed to save', error);
+            // toast.error('Failed to save', {
+            //     style: {
+            //         'border-color': 'var(--color-red-600)',
+            //     },
+            //     description: 'Error performing search',
+            // });
         },
     });
 }

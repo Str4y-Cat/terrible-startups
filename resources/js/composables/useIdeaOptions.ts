@@ -1,6 +1,6 @@
 import { Idea } from '@/types/general';
 import { router } from '@inertiajs/vue3';
-import { toast } from 'vue-sonner';
+import { errorToast } from './useErrorToast';
 
 export default function useIdeaOptions(idea: Idea) {
     const getIdeaContext = () => {
@@ -11,12 +11,7 @@ export default function useIdeaOptions(idea: Idea) {
                 console.log('SUCCESS', response);
             },
             onError: (err) => {
-                toast.error('Failed to save', {
-                    style: {
-                        'border-color': 'var(--color-red-600)',
-                    },
-                    description: 'Error performing search',
-                });
+                errorToast('Failed to save', err);
             },
         });
     };

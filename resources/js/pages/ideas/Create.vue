@@ -9,9 +9,11 @@ import Button from '@/components/ui/button/Button.vue';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { RatingAnswer, RatingFormData, RatingQuestion } from '@/types/rating';
+import { RatingAnswer, RatingQuestion } from '@/types/rating';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { computed, ref } from 'vue';
+// import { toast } from 'vue-sonner';
+import { errorToast } from '@/composables/useErrorToast';
 
 const idea_title = ref('New idea');
 
@@ -57,22 +59,23 @@ const form = useForm<{
     problem_to_solve: '',
     inspiration: '',
     solution: '',
-    // features: [''],
-    // target_audience: [''],
-    // risks: [''],
-    // challenges: [''],
+    features: [''],
+    target_audience: [''],
+    risks: [''],
+    challenges: [''],
     tags: [],
     rating_questions: [{ question_id: 0, score: 0 }],
 });
 
 const submit = () => {
     // form.rating_questions = [...stripratingsforsubmit()];
-    console.log('This is the form data', form.data());
     form.post(route('ideas.store'), {
         onFinish: () => {
             /*navigate to form */
         },
+        //REFACTOR: move this to a composable, with the option for title,description. useErrorToast
         onError: (error) => {
+            errorToast('Failed to save', error);
             console.log(error);
         },
     });
@@ -86,35 +89,6 @@ const canSubmit = computed(() => {
         return value !== null && value !== undefined && value.toString().trim() !== '' && !form.processing;
     });
 });
-
-// const stripRatingsForSubmit = (): { key: number; value: number }[] => {
-//     return ratings.map((x) => {
-//         return { key: x.key, value: x.value };
-//     });
-// };
-
-function ratingTotal(obj: object) {
-    let total = 1;
-    for (const key in obj) {
-        // console.log(key, obj[key]);
-        if (obj[key] != undefined) {
-            total *= obj[key];
-        }
-    }
-    return total;
-}
-
-function castRating(obj: RatingFormData) {
-    const arr: { question_id: number; score: number }[] = [];
-
-    for (const key in obj) {
-        // console.log(key, obj[key]);
-        if (obj[key] != undefined) {
-            arr.push({ question_id: +key, score: +obj[key] });
-        }
-    }
-    return arr;
-}
 
 const isRatingOpen = ref(false);
 
@@ -139,7 +113,7 @@ console.log(rating_questions);
                                 autofocus
                                 :tabindex="0"
                                 @update="
-                                    (val) => {
+                                    (val: string) => {
                                         idea_title = val;
                                     }
                                 "

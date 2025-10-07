@@ -2,7 +2,7 @@
 import { useForm } from '@inertiajs/vue3';
 import { debouncedWatch } from '@vueuse/core';
 import { computed, ref } from 'vue';
-import { toast } from 'vue-sonner';
+import { errorToast } from './useErrorToast';
 
 export function useAutosaveField(
     route: string,
@@ -54,19 +54,7 @@ export function useAutosaveField(
                 },
                 onError: (err) => {
                     console.log('error: ', err);
-                    let count = 0;
-                    for (const key in err) {
-                        setTimeout(() => {
-                            toast.error('Failed to save', {
-                                style: {
-                                    'border-color': 'var(--color-red-600)',
-                                },
-                                description: `${err[key]}`,
-                                duration: 10000,
-                            });
-                        }, count * 500);
-                        count++;
-                    }
+                    errorToast('Failed to save', err);
                 },
             });
         },
