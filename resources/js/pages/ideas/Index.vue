@@ -35,32 +35,36 @@ const ideas = computed(() => {
     <Head title="Terrible ideas" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl sm:p-4">
-            <!--<IdeaTable :ideas="ideas" />-->
-            <div v-if="ideas.length == 0" class="flex h-full w-full grow items-center justify-center">
-                <div class="flex flex-col items-center">
-                    <h1 class="bold mb-4 w-fit text-xl text-muted-foreground sm:text-4xl">You have no saved ideas yet</h1>
-                    <Button @click.prevent variant="secondary" class="w-fit">
-                        <Link :href="route('ideas.create')" class="flex gap-2">
-                            Create new idea
-                            <Plus class="size-5" />
-                        </Link>
-                    </Button>
+        <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+            <div class="relative m-auto h-full w-full max-w-4xl rounded-xl">
+                <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl sm:p-4">
+                    <!--<IdeaTable :ideas="ideas" />-->
+                    <div v-if="ideas.length == 0" class="flex h-full w-full grow items-center justify-center">
+                        <div class="flex flex-col items-center">
+                            <h1 class="bold mb-4 w-fit text-xl text-muted-foreground sm:text-4xl">You have no saved ideas yet</h1>
+                            <Button @click.prevent variant="secondary" class="w-fit">
+                                <Link :href="route('ideas.create')" class="flex gap-2">
+                                    Create new idea
+                                    <Plus class="size-5" />
+                                </Link>
+                            </Button>
+                        </div>
+                    </div>
+
+                    <template v-else>
+                        <div class="mt-4 flex justify-center px-4 sm:justify-end">
+                            <div class="relative w-full max-w-sm items-center">
+                                <Input v-model="searchTerm" id="search" type="text" placeholder="Search..." class="pl-10" />
+                                <span class="absolute inset-y-0 start-0 flex items-center justify-center px-2">
+                                    <Search class="size-5 text-muted-foreground" />
+                                </span>
+                            </div>
+                        </div>
+
+                        <IdeaList :ideas="ideas" />
+                    </template>
                 </div>
             </div>
-
-            <template v-else>
-                <div class="mt-4 flex justify-center px-4 sm:justify-end">
-                    <div class="relative w-full max-w-sm items-center">
-                        <Input v-model="searchTerm" id="search" type="text" placeholder="Search..." class="pl-10" />
-                        <span class="absolute inset-y-0 start-0 flex items-center justify-center px-2">
-                            <Search class="size-5 text-muted-foreground" />
-                        </span>
-                    </div>
-                </div>
-
-                <IdeaList :ideas="ideas" />
-            </template>
         </div>
     </AppLayout>
 </template>
