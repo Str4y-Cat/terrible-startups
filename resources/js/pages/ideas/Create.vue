@@ -59,10 +59,10 @@ const form = useForm<{
     problem_to_solve: '',
     inspiration: '',
     solution: '',
-    features: [''],
-    target_audience: [''],
-    risks: [''],
-    challenges: [''],
+    features: [],
+    target_audience: [],
+    risks: [],
+    challenges: [],
     tags: [],
     rating_questions: [{ question_id: 0, score: 0 }],
 });
@@ -138,7 +138,12 @@ console.log(rating_questions);
                             "
                             @skip="submit"
                         >
-                            <Button :disabled="!canSubmit" @click.prevent="isRatingOpen = true" class="fixed right-4 bottom-20 sm:static sm:block">
+                            <Button
+                                :disabled="!canSubmit"
+                                tabindex="2"
+                                @click.prevent="isRatingOpen = true"
+                                class="fixed right-4 bottom-20 sm:static sm:block"
+                            >
                                 <span v-if="form.processing" class="flex items-center gap-2">
                                     Submitting
                                     <LoaderCircle class="h-4 w-4 animate-spin" />
@@ -156,6 +161,7 @@ console.log(rating_questions);
                             <TextInput
                                 :modelValue="form.overview"
                                 :error="form.errors.overview"
+                                :tabindex="1"
                                 :required="true"
                                 label="Overview"
                                 id="overview"
@@ -166,6 +172,7 @@ console.log(rating_questions);
                             <TextInput
                                 :modelValue="form.inspiration"
                                 :error="form.errors.inspiration"
+                                :tabindex="3"
                                 label="Inspiration"
                                 id="inspiration"
                                 @update="(value) => (form.inspiration = value)"
