@@ -5,7 +5,7 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { LayoutGrid, Lightbulb } from 'lucide-vue-next';
+import { Plus, Rows3 } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 import InstallPrompt from './custom/sidebar/InstallPrompt.vue';
 
@@ -13,12 +13,12 @@ const mainNavItems: NavItem[] = [
     {
         title: 'New idea',
         href: '/ideas/create',
-        icon: Lightbulb,
+        icon: Plus,
     },
     {
         title: 'Ideas',
         href: '/ideas',
-        icon: LayoutGrid,
+        icon: Rows3,
     },
     // {
     //     title: 'Home',
