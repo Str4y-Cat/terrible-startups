@@ -3,9 +3,11 @@
 namespace App\Jobs;
 
 use App\Enums\ToolStatus;
+use App\Enums\ToolType;
 use App\Models\Idea;
 use App\Models\Tool;
 use App\Services\AiService;
+use App\Transformers\ToolDataTransformer;
 use GuzzleHttp\Promise\Utils;
 use GuzzleHttp\Utils as GuzzleHttpUtils;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -34,11 +36,19 @@ class ProcessCompetitorSearchJob implements ShouldQueue
     public function handle(): void
     {
 
+        //REFACTOR:
+        //look at combining all the jobs into one. We have the same
+        //content across all of them, except for the ai service query, and
+        //the transform.
+        //This could be handled with a refactor to aiService to return based on
+        //the tool type given to to
+        //i.e AiService::query(Tooltype::competitorSearch);
+
         $openAiService = new AiService($this->idea);
-        $request = $openAiService->getCompetitorAnalysis();
+        $response = $openAiService->getCompetitorAnalysis();
 
 
-        if (!$request->ok()) {
+        if (!$response->ok()) {
 
             $this->tool->update([
                 "status" => ToolStatus::failed->value
@@ -46,19 +56,14 @@ class ProcessCompetitorSearchJob implements ShouldQueue
 
             Log::error("ProcessCompetitorSearchJob: Job failed", [
                 "tool_id" => $this->tool->id,
-                'response' => $request->body(),
+                'response' => $response->body(),
             ]);
 
-            $this->fail($request);
+            throw new \Exception('ProcessSwotJob failed');
         }
 
+        $toolData = ToolDataTransformer::fromOpenAi($response, ToolType::competitorSearch);
 
-
-
-        $this->tool->update([
-            "full_response" => $request->json(),
-            "content" => json_decode(Arr::get($request->collect(), 'output.1.content.0.text'), true),
-            "status" => ToolStatus::complete->value
-        ]);
+        $this->tool->update($toolData->asArray());
     }
 }

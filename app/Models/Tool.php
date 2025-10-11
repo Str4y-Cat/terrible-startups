@@ -17,7 +17,9 @@ class Tool extends Model
         "full_response",
         "content",
         'type',
-        'status'
+        'status',
+        'tokens_used',
+        'model_type',
     ];
 
     protected $casts = [

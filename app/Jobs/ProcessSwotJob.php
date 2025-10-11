@@ -3,12 +3,15 @@
 namespace App\Jobs;
 
 use App\Enums\ToolStatus;
+use App\Enums\ToolType;
 use App\Models\Idea;
 use App\Models\Tool;
 use App\Services\AiService;
+use App\Transformers\ToolDataTransformer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
+use ToolData;
 
 class ProcessSwotJob implements ShouldQueue
 {
@@ -30,10 +33,9 @@ class ProcessSwotJob implements ShouldQueue
     {
 
         $openAiService = new AiService($this->idea);
-        //REFACTOR: return toolDTO;
-        $request = $openAiService->getSwot();
+        $response = $openAiService->getSwot();
 
-        if (!$request->ok()) {
+        if (!$response->ok()) {
 
             $this->tool->update([
                 "status" => ToolStatus::failed->value
@@ -41,18 +43,20 @@ class ProcessSwotJob implements ShouldQueue
 
             Log::error("ProcessSwotJob: Job failed", [
                 "tool_id" => $this->tool->id,
-                'response' => $request->body(),
+                'response' => $response->body(),
             ]);
 
             throw new \Exception('ProcessSwotJob failed');
         }
 
-        $this->tool->update([
-            "full_response" => $request->json(),
-            "content" => json_decode($request->collect()->get('output.0.content.0.text'), true),
-            "status" => ToolStatus::complete->value,
-            "tokens_used" => $request->collect()->get('usage.total_tokens'),
-            "model_type" => $request->collect()->get('model'),
-        ]);
+        $toolData = ToolDataTransformer::fromOpenAi($response, ToolType::swot);
+
+        $this->tool->update(
+            $toolData->asArray()
+        );
+
+        $this->tool->update(
+            ["status" => ToolStatus::complete->value]
+        );
     }
 }

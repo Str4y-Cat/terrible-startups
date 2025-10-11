@@ -3,9 +3,11 @@
 namespace App\Jobs;
 
 use App\Enums\ToolStatus;
+use App\Enums\ToolType;
 use App\Models\Idea;
 use App\Models\Tool;
 use App\Services\AiService;
+use App\Transformers\ToolDataTransformer;
 use GuzzleHttp\Promise\Utils;
 use GuzzleHttp\Utils as GuzzleHttpUtils;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -36,9 +38,9 @@ class ProcessRedditSearchJob implements ShouldQueue
     {
 
         $openAiService = new AiService($this->idea);
-        $request = $openAiService->getRedditCommunities();
+        $response = $openAiService->getRedditCommunities();
 
-        if (!$request->ok()) {
+        if (!$response->ok()) {
 
             $this->tool->update([
                 "status" => ToolStatus::failed->value
@@ -46,16 +48,14 @@ class ProcessRedditSearchJob implements ShouldQueue
 
             Log::error("ProcessRedditSearchJob: Job failed", [
                 "tool_id" => $this->tool->id,
-                'response' => $request->body(),
+                'response' => $response->body(),
             ]);
 
-            $this->fail();
+            throw new \Exception('ProcessRedditSearchJob failed');
         }
 
-        $this->tool->update([
-            "full_response" => $request->json(),
-            "content" => json_decode(Arr::get($request->collect(), 'output.0.content.0.text'), true),
-            "status" => ToolStatus::complete->value
-        ]);
+        $toolData = ToolDataTransformer::fromOpenAi($response, ToolType::redditCommunities);
+
+        $this->tool->update($toolData->asArray());
     }
 }
