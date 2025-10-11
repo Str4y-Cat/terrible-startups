@@ -14,24 +14,12 @@ Route::get('/', function () {
 /*     return redirect()->intended(route('ideas.index', absolute: false)); */
 /* })->middleware(['auth', 'verified'])->name('dashboard'); */
 
-Route::get('ideas/show', function () {
-    return Inertia::render('ideas/Show');
-})->middleware(['auth', 'verified'])->name('ideas/show');
-
-Route::resource('ideas', IdeaController::class)->middleware(['auth', 'verified']);
-
-Route::get('ideas/{idea}/download', [IdeaController::class,'download']);
-Route::patch('ideas/{idea}/rating', [RatingController::class,'update'])->name('rating.update');
-
-/* Route::patch('ideas/{idea}/tags', [TagController::class,'update'])->name('tag.update'); */
-/**/
-/* Route::delete('ideas/{idea}/tags', [TagController::class,'destroy'])->name('tag.delete'); */
-Route::post('ideas/{idea}/tags/sync', [TagController::class,'sync'])->name('tags.sync');
 
 
 
 /* Route::resource('ideas', IdeaController::class); */
 
+require __DIR__.'/ideas.php';
 require __DIR__.'/note.php';
 require __DIR__.'/settings.php';
 require __DIR__.'/tools.php';
