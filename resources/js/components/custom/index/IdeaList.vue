@@ -46,7 +46,7 @@ const visit = (val: number) => {
                             </div>
                         </div>
                         <div class="sm:max-w-[60%]">
-                            <p class="line-clamp-2 overflow-hidden text-ellipsis">{{ idea.overview }}</p>
+                            <p class="line-clamp-2 overflow-hidden text-ellipsis text-muted-foreground">{{ idea.overview }}</p>
                         </div>
                         <div class="mt-2 flex flex-wrap gap-2 sm:hidden">
                             <Tag
