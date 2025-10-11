@@ -7,6 +7,7 @@ use App\Enums\ToolType;
 use App\Jobs\ProcessCompetitorSearchJob;
 use App\Jobs\ProcessRedditSearchJob;
 use App\Jobs\ProcessSwotJob;
+use App\Jobs\ProcessToolJob;
 use App\Models\Idea;
 use App\Models\Tool;
 use App\Services\AiService;
@@ -17,6 +18,9 @@ use Inertia\Response;
 
 class ToolController extends Controller
 {
+    //REFACTOR: we could probably refactor this into one option.
+    //Then we add the tool type in the parameter. i.e tool?tooltype=competitorsearch
+
     //COMPETITOR SEARCH
     public function showCompetitorSearch(Idea $idea)
     {
@@ -38,13 +42,8 @@ class ToolController extends Controller
             "type" => ToolType::competitorSearch->value,
             "status" => ToolStatus::processing->value,
         ]);
-        /* $tool = Tool::create([ */
-        /*     "user_id" => Auth::user()->id, */
-        /*     "idea_id" => $idea->id, */
-        /* ]); */
 
-
-        ProcessCompetitorSearchJob::dispatch($idea, $tool);
+        ProcessToolJob::dispatch($idea, $tool);
 
         return Inertia::render('tools/CompetitorSearch', [
             "idea" => fn () => $idea -> only(['id', 'title']),
@@ -74,14 +73,7 @@ class ToolController extends Controller
             "type" => ToolType::swot->value,
             "status" => ToolStatus::processing->value,
         ]);
-        /* $tool = Tool::create([ */
-        /*     "user_id" => Auth::user()->id, */
-        /*     "idea_id" => $idea->id, */
-        /* ]); */
-
-        ProcessSwotJob::dispatch($idea, $tool);
-
-        /* ProcessSwotJob::dispatch($idea, $tool); */
+        ProcessToolJob::dispatch($idea, $tool);
 
         return Inertia::render('tools/SwotAnalysis', [
             "idea" => fn () => $idea -> only(['id', 'title']),
@@ -111,14 +103,8 @@ class ToolController extends Controller
             "type" => ToolType::redditCommunities->value,
             "status" => ToolStatus::processing->value,
         ]);
-        /* $tool = Tool::create([ */
-        /*     "user_id" => Auth::user()->id, */
-        /*     "idea_id" => $idea->id, */
-        /* ]); */
 
-        /* ProcessRedditSearchJob::dispatchSync($idea, $tool); */
-        ProcessRedditSearchJob::dispatch($idea, $tool);
-        /* ProcessSwotJob::dispatch($idea, $tool); */
+        ProcessToolJob::dispatch($idea, $tool);
 
         return Inertia::render('tools/RedditCommunities', [
             "idea" => fn () => $idea -> only(['id', 'title']),

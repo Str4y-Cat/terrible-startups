@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Enums\ToolType;
 use App\Models\Idea;
 use GuzzleHttp\Utils;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\Response;
+use Throwable;
 
 use function GuzzleHttp\json_decode;
 use function GuzzleHttp\json_encode;
@@ -85,6 +87,7 @@ class AiService
 
         return $this->queryOpenAi($id, $version);
 
+
     }
 
     public function getSwot(): Response
@@ -102,6 +105,20 @@ class AiService
         $version = "ai.openai_reddit_communities_prompt_version";
 
         return $this->queryOpenAi($id, $version);
+    }
+
+    public static function getResponseFor(ToolType $toolType, Idea $idea): Response
+    {
+
+        $service = new self($idea);
+
+        $match = match($toolType) {
+            ToolType::competitorSearch => $service->getCompetitorAnalysis(),
+            ToolType::swot => $service->getSwot(),
+            ToolType::redditCommunities => $service->getRedditCommunities(),
+        };
+
+        return $match;
     }
 
 }

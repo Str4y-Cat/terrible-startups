@@ -16,7 +16,8 @@ test('valid data creates a idea record', function () {
            "target_audience" => ["lorem","ipsum","dolor","sit","amet"],
            "risks" => ["lorem","ipsum","dolor","sit","amet"],
            "challenges" => ["lorem","ipsum","dolor","sit","amet"],
-            "rating_questions" => [],
+           "rating_questions" => [],
+           "tags" => [],
         ];
 
     $response = $this

@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Enums\ToolStatus;
-use App\Enums\ToolType;
 use App\Models\Idea;
 use App\Models\Tool;
 use App\Services\AiService;
@@ -11,9 +10,9 @@ use App\Transformers\ToolDataTransformer;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Log;
-use ToolData;
+use Throwable;
 
-class ProcessSwotJob implements ShouldQueue
+class ProcessToolJob implements ShouldQueue
 {
     use Queueable;
 
@@ -32,31 +31,44 @@ class ProcessSwotJob implements ShouldQueue
     public function handle(): void
     {
 
-        $openAiService = new AiService($this->idea);
-        $response = $openAiService->getSwot();
+        /* $openAiService = new AiService($this->idea); */
+        /* $response = $openAiService->getCompetitorAnalysis(); */
+
+        $response = AiService::getResponseFor($this->tool->type, $this->idea);
 
         if (!$response->ok()) {
+
 
             $this->tool->update([
                 "status" => ToolStatus::failed->value
             ]);
 
-            Log::error("ProcessSwotJob: Job failed", [
+            Log::error("Process tool job: Job failed", [
                 "tool_id" => $this->tool->id,
+                "tool_type" => $this->tool->type,
                 'response' => $response->body(),
             ]);
 
-            throw new \Exception('ProcessSwotJob failed');
+
+            throw new \Exception('ProcessToolJob failed');
         }
 
-        $toolData = ToolDataTransformer::fromOpenAi($response, ToolType::swot);
+        try {
+
+            $toolData = ToolDataTransformer::fromOpenAi($response, $this->tool->type);
+        } catch (Throwable $err) {
+            $this->tool->update([
+                "status" => ToolStatus::failed->value
+            ]);
+
+            throw $err;
+        }
 
         $this->tool->update(
-            $toolData->asArray()
-        );
-
-        $this->tool->update(
-            ["status" => ToolStatus::complete->value]
+            [
+                ...$toolData->asArray(),
+                'status' => ToolStatus::complete
+            ]
         );
     }
 }
