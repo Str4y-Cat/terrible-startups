@@ -66,7 +66,7 @@ const completedDetails = computed(() => {
     if (!idea.details) return count;
 
     for (const key in idea.details) {
-        if (idea.details?.[key]) {
+        if (getStatus(idea.details?.[key])) {
             count++;
         }
     }
@@ -90,6 +90,21 @@ watch(syncing, (isSyncing) => {
 });
 
 const tagDialogOpen = ref(false);
+
+function getStatus(item) {
+    // console.log('item', item, item?.value, item?.length);
+
+    if (item == undefined || item == null) return false;
+
+    //is proxy array
+    if (typeof item == 'object') {
+        console.log('is Array', item.length > 0);
+        return item.length > 0;
+    }
+    console.log(item, ' returning true');
+
+    return true;
+}
 </script>
 
 <template>
@@ -162,7 +177,7 @@ const tagDialogOpen = ref(false);
                     </template>
 
                     <template v-for="(meta, key) in detailConfig" :key="key">
-                        <TextDisplay :title="meta.title" :status="idea.details?.[key] ? 'complete' : 'progress'">
+                        <TextDisplay :title="meta.title" :status="getStatus(idea.details?.[key]) ? 'complete' : 'progress'">
                             <TextDisplayBody
                                 @processing="(value) => (syncing = value)"
                                 v-if="meta.type === 'string'"

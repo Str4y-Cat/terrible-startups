@@ -31,15 +31,18 @@ export function useAutosaveField(
             isSaving.value = true;
             form[fieldName] = newVal;
 
-            form.transform((data: { [key: string]: string[] }) => {
-                const filtered: { [key: string]: string[] } = {};
+            form.transform((data: { [key: string]: string[] | string }) => {
+                const filtered: { [key: string]: string[] | string } = {};
                 for (const key in data) {
+                    //skips the filter if the value is a string
+                    if (typeof data[key] === 'string' || data[key] instanceof String) {
+                        filtered[key] = data[key];
+                        continue;
+                    }
+
                     filtered[key] = data[key].filter((val) => val != null && val != '');
                 }
                 return filtered;
-                // return data.filter((val) => {
-                //     return val != null;
-                // });
             }).patch(route, {
                 preserveState: true,
                 preserveScroll: true,
