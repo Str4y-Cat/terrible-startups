@@ -1,50 +1,85 @@
 <script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
+import { ref } from 'vue';
+import LandingNav from '@/components/custom/landing/LandingNav.vue';
+import LandingHeroClean from '@/components/custom/landing/hero/LandingHeroClean.vue';
+import LandingHeroMatter from '@/components/custom/landing/hero/LandingHeroMatter.vue';
+import LandingHeroThree from '@/components/custom/landing/hero/LandingHeroThree.vue';
+import LandingPhilosophy from '@/components/custom/landing/LandingPhilosophy.vue';
+import LandingCoreLoop from '@/components/custom/landing/LandingCoreLoop.vue';
+import LandingFeatures from '@/components/custom/landing/LandingFeatures.vue';
+import LandingWhyTerrible from '@/components/custom/landing/LandingWhyTerrible.vue';
+import LandingSocialProof from '@/components/custom/landing/LandingSocialProof.vue';
+import LandingCTA from '@/components/custom/landing/LandingCTA.vue';
+
+interface Props {
+    auth: {
+        user: any | null;
+    };
+}
+
+const props = defineProps<Props>();
+
+// Hero variation selector - change this to switch between hero styles
+// Options: 'clean', 'matter', 'three'
+const heroType = ref<'clean' | 'matter' | 'three'>('matter');
 </script>
 
 <template>
-    <Head title="Hello">
+    <Head title="Terrible Startups - Turn Your Ideas Into Reality">
+        <meta name="description" content="Document 100 startup ideas. 99 will be terrible. 1 will change everything. Quantity leads to quality." />
         <link rel="preconnect" href="https://rsms.me/" />
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     </Head>
-    <div class="flex min-h-screen flex-col items-center bg-[#FDFDFC] p-6 text-[#1b1b18] lg:justify-center lg:p-8 dark:bg-[#0a0a0a]">
-        <header class="mb-6 w-full max-w-[335px] text-sm not-has-[nav]:hidden lg:max-w-4xl">
-            <nav class="flex items-center justify-end gap-4">
-                <Link
-                    v-if="$page.props.auth.user"
-                    :href="route('ideas.index')"
-                    class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-                >
-                    Ideas
-                </Link>
 
-                <template v-else>
-                    <Link
-                        :href="route('login')"
-                        class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
-                    >
-                        Log in
-                    </Link>
-                    <Link
-                        :href="route('register')"
-                        class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-                    >
-                        Register
-                    </Link>
-                </template>
-            </nav>
-        </header>
-        <div class="flex w-full items-center justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0">
-            <main class="flex w-full max-w-[335px] flex-col-reverse overflow-hidden rounded-lg lg:max-w-4xl lg:flex-row">
-                <div class="m-auto flex flex-col items-center justify-center">
-                    <h1 class="text-4xl font-bold text-primary">This site is still being built. Check back in soon :)</h1>
+    <div class="min-h-screen bg-background text-foreground">
+        <!-- Navigation -->
+        <LandingNav :authenticated="!!auth.user" />
+
+        <!-- Hero Section - Switchable -->
+        <LandingHeroClean v-if="heroType === 'clean'" />
+        <LandingHeroMatter v-else-if="heroType === 'matter'" />
+        <LandingHeroThree v-else-if="heroType === 'three'" />
+
+        <!-- Philosophy Section -->
+        <LandingPhilosophy />
+
+        <!-- Core Loop Section -->
+        <LandingCoreLoop />
+
+        <!-- Features Section -->
+        <LandingFeatures />
+
+        <!-- Why Terrible Section -->
+        <LandingWhyTerrible />
+
+        <!-- Social Proof -->
+        <LandingSocialProof />
+
+        <!-- Final CTA -->
+        <LandingCTA />
+
+        <!-- Footer -->
+        <footer class="border-t py-8">
+            <div class="container px-4 sm:px-8">
+                <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
+                    <p class="text-sm text-muted-foreground">
+                        © 2025 Terrible Startups. All rights reserved.
+                    </p>
+                    <div class="flex gap-6 text-sm">
+                        <a href="#" class="text-muted-foreground hover:text-foreground">Privacy</a>
+                        <a href="#" class="text-muted-foreground hover:text-foreground">Terms</a>
+                        <a :href="route('login')" class="text-muted-foreground hover:text-foreground">Login</a>
+                    </div>
                 </div>
-                <!--
-                <div class="relative h-[50vh] w-full flex-grow border">
-                    <PlaceholderPattern />
-                </div>
--->
-            </main>
-        </div>
+            </div>
+        </footer>
     </div>
 </template>
+
+<style scoped>
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+</style>
