@@ -23,6 +23,10 @@ class IdeaCreatorService
 
     public function createRating(array $questions): IdeaCreatorService
     {
+        if (sizeof($questions) == 1) {
+            return $this;
+
+        }
         //convert array to collection
         $questions = collect($questions);
 
@@ -30,7 +34,9 @@ class IdeaCreatorService
         $questionTotal = $questions
             ->reduce(function ($sum, $cur) {
                 return $sum *= $cur['score'];
-            }, 1);
+            }, 1) ?? -1;
+
+
 
         //create the rating
         $rating = $this->idea->ratings()->create(['idea_id' => $this->idea->id, 'total_score' => $questionTotal]);

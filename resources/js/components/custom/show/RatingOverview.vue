@@ -29,7 +29,7 @@ const ratingTotal = computed(() => {
 const ratingResults = {
     broken: {
         title: 'Oh no',
-        description: 'Looks like something broke. Please redo your rating',
+        description: "Look like you haven't rated this yet",
     },
     terrible: {
         title: 'Wonderfully terrible',
@@ -109,7 +109,8 @@ const submit = () => {
                     'bg-green-600/10 text-green-600': ratingTotal >= 80,
                 }"
             >
-                {{ ratingTotal }}
+                <!--{{ ratingTotal }}-->
+                {{ ratingTotal > 100 ? '100+' : ratingTotal }}
             </div>
             <div class="flex flex-col gap-2">
                 <h3 class="text-xl font-bold">

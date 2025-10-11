@@ -25,7 +25,8 @@ const visit = (val: number) => {
                             'bg-green-600/10 text-green-600': idea.rating >= 80,
                         }"
                     >
-                        {{ idea.rating }}
+                        <!--{{ idea.rating }}-->
+                        {{ idea.rating > 100 ? '100+' : idea.rating }}
                     </div>
                 </div>
 

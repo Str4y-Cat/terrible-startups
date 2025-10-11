@@ -11,6 +11,7 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { RatingAnswer, RatingQuestion } from '@/types/rating';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { LoaderCircle } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
 // import { toast } from 'vue-sonner';
 import { errorToast } from '@/composables/useErrorToast';
@@ -49,7 +50,7 @@ const form = useForm<{
     target_audience?: string[];
     risks?: string[];
     challenges?: string[];
-    rating_questions?: RatingAnswer[];
+    rating_questions?: RatingAnswer[] | {};
     tags?: { key: string; value: string }[];
 }>({
     title: '',
@@ -64,7 +65,7 @@ const form = useForm<{
     risks: [],
     challenges: [],
     tags: [],
-    rating_questions: [{ question_id: 0, score: 0 }],
+    rating_questions: [{}],
 });
 
 const submit = () => {

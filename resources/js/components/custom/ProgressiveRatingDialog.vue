@@ -33,7 +33,8 @@ if (answers.length == 0) {
 //are all questions answered
 const allAnswered = computed(() => {
     // return props.questions.every((question) => formData.value[question.id] !== undefined)
-    return props.questions.every((question) => getAnswer(question.id) !== undefined);
+    return progress.value == 100;
+    // return props.questions.every((question) => getAnswer(question.id) !== undefined);
 });
 
 //get the current answer
@@ -203,7 +204,7 @@ function setAnswer(questionId: number | string, score: number) {
                                 'bg-green-600/10 text-green-600': ratingTotal >= 80,
                             }"
                         >
-                            {{ ratingTotal }}
+                            {{ ratingTotal > 100 ? '100+' : ratingTotal }}
                         </div>
                         <div class="flex flex-col gap-2">
                             <h3 class="text-2xl font-bold">
