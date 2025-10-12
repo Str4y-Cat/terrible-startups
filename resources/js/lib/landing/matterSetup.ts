@@ -1,34 +1,27 @@
 import Matter from 'matter-js';
 
-export interface BallData {
+export interface CardData {
     label: string;
-    color: 'red' | 'yellow' | 'green';
+    size: 'small' | 'medium' | 'large';
 }
 
 export const terribleIdeas = [
-    'Blockchain for Cats',
-    'Uber for Houseplants',
+    'Blockchain for Houseplants',
     'AI-Powered Socks',
-    'Tinder for Pets',
-    'Instagram for Ants',
+    'Uber for Lost Keys',
     'Netflix for Dreams',
+    'Tinder for Furniture',
     'Airbnb for Bathrooms',
+    'Instagram for Ants',
     'Pet Rock 2.0',
-    'Cryptocurrency for Toddlers',
-    'Smart Spatula',
-    'IoT Doormat',
-    'AR Sticky Notes',
-    'VR Umbrella',
-    'NFT Lunch Boxes',
-    'Metaverse Garage Sale',
-    'Podcast for Plants',
-    'TikTok for Seniors',
-    'LinkedIn for Pets',
-    'Uber for Groceries', // Wait...
-    'Food Delivery App', // Hmm...
-    'Marketplace for Used Goods', // Actually...
-    'Photo Sharing App', // These exist!
 ];
+
+// Card size configurations
+const cardSizes = {
+    small: { width: 80, height: 50 },
+    medium: { width: 120, height: 75 },
+    large: { width: 160, height: 100 },
+};
 
 export function createBallPitWorld(canvas: HTMLCanvasElement, isMobile: boolean) {
     const Engine = Matter.Engine;
@@ -37,13 +30,12 @@ export function createBallPitWorld(canvas: HTMLCanvasElement, isMobile: boolean)
     const Bodies = Matter.Bodies;
     const Mouse = Matter.Mouse;
     const MouseConstraint = Matter.MouseConstraint;
-    const Events = Matter.Events;
 
-    // Create engine
+    // Create engine with reduced gravity for floaty feel
     const engine = Engine.create();
-    engine.gravity.y = 1;
+    engine.gravity.y = 0.5;
 
-    // Create renderer
+    // Create renderer with custom rendering disabled (we'll draw manually)
     const render = Render.create({
         canvas: canvas,
         engine: engine,
@@ -64,48 +56,46 @@ export function createBallPitWorld(canvas: HTMLCanvasElement, isMobile: boolean)
         Bodies.rectangle(canvas.clientWidth, canvas.clientHeight / 2, 20, canvas.clientHeight, wallOptions), // right
     ];
 
-    // Create balls
-    const totalBalls = isMobile ? 80 : 150;
-    const redCount = Math.floor(totalBalls * 0.7);
-    const yellowCount = Math.floor(totalBalls * 0.25);
-    const greenCount = totalBalls - redCount - yellowCount;
+    // Create cards with varying sizes
+    const totalCards = isMobile ? 12 : 20;
+    const cards: Matter.Body[] = [];
+    const cardData = new Map<Matter.Body, CardData>();
 
-    const balls: Matter.Body[] = [];
-    const ballData = new Map<Matter.Body, BallData>();
-
-    const colorConfigs = [
-        { count: redCount, color: 'red' as const, fillStyle: 'hsl(0, 70%, 55%)' },
-        { count: yellowCount, color: 'yellow' as const, fillStyle: 'hsl(45, 90%, 60%)' },
-        { count: greenCount, color: 'green' as const, fillStyle: 'hsl(142, 60%, 50%)' },
+    // Size distribution: 40% small, 40% medium, 20% large
+    const sizeDistribution = [
+        { size: 'small' as const, count: Math.floor(totalCards * 0.4) },
+        { size: 'medium' as const, count: Math.floor(totalCards * 0.4) },
+        { size: 'large' as const, count: totalCards - Math.floor(totalCards * 0.4) - Math.floor(totalCards * 0.4) },
     ];
 
     let ideaIndex = 0;
-    colorConfigs.forEach(({ count, color, fillStyle }) => {
+    sizeDistribution.forEach(({ size, count }) => {
         for (let i = 0; i < count; i++) {
-            const radius = isMobile ? 15 : 20;
-            const x = Math.random() * (canvas.clientWidth - 100) + 50;
-            const y = Math.random() * (canvas.clientHeight - 100) + 50;
+            const dimensions = cardSizes[size];
+            const x = Math.random() * (canvas.clientWidth - dimensions.width) + dimensions.width / 2;
+            const y = Math.random() * (canvas.clientHeight - dimensions.height) + dimensions.height / 2;
 
-            const ball = Bodies.circle(x, y, radius, {
-                restitution: 0.8,
-                friction: 0.001,
+            const card = Bodies.rectangle(x, y, dimensions.width, dimensions.height, {
+                restitution: 0.5,
+                friction: 0.05,
                 density: 0.001,
+                angle: (Math.random() - 0.5) * 0.3, // Slight random rotation
                 render: {
-                    fillStyle: fillStyle,
+                    fillStyle: 'transparent', // We'll render manually
                 },
             });
 
-            balls.push(ball);
-            ballData.set(ball, {
+            cards.push(card);
+            cardData.set(card, {
                 label: terribleIdeas[ideaIndex % terribleIdeas.length],
-                color: color,
+                size: size,
             });
             ideaIndex++;
         }
     });
 
     // Add all bodies to world
-    World.add(engine.world, [...walls, ...balls]);
+    World.add(engine.world, [...walls, ...cards]);
 
     // Add mouse control
     const mouse = Mouse.create(render.canvas);
@@ -124,23 +114,135 @@ export function createBallPitWorld(canvas: HTMLCanvasElement, isMobile: boolean)
     // Keep the mouse in sync with rendering
     render.mouse = mouse;
 
-    // Run the engine and renderer
+    // Custom rendering function for cards
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('Could not get canvas context');
+
+    // Get computed styles from document for Tailwind colors
+    const rootStyles = getComputedStyle(document.documentElement);
+    const cardBg = rootStyles.getPropertyValue('--card').trim() || '0 0% 100%';
+    const cardBorder = rootStyles.getPropertyValue('--border').trim() || '0 0% 89.8%';
+    const cardText = rootStyles.getPropertyValue('--card-foreground').trim() || '0 0% 3.9%';
+
+    // Convert HSL to RGB for canvas
+    const hslToRgb = (h: number, s: number, l: number) => {
+        s /= 100;
+        l /= 100;
+        const k = (n: number) => (n + h / 30) % 12;
+        const a = s * Math.min(l, 1 - l);
+        const f = (n: number) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+        return [Math.round(255 * f(0)), Math.round(255 * f(8)), Math.round(255 * f(4))];
+    };
+
+    const parseHsl = (hsl: string) => {
+        const values = hsl.split(' ').map(v => parseFloat(v));
+        return { h: values[0] || 0, s: values[1] || 0, l: values[2] || 100 };
+    };
+
+    // Run the engine
     const runner = Matter.Runner.create();
     Matter.Runner.run(runner, engine);
-    Render.run(render);
+
+    // Custom render loop
+    function customRender() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        cards.forEach((card) => {
+            const data = cardData.get(card);
+            if (!data) return;
+
+            const dimensions = cardSizes[data.size];
+            ctx.save();
+
+            // Translate to card position and rotate
+            ctx.translate(card.position.x, card.position.y);
+            ctx.rotate(card.angle);
+
+            // Draw card background
+            ctx.fillStyle = `hsl(${cardBg})`;
+            ctx.strokeStyle = `hsl(${cardBorder})`;
+            ctx.lineWidth = 1;
+
+            const radius = 8;
+            const x = -dimensions.width / 2;
+            const y = -dimensions.height / 2;
+
+            // Rounded rectangle
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + dimensions.width - radius, y);
+            ctx.quadraticCurveTo(x + dimensions.width, y, x + dimensions.width, y + radius);
+            ctx.lineTo(x + dimensions.width, y + dimensions.height - radius);
+            ctx.quadraticCurveTo(x + dimensions.width, y + dimensions.height, x + dimensions.width - radius, y + dimensions.height);
+            ctx.lineTo(x + radius, y + dimensions.height);
+            ctx.quadraticCurveTo(x, y + dimensions.height, x, y + dimensions.height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+
+            ctx.fill();
+            ctx.stroke();
+
+            // Add shadow
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.1)';
+            ctx.shadowBlur = 4;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 2;
+
+            // Draw text
+            ctx.fillStyle = `hsl(${cardText})`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.shadowColor = 'transparent';
+
+            const fontSize = data.size === 'small' ? 10 : data.size === 'medium' ? 12 : 14;
+            ctx.font = `600 ${fontSize}px Inter, system-ui, sans-serif`;
+
+            // Word wrap text
+            const words = data.label.split(' ');
+            const maxWidth = dimensions.width - 16;
+            const lines: string[] = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                const testLine = currentLine + ' ' + words[i];
+                const metrics = ctx.measureText(testLine);
+                if (metrics.width > maxWidth) {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                } else {
+                    currentLine = testLine;
+                }
+            }
+            lines.push(currentLine);
+
+            const lineHeight = fontSize * 1.3;
+            const totalHeight = lines.length * lineHeight;
+            const startY = -totalHeight / 2 + lineHeight / 2;
+
+            lines.forEach((line, i) => {
+                ctx.fillText(line, 0, startY + i * lineHeight);
+            });
+
+            ctx.restore();
+        });
+
+        requestAnimationFrame(customRender);
+    }
+
+    customRender();
 
     return {
         engine,
         render,
         runner,
-        balls,
-        ballData,
+        balls: cards,
+        ballData: cardData,
         cleanup: () => {
             Matter.Runner.stop(runner);
             Render.stop(render);
             World.clear(engine.world, false);
             Engine.clear(engine);
-            render.canvas.remove();
         },
     };
 }

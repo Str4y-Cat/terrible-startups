@@ -21,8 +21,8 @@ interface Props {
 const props = defineProps<Props>();
 
 // Hero variation selector - change this to switch between hero styles
-// Options: 'clean', 'three'
-const heroType = ref<'clean' | 'three'>('clean');
+// Options: 'clean', 'matter', 'three'
+const heroType = ref<'clean' | 'matter' | 'three'>('matter');
 </script>
 
 <template>
@@ -38,6 +38,7 @@ const heroType = ref<'clean' | 'three'>('clean');
 
         <!-- Hero Section - Switchable -->
         <LandingHeroClean v-if="heroType === 'clean'" />
+        <LandingHeroMatter v-else-if="heroType === 'matter'" />
         <LandingHeroThree v-else-if="heroType === 'three'" />
 
         <!-- Philosophy Section -->
