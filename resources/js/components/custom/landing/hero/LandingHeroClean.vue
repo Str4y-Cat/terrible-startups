@@ -37,7 +37,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <section class="relative overflow-hidden bg-gradient-to-b from-background to-muted/30 py-20 sm:py-32">
+    <section class="relative bg-gradient-to-b from-background to-muted/30 py-20 sm:py-32">
         <!-- Floating idea cards in background -->
         <div class="pointer-events-none absolute inset-0 overflow-hidden opacity-40">
             <div

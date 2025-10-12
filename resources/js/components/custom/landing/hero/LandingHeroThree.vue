@@ -37,7 +37,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <section class="relative overflow-hidden bg-gradient-to-b from-background to-muted/30 py-20 sm:py-32">
+    <section class="relative bg-gradient-to-b from-background to-muted/30 py-20 sm:py-32">
         <!-- 3D Particle container -->
         <div ref="containerRef" class="absolute inset-0 opacity-60"></div>
 

@@ -81,9 +81,9 @@ function handleMouseMove(event: MouseEvent) {
 </script>
 
 <template>
-    <section class="relative overflow-hidden bg-gradient-to-b from-background to-muted/30 py-20 sm:py-32">
+    <section class="relative bg-gradient-to-b from-background to-muted/30 py-20 sm:py-32">
         <!-- Ball pit container -->
-        <div ref="containerRef" class="absolute inset-0">
+        <div ref="containerRef" class="absolute inset-0" style="height: 80vh; max-height: 600px;">
             <canvas ref="canvasRef" class="size-full"></canvas>
         </div>
 
