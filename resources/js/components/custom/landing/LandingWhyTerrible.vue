@@ -28,7 +28,7 @@ const terribleIdeas = [
     {
         idea: 'Your idea',
         quote: 'Probably terrible too',
-        value: '??? =Ž',
+        value: '??? ðŸ’Ž',
     },
 ];
 </script>

@@ -28,7 +28,7 @@
                         </p>
                         <div class="flex items-center justify-center py-8">
                             <div class="flex size-24 items-center justify-center rounded-full border-2 border-dashed">
-                                <span class="text-4xl"><˙</span>
+                                <span class="text-4xl">üè∫</span>
                             </div>
                         </div>
                         <p class="text-center text-sm font-medium text-muted-foreground">
@@ -47,7 +47,7 @@
                         </p>
                         <div class="grid grid-cols-5 gap-2 py-4">
                             <div v-for="i in 10" :key="i" class="flex items-center justify-center text-2xl">
-                                <˙
+                                üè∫
                             </div>
                         </div>
                         <p class="text-center text-sm font-medium text-primary">
