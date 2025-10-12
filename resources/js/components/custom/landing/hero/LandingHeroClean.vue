@@ -38,15 +38,15 @@ onMounted(() => {
 
 <template>
     <section class="relative bg-gradient-to-b from-background to-muted/30 py-20 sm:py-32">
-        <!-- Floating idea cards in background -->
-        <div class="pointer-events-none absolute inset-0 overflow-hidden opacity-40">
+        <!-- Floating idea cards around content -->
+        <div class="pointer-events-none absolute inset-0 overflow-hidden">
             <div
                 v-for="(idea, index) in floatingIdeas"
                 :key="idea"
-                class="absolute animate-float rounded-lg border bg-card px-3 py-2 text-xs font-medium shadow-sm"
+                class="absolute animate-float rounded-lg border bg-card px-3 py-2 text-xs font-medium shadow-sm opacity-60"
                 :style="{
-                    left: `${(index * 13) % 90}%`,
-                    top: `${(index * 17) % 80}%`,
+                    left: index < 4 ? `${5 + (index * 20)}%` : `${70 + ((index - 4) * 8)}%`,
+                    top: `${15 + (index * 10)}%`,
                     animationDelay: `${index * 0.5}s`,
                     animationDuration: `${8 + index}s`,
                 }"
