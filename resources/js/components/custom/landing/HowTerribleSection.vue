@@ -14,7 +14,7 @@ defineProps<{
             <p class="text-left text-lg/8">{{ item.description }}</p>
         </div>
         <div class="w-full">
-            <div class="relative aspect-6/4 w-full overflow-hidden rounded-2xl border border-4">
+            <div class="relative aspect-square w-full overflow-hidden rounded-2xl border border-4 sm:aspect-6/4">
                 <PlaceholderPattern class="!stoke-muted-foreground" />
             </div>
         </div>

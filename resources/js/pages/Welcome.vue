@@ -24,7 +24,7 @@ console.log(props.auth);
 
     <LandingNav :authenticated="auth.user != null ? true : false" />
 
-    <div class="mx-auto min-h-screen max-w-screen-2xl bg-background px-4 text-foreground sm:px-8">
+    <div class="mx-auto min-h-screen max-w-screen-2xl bg-background px-6 text-foreground sm:px-8">
         <LandingHero />
 
         <LandingHeroVideo src="" />
