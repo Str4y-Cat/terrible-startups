@@ -17,8 +17,8 @@ import Section from '../Section.vue';
             The best way to keep track, validate and share your startup ideas.<br />100 startup ideas. 99 will be terrible. 1 will change everything.
         </p>
 
-        <Button @click.prevent>
-            <Link :href="route('register')" class="w-full font-bold">Create Your First Terrible Idea</Link>
+        <Button size="lg" @click.prevent>
+            <Link :href="route('register')" class="w-full font-bold sm:text-lg">Create Your First Terrible Idea</Link>
         </Button>
     </Section>
 </template>
