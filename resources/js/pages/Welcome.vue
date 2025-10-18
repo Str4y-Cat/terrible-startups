@@ -2,10 +2,9 @@
 import LandingHero from '@/components/custom/landing/hero/LandingHero.vue';
 import LandingHeroVideo from '@/components/custom/landing/hero/LandingHeroVideo.vue';
 import LandingCTA from '@/components/custom/landing/LandingCTA.vue';
+import LandingHowTerrible from '@/components/custom/landing/LandingHowTerrible.vue';
 import LandingNav from '@/components/custom/landing/LandingNav.vue';
-import LandingSocialProof from '@/components/custom/landing/LandingSocialProof.vue';
 import LandingWhatTerrible from '@/components/custom/landing/LandingWhatTerrible.vue';
-import LandingWhyTerrible from '@/components/custom/landing/LandingWhyTerrible.vue';
 import { Head } from '@inertiajs/vue3';
 
 interface Props {
@@ -25,7 +24,7 @@ console.log(props.auth);
 
     <LandingNav :authenticated="auth.user != null ? true : false" />
 
-    <div class="mx-auto min-h-screen max-w-screen-2xl border border-green-600 bg-background px-4 text-foreground sm:px-8">
+    <div class="mx-auto min-h-screen max-w-screen-2xl bg-background px-4 text-foreground sm:px-8">
         <LandingHero />
 
         <LandingHeroVideo src="" />
@@ -34,16 +33,16 @@ console.log(props.auth);
         <LandingWhatTerrible />
 
         <!-- Why Terrible Section -->
-        <LandingWhyTerrible />
+        <LandingHowTerrible />
 
         <!-- Social Proof -->
-        <LandingSocialProof />
+        <!--<LandingSocialProof />-->
 
         <!-- Final CTA -->
         <LandingCTA />
 
         <!-- Footer -->
-        <footer class="border-t py-8">
+        <footer v-if="false" class="border-t py-8">
             <div class="container px-4 sm:px-8">
                 <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
                     <p class="text-sm text-muted-foreground">© 2025 Terrible Startups. All rights reserved.</p>
