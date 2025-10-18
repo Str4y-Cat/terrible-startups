@@ -27,7 +27,7 @@ const steps = [
 </script>
 
 <template>
-    <SectionWide>
+    <SectionWide class="pt-10">
         <!-- Header -->
         <!--
         <div class="mb-12 text-center">
