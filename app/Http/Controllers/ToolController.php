@@ -4,15 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\ToolStatus;
 use App\Enums\ToolType;
-use App\Jobs\ProcessCompetitorSearchJob;
-use App\Jobs\ProcessRedditSearchJob;
-use App\Jobs\ProcessSwotJob;
 use App\Jobs\ProcessToolJob;
 use App\Models\Idea;
-use App\Models\Tool;
 use App\Services\AiService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Collection;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -22,7 +17,7 @@ class ToolController extends Controller
     //Then we add the tool type in the parameter. i.e tool?tooltype=competitorsearch
 
     //COMPETITOR SEARCH
-    public function showCompetitorSearch(Idea $idea)
+    public function showCompetitorSearch(Idea $idea): Response
     {
 
         /* dd("hello world, $idea->id"); */
@@ -33,7 +28,7 @@ class ToolController extends Controller
 
     }
 
-    public function createCompetitorSearch(Idea $idea)
+    public function createCompetitorSearch(Idea $idea): Response
     {
 
         //1. create empty instance in the database, status = untouched
@@ -54,7 +49,7 @@ class ToolController extends Controller
 
 
     //SWOT ANALYSIS
-    public function showSwot(Idea $idea)
+    public function showSwot(Idea $idea): Response
     {
 
         return Inertia::render('tools/SwotAnalysis', [
@@ -64,7 +59,7 @@ class ToolController extends Controller
 
     }
 
-    public function createSwot(Idea $idea)
+    public function createSwot(Idea $idea): Response
     {
 
         //1. create empty instance in the database, status = untouched
@@ -77,14 +72,14 @@ class ToolController extends Controller
 
         return Inertia::render('tools/SwotAnalysis', [
             "idea" => fn () => $idea -> only(['id', 'title']),
-            "swots" => fn () => $idea->tools()->where('type', ToolType::competitorSearch->value)->get(['status', "content", 'updated_at'])
+            "swots" => fn () => $idea->tools()->where('type', ToolType::swot->value)->get(['status', "content", 'updated_at'])
         ]);
 
     }
 
 
     //SWOT ANALYSIS
-    public function showRedditCommunities(Idea $idea)
+    public function showRedditCommunities(Idea $idea): Response
     {
 
         return Inertia::render('tools/RedditCommunities', [
@@ -94,7 +89,7 @@ class ToolController extends Controller
 
     }
 
-    public function createRedditCommunities(Idea $idea)
+    public function createRedditCommunities(Idea $idea): Response
     {
 
         //1. create empty instance in the database, status = untouched
@@ -108,13 +103,13 @@ class ToolController extends Controller
 
         return Inertia::render('tools/RedditCommunities', [
             "idea" => fn () => $idea -> only(['id', 'title']),
-            "community_searches" => fn () => $idea->tools()->where('type', ToolType::competitorSearch->value)->get(['status', "content", 'updated_at'])
+            "community_searches" => fn () => $idea->tools()->where('type', ToolType::redditCommunities->value)->get(['status', "content", 'updated_at'])
         ]);
 
     }
 
 
-    public function context(Idea $idea)
+    public function context(Idea $idea): Collection
     {
 
         $aiService = new AiService($idea);
