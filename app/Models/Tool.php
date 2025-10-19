@@ -31,7 +31,7 @@ class Tool extends Model
 
     public function idea(): BelongsTo
     {
-        return this->belongsTo(Tool::class);
+        return this->belongsTo(Idea::class);
     }
 
 }
