@@ -4,6 +4,7 @@ import LandingHeroVideo from '@/components/custom/landing/hero/LandingHeroVideo.
 import LandingCTA from '@/components/custom/landing/LandingCTA.vue';
 import LandingHowTerrible from '@/components/custom/landing/LandingHowTerrible.vue';
 import LandingNav from '@/components/custom/landing/LandingNav.vue';
+import LandingPrivacy from '@/components/custom/landing/LandingPrivacy.vue';
 import LandingWhatTerrible from '@/components/custom/landing/LandingWhatTerrible.vue';
 import { Head } from '@inertiajs/vue3';
 
@@ -34,6 +35,8 @@ console.log(props.auth);
 
         <!-- Why Terrible Section -->
         <LandingHowTerrible />
+
+        <LandingPrivacy />
 
         <!-- Social Proof -->
         <!--<LandingSocialProof />-->
