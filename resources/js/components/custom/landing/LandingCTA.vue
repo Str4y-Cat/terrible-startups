@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from '@/components/ui/button/Button.vue';
 import { Link } from '@inertiajs/vue3';
 import { Check } from 'lucide-vue-next';
 import Section from './Section.vue';
@@ -12,12 +13,9 @@ import Section from './Section.vue';
 
         <!-- CTA Button -->
         <div class="mb-8">
-            <Link
-                :href="route('register')"
-                class="inline-flex h-14 items-center justify-center rounded-md bg-primary px-10 text-base font-medium text-primary-foreground shadow-lg ring-offset-background transition-all hover:bg-primary/90 hover:shadow-xl focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
-            >
-                Create Your First Terrible Idea
-            </Link>
+            <Button @click.prevent size="lg">
+                <Link :href="route('register')" class="font-bold sm:text-lg"> Create Your First Terrible Idea </Link>
+            </Button>
         </div>
 
         <!-- Value props -->

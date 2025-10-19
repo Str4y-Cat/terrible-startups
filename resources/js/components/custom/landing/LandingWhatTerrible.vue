@@ -36,8 +36,8 @@ const terribleIdeas = [
         <div class="mb-12 text-center">
             <h2 class="mb-4 text-4xl font-bold tracking-tight sm:text-4xl">What is Terrible Statups?</h2>
             <p class="mx-auto max-w-2xl text-lg/8 text-muted-foreground">
-                Every billion-dollar company started as a terrible idea. The only way to find the gems is to make. Terrible statups is a way to keep
-                all your ideas in one place, and validate them as you go.
+                Every billion-dollar company started as a terrible idea. Terrible statups speeds up the process of validating and sharing your next
+                startup idea. Ideate fast, validate faster.
             </p>
         </div>
 
