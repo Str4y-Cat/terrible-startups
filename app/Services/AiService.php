@@ -5,12 +5,9 @@ namespace App\Services;
 use App\Enums\ToolType;
 use App\Models\Idea;
 use GuzzleHttp\Utils;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\Response;
-use Throwable;
-
-use function GuzzleHttp\json_decode;
-use function GuzzleHttp\json_encode;
 
 class AiService
 {
@@ -25,9 +22,7 @@ class AiService
         $this->idea = $idea;
     }
 
-
-
-    public function buildTextContext(Idea $idea)
+    public function buildTextContext(Idea $idea): string
     {
         $context =
         "Title: ".$idea->title . "\n".
@@ -43,7 +38,7 @@ class AiService
         return $context;
     }
 
-    public function buildJsonContext(Idea $idea)
+    public function buildJsonContext(Idea $idea): Collection
     {
         $idea_context =  collect($idea)->only(['title','overview','inspiration','solution','features','target_audience','risks','challenges']);
 
@@ -57,7 +52,7 @@ class AiService
         return $idea_context;
     }
 
-    private function queryOpenAi(string $id, string $version)
+    private function queryOpenAi(string $id, string $version): Response
     {
         return  Http::acceptJson()
             ->withToken(config('ai.openai_key'))
