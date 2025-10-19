@@ -6,6 +6,7 @@ import { ZiggyVue } from 'ziggy-js';
 import '../css/app.css';
 import { initializeTheme } from './composables/useAppearance';
 import { useHistory } from './composables/useHistory';
+import { usePostHog } from './composables/usePostHog';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Terrible Startups';
 
@@ -28,6 +29,9 @@ const { trackNavigation } = useHistory();
 router.on('navigate', () => {
     trackNavigation();
 });
+
+//Analytics : @ https://posthog.com/docs/getting-started/start-here
+const { posthog } = usePostHog();
 
 // This will set light / dark mode on page load...
 initializeTheme();
