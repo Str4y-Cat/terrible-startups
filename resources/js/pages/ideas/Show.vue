@@ -201,70 +201,70 @@ function getStatus(item) {
                 <CollapsibleContainer title="Validation Tools" :open="true">
                     <div class="mt-4 grid grid-cols-1 flex-wrap gap-4 xs:grid-cols-2 md:grid-cols-3">
                         <!-- COMPETITOR SEARCH -->
-                        <ToolOverview route_name="tool.competitor_search" :idea_id="idea.id">
+                        <ToolOverview type="competitor-search" :idea_id="idea.id">
                             <template v-slot:icon><Ghost /></template>
                             Competitor Search
                             <template v-slot:description>Search for competitors to your business</template>
                         </ToolOverview>
 
                         <!-- SWOT ANALYSIS -->
-                        <ToolOverview route_name="tool.swot" :idea_id="idea.id">
+                        <ToolOverview type="swot" :idea_id="idea.id">
                             <template v-slot:icon><Grid2x2Check /></template>
                             SWOT
                             <template v-slot:description>Strengths, Weaknesses, Opportunities, Threats</template>
                         </ToolOverview>
 
                         <!-- REDDIT COMPETITOR ANALYSIS -->
-                        <ToolOverview route_name="tool.reddit_community_search" :idea_id="idea.id">
+                        <ToolOverview type="reddit-communities" :idea_id="idea.id">
                             <template v-slot:icon><Users /></template>
                             Reddit Community search
                             <template v-slot:description>Search for relevant reddit communities</template>
                         </ToolOverview>
 
                         <!-- MARKET SIZE -->
-                        <ToolOverview route_name="tool.reddit_community_search" :idea_id="idea.id">
+                        <ToolOverview type="tool.reddit_community_search" :idea_id="idea.id">
                             <template v-slot:icon><Construction class="text-yellow-600" /></template>
                             Market Size Tool
                             <template v-slot:description>Get a rough estimate of market size</template>
                         </ToolOverview>
 
                         <!-- PRICING STRATEGY -->
-                        <ToolOverview route_name="tool.reddit_community_search" :idea_id="idea.id">
+                        <ToolOverview type="tool.reddit_community_search" :idea_id="idea.id">
                             <template v-slot:icon><Construction class="text-yellow-600" /></template>
                             Pricing strategy helper
                             <template v-slot:description>Generate pricing strategies</template>
                         </ToolOverview>
 
                         <!-- POSITIONING -->
-                        <ToolOverview route_name="tool.reddit_community_search" :idea_id="idea.id">
+                        <ToolOverview type="tool.reddit_community_search" :idea_id="idea.id">
                             <template v-slot:icon><Construction class="text-yellow-600" /></template>
                             Marketing positioner
                             <template v-slot:description>Generate a market position</template>
                         </ToolOverview>
 
                         <!-- Buildability -->
-                        <ToolOverview route_name="tool.reddit_community_search" :idea_id="idea.id">
+                        <ToolOverview type="tool.reddit_community_search" :idea_id="idea.id">
                             <template v-slot:icon><Construction class="text-yellow-600" /></template>
                             Buildability
                             <template v-slot:description>Generate a overview of how possible the idea is to create</template>
                         </ToolOverview>
 
                         <!-- GTM Planner -->
-                        <ToolOverview route_name="tool.reddit_community_search" :idea_id="idea.id">
+                        <ToolOverview type="tool.reddit_community_search" :idea_id="idea.id">
                             <template v-slot:icon><Construction class="text-yellow-600" /></template>
                             Go to market strategizer
                             <template v-slot:description>Generate a go to market plan</template>
                         </ToolOverview>
 
                         <!-- GTM Planner -->
-                        <ToolOverview route_name="tool.reddit_community_search" :idea_id="idea.id">
+                        <ToolOverview type="tool.reddit_community_search" :idea_id="idea.id">
                             <template v-slot:icon><Construction class="text-yellow-600" /></template>
                             Differenciation map
                             <template v-slot:description>How your idea is differenciated from other similar ideas. </template>
                         </ToolOverview>
 
                         <!-- Persona Builder -->
-                        <ToolOverview route_name="tool.reddit_community_search" :idea_id="idea.id">
+                        <ToolOverview type="tool.reddit_community_search" :idea_id="idea.id">
                             <template v-slot:icon><Construction class="text-yellow-600" /></template>
                             Persona Builder
                             <template v-slot:description>Build customer persona profiles of ideal clients</template>

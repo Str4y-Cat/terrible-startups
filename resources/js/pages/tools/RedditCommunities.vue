@@ -14,7 +14,7 @@ const page = usePage();
 
 const idea = page.props.idea as { id: string; title: string };
 
-const community_searches = computed(() => page.props.community_searches as CommunityAnalysis[]);
+const community_searches = computed(() => page.props.tool_results as CommunityAnalysis[]);
 // console.log(competitor_searches);
 const latest_community_search = computed(() => {
     return community_searches.value[community_searches.value?.length - 1] || {};
@@ -49,7 +49,7 @@ const { start, stop } = usePoll(
 // console.log(poll);
 
 function createNewRedditCommunitySearch() {
-    router.visit(route('tool.reddit_community_search', idea.id), {
+    router.visit(`${route('tool', idea.id)}?type=reddit-communities`, {
         method: 'post',
         onSuccess: (response) => {
             console.log('SUCCESS', response);

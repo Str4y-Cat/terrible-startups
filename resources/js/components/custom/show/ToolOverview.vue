@@ -2,14 +2,14 @@
 import { Link } from '@inertiajs/vue3';
 import { useSlots } from 'vue';
 defineProps<{
-    route_name: string;
+    type: string;
     idea_id: number;
 }>();
 const slots = useSlots();
 </script>
 <template>
     <Link
-        :href="route(route_name, idea_id)"
+        :href="`${route('tool', idea_id)}?type=${type}`"
         class="group relative flex h-full w-full items-start justify-start gap-2 rounded border border-border p-4 transition-colors hover:border-primary"
     >
         <div v-if="slots.icon" class="rounded-full bg-muted p-2">

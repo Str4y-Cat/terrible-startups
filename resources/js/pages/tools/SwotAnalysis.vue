@@ -14,8 +14,8 @@ const page = usePage();
 
 const idea = page.props.idea as { id: string; title: string };
 
-const swots = computed(() => page.props.swots as SwotAnalysis[]);
-console.log(swots.value);
+const swots = computed(() => page.props.tool_results as SwotAnalysis[]);
+// console.log(swots.value);
 // console.log(competitor_searches);
 const latest_swot = computed(() => swots.value[swots.value.length - 1] || {});
 
@@ -48,7 +48,7 @@ const { start, stop } = usePoll(
 // console.log(poll);
 
 function createNewCompetitorSearch() {
-    router.visit(route('tool.swot', idea.id), {
+    router.visit(`${route('tool', idea.id)}?type=swot`, {
         method: 'post',
         onSuccess: (response) => {
             console.log('SUCCESS', response);
@@ -56,15 +56,8 @@ function createNewCompetitorSearch() {
         },
         onError: (error) => {
             console.log(error);
-            //trigger pop up
 
             errorToast('Failed to save', error);
-            // toast.error('Failed to save', {
-            //     style: {
-            //         'border-color': 'var(--color-red-600)',
-            //     },
-            //     description: 'Error performing search',
-            // });
         },
     });
 }

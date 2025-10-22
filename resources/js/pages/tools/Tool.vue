@@ -1,28 +1,25 @@
 <script setup lang="ts">
-import CompetitorSearchTable from '@/components/custom/CompetitorSearchTable.vue';
 import Button from '@/components/ui/button/Button.vue';
 import { Toaster } from '@/components/ui/sonner';
 import { errorToast } from '@/composables/useErrorToast';
 import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
-import { CompetitorSearch } from '@/types/tools';
+import { ToolResult, ToolType } from '@/types/tools';
 import { Head, Link, router, usePage, usePoll } from '@inertiajs/vue3';
 import { ArrowLeft, LoaderCircle } from 'lucide-vue-next';
-import { computed, watch } from 'vue';
+import { Component, computed, watch } from 'vue';
 import 'vue-sonner/style.css'; // vue-sonner v2 requires this import
 
+//CONSTANTS
 const page = usePage();
 
 const idea = page.props.idea as { id: string; title: string };
 
-const competitor_searches = computed(() => page.props.tool_results as CompetitorSearch[]);
-// console.log(competitor_searches);
-const latest_competitor_search = computed(() => competitor_searches.value[competitor_searches.value.length - 1] || {});
+const tool_results = computed(() => page.props.tool_results as ToolResult[]);
 
-const processing = computed(() => {
-    return latest_competitor_search?.value.status == 'processing';
-});
+const tool_type = page.props.tool_type as ToolType;
 
+//GENERAL
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Ideas',
@@ -33,21 +30,28 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: `/ideas/${idea.id}`,
     },
     {
-        title: 'competitor search',
-        href: `/ideas/${idea.id}/competitor-search`,
+        title: tool_type,
+        href: `/ideas/${idea.id}/tool?type=${tool_type}`,
     },
 ];
+
+//SPECIFIC FUNCTION - excract to "useCreateTool"
+const latest_tool_result = computed(() => tool_results.value[tool_results.value.length - 1] || {});
+
+const processing = computed(() => {
+    return latest_tool_result?.value.status == 'processing';
+});
 
 const { start, stop } = usePoll(
     1000,
     {
-        only: ['competitor_searches'],
+        only: ['tool_results'],
     },
     { autoStart: false },
 );
 // console.log(poll);
 
-function createNewCompetitorSearch() {
+function createNewTool() {
     router.visit(`${route('tool', idea.id)}?type=competitor-search`, {
         method: 'post',
         onSuccess: (response) => {
@@ -63,7 +67,7 @@ function createNewCompetitorSearch() {
 }
 
 watch(
-    () => latest_competitor_search?.value.status,
+    () => latest_tool_result?.value.status,
     (newStatus) => {
         console.log('competitor status', newStatus);
         if (newStatus == 'complete') {
@@ -73,6 +77,14 @@ watch(
         }
     },
 );
+
+//SPECIFIC SETUP
+// dynamic component mapping
+const viewers: Record<ToolType, Component> = {
+    'competitor-search': CompetitorSearchViewer,
+    swot: SwotAnalysisViewer,
+    'reddit-communities': RedditCommunitiesViewer,
+};
 </script>
 
 <template>
@@ -87,42 +99,19 @@ watch(
                 </Link>
             </div>
             <div class="flex flex-1 gap-4 overflow-x-auto rounded-xl py-4">
-                <h1 class="text-4xl">Competitor search</h1>
-                <Button :disabled="processing" @click="createNewCompetitorSearch">
+                <h1 class="text-4xl">{{ tool_type }}</h1>
+                <Button :disabled="processing" @click="createNewTool">
                     <span v-if="!processing"> Search </span>
                     <span v-if="processing"> Searching </span>
                     <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
                 </Button>
             </div>
             <div>
-                <p class="text-foreground/50">
-                    Perform a ai search for all the competitors of your idea. The more information you have added to your idea description, the more
-                    accurate the results will be
-                </p>
+                <p class="text-foreground/50">text goes here</p>
             </div>
         </div>
 
-        <div>
-            <div class="space-y-8 p-4">
-                <!-- DIRECT COMPETITORS -->
-                <div v-if="latest_competitor_search">
-                    <h3 class="mb-4 text-2xl font-semibold">Direct Competitors</h3>
-                    <CompetitorSearchTable
-                        :head="['name', 'regions', 'description', 'strengths', 'weaknesses', 'target_audience', 'website']"
-                        :content="latest_competitor_search.content?.competitors"
-                    />
-                </div>
-
-                <!-- INDIRECT COMPETITORS -->
-                <div v-if="latest_competitor_search">
-                    <h3 class="mb-4 text-2xl font-semibold">Indirect Competitors</h3>
-                    <CompetitorSearchTable
-                        :head="['name', 'regions', 'description', 'strengths', 'weaknesses', 'target_audience', 'website']"
-                        :content="latest_competitor_search.content?.indirect_competitors"
-                    />
-                </div>
-            </div>
-        </div>
+        <component :is="viewers[tool_type]" v-if="latest_tool_result" :content="latest_tool_result.content" />
 
         <Toaster />
     </AppLayout>

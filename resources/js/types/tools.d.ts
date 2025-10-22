@@ -1,4 +1,24 @@
+export interface Tool {
+    idea: { id: string; title: string };
+    tool_results: ToolResult[];
+    tool_type: ToolType;
+}
+
+export type ToolType = 'competitor-search' | 'swot' | 'reddit-communities';
+
+export interface ToolResult {
+    status: 'processing' | 'complete' | 'failed'; // matches your ToolStatus enum
+    content: CompetitorSearchContent | SwotAnalysisContent | CompetitorSearchContent;
+    updated_at: string;
+}
+
 // COMPETITOR ANALYSIS
+
+export interface CompetitorSearchContent {
+    competitors: Competitor[];
+    indirect_competitors: Competitor[];
+}
+
 export interface Competitor {
     name: string;
     description: string;
@@ -11,23 +31,7 @@ export interface Competitor {
     regions: string;
 }
 
-export interface CompetitorSearchContent {
-    competitors: Competitor[];
-    indirect_competitors: Competitor[];
-}
-
-export interface CompetitorSearch {
-    status: 'processing' | 'complete' | 'failed'; // matches your ToolStatus enum
-    content: CompetitorSearchContent;
-    updated_at: string;
-}
-
 // SWOT
-export interface SwotAnalysis {
-    status: 'processing' | 'complete' | 'failed'; // matches your ToolStatus enum
-    content: SwotAnalysisContent;
-    updated_at: string;
-}
 
 export interface SwotAnalysisContent {
     SWOT: {
@@ -46,11 +50,6 @@ export interface SWOTCategory {
 }
 
 // COMMUNITY
-export interface CommunityAnalysis {
-    status: 'processing' | 'complete' | 'failed'; // matches your ToolStatus enum
-    content: CommunityAnalysisContent;
-    updated_at: string;
-}
 
 export interface CommunityAnalysisContent {
     communities: Community[];
