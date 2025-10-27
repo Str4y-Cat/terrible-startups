@@ -15,11 +15,6 @@ use Inertia\Response;
 
 class ToolController extends Controller
 {
-    //REFACTOR: we could probably refactor this into one option.
-    //Then we add the tool type in the parameter. i.e tool?tooltype=competitorsearch
-
-    //Tool Show
-
     public function showTool(Idea $idea, Request $request): Response
     {
         $toolType = ToolType::tryFrom($request->type);
@@ -66,7 +61,7 @@ class ToolController extends Controller
             $toolType::redditCommunities => 'RedditCommunities',
         };
 
-        return Inertia::render("tools/{$page}", [
+        return Inertia::render("tools/Tool?type={$page}", [
             "idea" => fn () => $idea -> only(['id', 'title']),
             "tool_results" => fn () => $idea->tools()->where('type', $toolType->value)->get(['status', "content", 'updated_at'])
         ]);

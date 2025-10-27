@@ -7,8 +7,11 @@ import { type BreadcrumbItem } from '@/types';
 import { ToolResult, ToolType } from '@/types/tools';
 import { Head, Link, router, usePage, usePoll } from '@inertiajs/vue3';
 import { ArrowLeft, LoaderCircle } from 'lucide-vue-next';
-import { Component, computed, watch } from 'vue';
+import { computed, watch } from 'vue';
 import 'vue-sonner/style.css'; // vue-sonner v2 requires this import
+import CompetitorSearch from './viewers/CompetitorSearch.vue';
+import RedditCommunities from './viewers/RedditCommunities.vue';
+import SwotAnalysis from './viewers/SwotAnalysis.vue';
 
 //CONSTANTS
 const page = usePage();
@@ -52,7 +55,9 @@ const { start, stop } = usePoll(
 // console.log(poll);
 
 function createNewTool() {
-    router.visit(`${route('tool', idea.id)}?type=competitor-search`, {
+    console.log(`posting to : ${route('tool', idea.id)}?type=${tool_type}`);
+
+    router.visit(`${route('tool', idea.id)}?type=${tool_type}`, {
         method: 'post',
         onSuccess: (response) => {
             console.log('SUCCESS', response);
@@ -69,7 +74,7 @@ function createNewTool() {
 watch(
     () => latest_tool_result?.value.status,
     (newStatus) => {
-        console.log('competitor status', newStatus);
+        console.log(`${tool_type} status`, newStatus);
         if (newStatus == 'complete') {
             console.log('stopping the search');
             // console.log(poll);
@@ -80,11 +85,17 @@ watch(
 
 //SPECIFIC SETUP
 // dynamic component mapping
-const viewers: Record<ToolType, Component> = {
-    'competitor-search': CompetitorSearchViewer,
-    swot: SwotAnalysisViewer,
-    'reddit-communities': RedditCommunitiesViewer,
+const viewers: Record<ToolType, any> = {
+    'competitor-search': CompetitorSearch,
+    swot: SwotAnalysis,
+    'reddit-communities': RedditCommunities,
 };
+
+// const viewers = {
+//     'competitor-search': CompetitorSearch,
+//     swot: SwotAnalysis,
+//     'reddit-communities': RedditCommunities,
+// };
 </script>
 
 <template>
@@ -106,12 +117,12 @@ const viewers: Record<ToolType, Component> = {
                     <LoaderCircle v-if="processing" class="h-4 w-4 animate-spin" />
                 </Button>
             </div>
-            <div>
-                <p class="text-foreground/50">text goes here</p>
-            </div>
         </div>
 
-        <component :is="viewers[tool_type]" v-if="latest_tool_result" :content="latest_tool_result.content" />
+        <div class="mb-8 px-4">
+            <!--<component :is="viewers[tool_type]" v-if="latest_tool_result && latest_tool_result.content" :content="latest_tool_result.content" />-->
+            <component :is="viewers[tool_type]" :content="{}" />
+        </div>
 
         <Toaster />
     </AppLayout>

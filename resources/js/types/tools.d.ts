@@ -8,7 +8,7 @@ export type ToolType = 'competitor-search' | 'swot' | 'reddit-communities';
 
 export interface ToolResult {
     status: 'processing' | 'complete' | 'failed'; // matches your ToolStatus enum
-    content: CompetitorSearchContent | SwotAnalysisContent | CompetitorSearchContent;
+    content: CommunitySearchContent | SwotAnalysisContent | CompetitorSearchContent;
     updated_at: string;
 }
 
@@ -16,21 +16,59 @@ export interface ToolResult {
 
 export interface CompetitorSearchContent {
     competitors: Competitor[];
-    indirect_competitors: Competitor[];
+    // indirect_competitors: Competitor[];
 }
 
-export interface Competitor {
+// export interface Competitor {
+//     name: string;
+//     description: string;
+//     strengths: string;
+//     weaknesses: string;
+//     market_position: string;
+//     target_audience: string;
+//     pricing: string;
+//     website: string;
+//     regions: string;
+// }
+//
+interface Competitor {
     name: string;
-    description: string;
-    strengths: string;
-    weaknesses: string;
-    market_position: string;
-    target_audience: string;
-    pricing: string;
-    website: string;
-    regions: string;
-}
+    summary: string;
+    key_info: string[];
 
+    // Grouping general market info for clarity
+    overview: {
+        market_position: string;
+        regions: string[];
+        target_audience: string[];
+    };
+
+    strengths: string[];
+    weaknesses: string[];
+    differentiators?: string[];
+
+    value_proposition: {
+        summary: string;
+        problems_solved: string;
+        desired_fulfilled: string;
+        benefits: string;
+        additional?: string;
+    };
+
+    brand_identity: {
+        tone: string;
+        personality: string;
+        visual_style?: string;
+    };
+
+    url: string;
+
+    metadata?: {
+        source_urls?: string[];
+        data_confidence?: number; // 0–1 confidence level
+        last_updated?: string; // ISO date string
+    };
+}
 // SWOT
 
 export interface SwotAnalysisContent {
@@ -51,7 +89,7 @@ export interface SWOTCategory {
 
 // COMMUNITY
 
-export interface CommunityAnalysisContent {
+export interface CommunitySearchContent {
     communities: Community[];
     business_idea_analysis: string;
 }
