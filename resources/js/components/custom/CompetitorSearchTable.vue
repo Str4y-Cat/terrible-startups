@@ -24,8 +24,13 @@ const props = defineProps<{
                     <span v-if="head != 'website'">
                         {{ row[head] }}
                     </span>
-                    <a class="flex gap-2 text-blue-500" target="_blank" :href="`https://${row[head]}`" v-if="head == 'website'">
-                        {{ row[head] }}
+                    <a
+                        class="flex gap-2 text-blue-500"
+                        target="_blank"
+                        :href="`https://${row[head].replace('https://', '')}`"
+                        v-if="head == 'website'"
+                    >
+                        {{ row[head].replace('https://', '') }}
                         <ExternalLink class="size-4" />
                     </a>
                 </TableCell>
