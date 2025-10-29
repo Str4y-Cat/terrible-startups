@@ -121,7 +121,7 @@ const viewers: Record<ToolType, any> = {
 
         <div class="mb-8 px-4">
             <!--<component :is="viewers[tool_type]" v-if="latest_tool_result && latest_tool_result.content" :content="latest_tool_result.content" />-->
-            <component :is="viewers[tool_type]" :content="{}" />
+            <component :is="viewers[tool_type]" :content="latest_tool_result.content" />
         </div>
 
         <Toaster />

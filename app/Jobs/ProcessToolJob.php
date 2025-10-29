@@ -57,6 +57,7 @@ class ProcessToolJob implements ShouldQueue
 
             $toolData = ToolDataTransformer::fromOpenAi($response, $this->tool->type);
         } catch (Throwable $err) {
+
             $this->tool->update([
                 "status" => ToolStatus::failed->value
             ]);

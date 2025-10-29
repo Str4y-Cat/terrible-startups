@@ -37,7 +37,7 @@ class ToolController extends Controller
     }
     //Tool Create
 
-    public function createTool(Idea $idea, Request $request): Response
+    public function createTool(Idea $idea, Request $request)
     {
 
         $toolType = ToolType::tryFrom($request->type);
@@ -53,7 +53,7 @@ class ToolController extends Controller
             "status" => ToolStatus::processing,
         ]);
 
-        ProcessToolJob::dispatch($idea, $tool);
+        /* ProcessToolJob::dispatch($idea, $tool); */
 
         $page = match($toolType) {
             $toolType::competitorSearch => 'CompetitorSearch',
@@ -61,10 +61,16 @@ class ToolController extends Controller
             $toolType::redditCommunities => 'RedditCommunities',
         };
 
-        return Inertia::render("tools/Tool?type={$page}", [
+        /* return redirect("tools/Tool?type={$page}"); */
+        return Inertia::render("tools/Tool", [
             "idea" => fn () => $idea -> only(['id', 'title']),
-            "tool_results" => fn () => $idea->tools()->where('type', $toolType->value)->get(['status', "content", 'updated_at'])
+            "tool_results" => fn () => $idea->tools()->where('type', $toolType->value)->get(['status', "content", 'updated_at']),
+            "tool_type" => $toolType->value
         ]);
+        /* return Inertia::render("tools/Tool?type={$page}", [ */
+        /*     "idea" => fn () => $idea -> only(['id', 'title']), */
+        /*     "tool_results" => fn () => $idea->tools()->where('type', $toolType->value)->get(['status', "content", 'updated_at']) */
+        /* ]); */
 
     }
 
